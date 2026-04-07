@@ -1,24 +1,27 @@
 if (typeof browser === "undefined") var browser = chrome;
 
 const chromeStorage = chrome.storage.local;
-
-const problemId = document.querySelector(".nav").children[0].firstChild.href.split("/").at(-2);
-const navbarElement = document.querySelector(".nav");
-const sidebarElement = document.querySelector(".nav.sidebar");
 const topics = [];
 const problemset = {};
 
-const getTags = (problemId) =>
-    browser.runtime.sendMessage({
-        command: "fetch-tags",
-        problemId: problemId
-    }).then(response => response.tags);
+const getProblemId = () => {
+    const match = location.pathname.match(/\/(task|submit|view|stats|hack|result)\/(\d+)/);
+    return match ? match[2] : null;
+};
 
-const getTips = (problemId) =>
-    browser.runtime.sendMessage({
-        command: "fetch-tips",
-        problemId: problemId
-    }).then(response => response.tips);
+const getTags = async (problemId) => {
+    try {
+        const response = await browser.runtime.sendMessage({ command: "fetch-tags", problemId });
+        return response?.tags || [];
+    } catch (e) { return []; }
+};
+
+const getTips = async (problemId) => {
+    try {
+        const response = await browser.runtime.sendMessage({ command: "fetch-tips", problemId });
+        return response?.tips || [];
+    } catch (e) { return []; }
+};
 
 const translateText = async (text, targetLang) => {
     const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
@@ -32,6 +35,9 @@ const translateText = async (text, targetLang) => {
 };
 
 const createTranslationSectionOnSidebar = () => {
+    const sidebarElement = document.querySelector(".nav.sidebar");
+    if (!sidebarElement) return;
+
     const container = document.createElement("div");
     container.id = "translate-container";
 
@@ -90,11 +96,16 @@ const createTranslationSectionOnSidebar = () => {
     container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(langSelect);
-
     sidebarElement.appendChild(container);
 };
 
 const createTagsSectionOnSidebar = async () => {
+    const sidebarElement = document.querySelector(".nav.sidebar");
+    const problemId = getProblemId();
+    if (!sidebarElement || !problemId) return;
+
+    const tagsList = await getTags(problemId);
+
     const container = document.createElement("div");
     container.id = "tags-container";
     
@@ -110,6 +121,19 @@ const createTagsSectionOnSidebar = async () => {
     showTagsSummary.style.cursor = "pointer";
     showTags.appendChild(showTagsSummary);
     
+    container.appendChild(dividerLine);
+    container.appendChild(sectionTitle);
+    container.appendChild(showTags);
+    sidebarElement.appendChild(container);
+
+    if (!tagsList || tagsList.length === 0) {
+        const noTagsElement = document.createElement("p");
+        noTagsElement.style.margin = "10px 0 0 0";
+        noTagsElement.innerHTML = "No Tags";
+        showTags.appendChild(noTagsElement);
+        return;
+    }
+
     const tagsListElement = document.createElement("ul");
     tagsListElement.id = "tags";
     tagsListElement.style.marginTop = "10px";
@@ -118,22 +142,6 @@ const createTagsSectionOnSidebar = async () => {
     tagsListElement.style.flexWrap = "wrap";
     tagsListElement.style.gap = "6px";
     showTags.appendChild(tagsListElement);
-
-    container.appendChild(dividerLine);
-    container.appendChild(sectionTitle);
-    container.appendChild(showTags);
-    
-    sidebarElement.appendChild(container);
-
-    const tagsList = await getTags(problemId);
-
-    if (tagsList.length == 0) {
-        const noTagsElement = document.createElement("p");
-        noTagsElement.style.margin = "0px";
-        noTagsElement.innerHTML = "No Tags";
-        document.getElementById("show-tags").outerHTML = noTagsElement.outerHTML;
-        return;
-    }
 
     tagsList.forEach((tag) => {
         const tagElement = document.createElement("li");
@@ -146,12 +154,17 @@ const createTagsSectionOnSidebar = async () => {
         tagElement.style.fontFamily = "monospace";
         tagElement.style.fontSize = "0.9em";
         tagElement.style.border = "1px solid #d1d5db";
-        
-        document.getElementById("tags").appendChild(tagElement);
+        tagsListElement.appendChild(tagElement);
     });
 }
 
 const createTipsSectionOnSidebar = async () => {
+    const sidebarElement = document.querySelector(".nav.sidebar");
+    const problemId = getProblemId();
+    if (!sidebarElement || !problemId) return;
+
+    const tips = await getTips(problemId);
+
     const container = document.createElement("div");
     container.id = "tips-container";
     
@@ -167,26 +180,23 @@ const createTipsSectionOnSidebar = async () => {
     showTipsSummary.style.cursor = "pointer";
     showTips.appendChild(showTipsSummary);
     
+    container.appendChild(dividerLine);
+    container.appendChild(sectionTitle);
+    container.appendChild(showTips);
+    sidebarElement.appendChild(container);
+
+    if (!tips || tips.length === 0) {
+        const noTipsElement = document.createElement("p");
+        noTipsElement.style.margin = "10px 0 0 0";
+        noTipsElement.innerHTML = "No Tips";
+        showTips.appendChild(noTipsElement);
+        return;
+    }
+
     const tipsListElement = document.createElement("ul");
     tipsListElement.style.marginTop = "8px";
     tipsListElement.style.paddingLeft = "20px";
     showTips.appendChild(tipsListElement);
-
-    container.appendChild(dividerLine);
-    container.appendChild(sectionTitle);
-    container.appendChild(showTips);
-    
-    sidebarElement.appendChild(container);
-
-    const tips = await getTips(problemId);
-
-    if (tips.length == 0) {
-        const noTipsElement = document.createElement("p");
-        noTipsElement.style.margin = "0px";
-        noTipsElement.innerHTML = "No Tips";
-        document.getElementById("show-tips").outerHTML = noTipsElement.outerHTML;
-        return;
-    }
 
     tips.reverse().forEach((tip) => {
         const tipElement = document.createElement("li");
@@ -197,24 +207,27 @@ const createTipsSectionOnSidebar = async () => {
 }
 
 const createSolutionSectionOnNavbar = () => {
+    const navbarElement = document.querySelector(".nav");
+    if (!navbarElement) return;
     const ele = document.createElement("li");
     ele.style.cursor = "pointer";
     ele.addEventListener("click", () => {
-        document.querySelector(".content").innerHTML = "Solution Page";
-        navbarElement.querySelector(".current").classList.remove("current");
-        document.getElementById("solution").classList.add("current");
+        const contentDiv = document.querySelector(".content");
+        if(contentDiv) contentDiv.innerHTML = "Solution Page";
+        navbarElement.querySelector(".current")?.classList.remove("current");
+        document.getElementById("solution")?.classList.add("current");
     });
     const a = document.createElement("a");
     a.id = "solution";
     a.innerHTML = "Solution"
     ele.appendChild(a);
-    const nav = document.querySelector(".nav");
-    nav.appendChild(ele);
+    navbarElement.appendChild(ele);
 }
 
 const loadLanguageSelectorCache = () => {
     const languageSelector = document.getElementById("lang");
     const languageOption = document.getElementById("option");
+    if(!languageSelector || !languageOption) return;
 
     chromeStorage.get(["language", "option"]).then((result) => {
         setTimeout(() => {
@@ -231,6 +244,7 @@ const loadLanguageSelectorCache = () => {
 const createLanguageSelectorCache = () => {
     const languageSelector = document.getElementById("lang");
     const languageOption = document.getElementById("option");
+    if(!languageSelector || !languageOption) return;
     languageSelector.addEventListener("change", () => {
         chromeStorage.set({ language: languageSelector.value });
     });
@@ -240,6 +254,8 @@ const createLanguageSelectorCache = () => {
 }
 
 const submitCodeFile = (fileData) => {
+    const problemId = getProblemId();
+    if (!problemId) return;
     const formData = new FormData();
     const languageSelector = document.getElementById("lang");
     const languageOption = document.getElementById("option");
@@ -258,27 +274,29 @@ const submitCodeFile = (fileData) => {
         if (response.ok) {
             location.href = response.url;
         }
-    }).catch((error) => {
-        console.error(error);
-    });
+    }).catch((error) => console.error(error));
 };
 
 const createCodeInputArea = () => {
+    const form = document.querySelector("form");
+    if (!form) return;
     const codeInputArea = document.createElement("textarea");
     codeInputArea.id = "code";
     codeInputArea.style.width = "500px";
     codeInputArea.style.height = "300px";
-    const form = document.querySelector("form");
-    form.insertBefore(codeInputArea, form.children[5]);
+    form.insertBefore(codeInputArea, form.children[5] || form.firstChild);
 }
 
 const modifySubmitButton = () => {
     const submitButton = document.querySelector("input[type='submit']");
+    if (!submitButton) return;
     submitButton.addEventListener("click", (event) => {
-        const code = document.getElementById("code").value;
+        const codeElement = document.getElementById("code");
+        if (!codeElement) return;
+        const code = codeElement.value;
         if (code == "") {
             const fileInput = document.querySelector("input[type='file']");
-            submitCodeFile(fileInput.files[0]);
+            if (fileInput && fileInput.files.length > 0) submitCodeFile(fileInput.files[0]);
             return;
         }
         submitCodeFile(new Blob([code], { type: 'text/plain' }))
@@ -286,22 +304,83 @@ const modifySubmitButton = () => {
     });
 }
 
+const formatPreBlocks = () => {
+    if (!location.href.includes("/task/")) return;
+    
+    // Đã nới lỏng bộ lọc để lấy tất cả các thẻ pre nằm trong phần content
+    const preElements = document.querySelectorAll(".content pre");
+    preElements.forEach((pre) => {
+        
+        // Cố gắng tìm chữ "Input" hoặc "Output" từ thẻ <p> đứng trước nó
+        let labelText = "text";
+        const prevElement = pre.previousElementSibling;
+        if (prevElement && prevElement.tagName === "P") {
+            labelText = prevElement.innerText.trim().replace(":", "");
+        }
+
+        const wrapper = document.createElement("div");
+        wrapper.style.backgroundColor = "#f8f9fa";
+        wrapper.style.border = "1px solid #d1d5db";
+        wrapper.style.borderRadius = "6px";
+        wrapper.style.marginBottom = "1.5em";
+        
+        const header = document.createElement("div");
+        header.style.display = "flex";
+        header.style.justifyContent = "space-between";
+        header.style.alignItems = "center";
+        header.style.padding = "6px 12px";
+        header.style.backgroundColor = "#e5e7eb";
+        header.style.borderTopLeftRadius = "5px";
+        header.style.borderTopRightRadius = "5px";
+        header.style.borderBottom = "1px solid #d1d5db";
+        header.style.fontFamily = "sans-serif";
+        header.style.fontSize = "0.85em";
+        
+        const label = document.createElement("span");
+        label.innerHTML = labelText; // Gắn nhãn tự động
+        label.style.color = "#6b7280";
+        label.style.fontWeight = "bold";
+        
+        const copyBtn = document.createElement("button");
+        copyBtn.innerHTML = "Copy";
+        copyBtn.style.cursor = "pointer";
+        copyBtn.style.border = "none";
+        copyBtn.style.background = "transparent";
+        copyBtn.style.color = "#374151";
+        copyBtn.style.fontWeight = "600";
+        
+        copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(pre.innerText);
+            copyBtn.innerHTML = "Copied!";
+            setTimeout(() => { copyBtn.innerHTML = "Copy"; }, 2000);
+        });
+        
+        header.appendChild(label);
+        header.appendChild(copyBtn);
+        
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
+        
+        pre.style.margin = "0";
+        pre.style.border = "none";
+        pre.style.padding = "12px";
+        pre.style.backgroundColor = "transparent";
+        pre.style.overflowX = "auto";
+    });
+}
+
 const isSubmitPage = () => location.href.startsWith("https://cses.fi/problemset/submit");
 
 const isProblemPage = () => {
-    let result = false;
-    const possibleUrls = [
+    return [
         "https://cses.fi/problemset/submit/",
         "https://cses.fi/problemset/task/",
         "https://cses.fi/problemset/view/",
         "https://cses.fi/problemset/stats/",
         "https://cses.fi/problemset/hack/",
         "https://cses.fi/problemset/result/",
-    ];
-    possibleUrls.forEach((url) => {
-        if (location.href.startsWith(url)) result = true;
-    });
-    return result;
+    ].some(url => location.href.startsWith(url));
 }
 
 const isResultPage = () => location.href.startsWith("https://cses.fi/problemset/result/");
@@ -321,6 +400,7 @@ const createElementByHTMLtext = (htmlText) => {
 
 const generateProblemset = () => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
+    if (taskGroups.length === 0) return;
     taskGroups.shift();
     for (let i = 0; i < taskGroups.length; i++) {
         problemset[topics[i]] = [];
@@ -329,11 +409,7 @@ const generateProblemset = () => {
             const solvers = problem.querySelector(".detail").innerText.split("/").at(0).trim();
             const defaultIndex = index;
             const html = problem.outerHTML;
-            problemset[topics[i]].push({
-                defaultIndex,
-                solvers,
-                html
-            });
+            problemset[topics[i]].push({ defaultIndex, solvers, html });
         });
     }
 };
@@ -342,9 +418,7 @@ const sortByDefault = (topicIndex) => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
     taskGroups.shift();
     taskGroups[topicIndex].innerHTML = "";
-    problemset[topics[topicIndex]].sort((a, b) => {
-        return a.defaultIndex - b.defaultIndex;
-    }).forEach((problem) => {
+    problemset[topics[topicIndex]].sort((a, b) => a.defaultIndex - b.defaultIndex).forEach((problem) => {
         taskGroups[topicIndex].innerHTML += problem.html;
     });
 }
@@ -353,15 +427,14 @@ const sortBySolvers = (topicIndex) => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
     taskGroups.shift();
     taskGroups[topicIndex].innerHTML = "";
-    problemset[topics[topicIndex]].sort((a, b) => {
-        return b.solvers - a.solvers;
-    }).forEach((problem) => {
+    problemset[topics[topicIndex]].sort((a, b) => b.solvers - a.solvers).forEach((problem) => {
         taskGroups[topicIndex].innerHTML += problem.html;
     });
 }
 
 const createCustomSortSelector = () => {
     const titleList = [...document.querySelectorAll("h2")];
+    if (titleList.length === 0) return;
     titleList.shift();
     titleList.forEach((element, index) => {
         const selector = createElementByHTMLtext(`
@@ -395,7 +468,7 @@ const applySortRule = () => {
         titleList.shift();
         titleList.forEach((element, index) => {
             const selector = element.querySelector("select");
-            if (index in sortRule) {
+            if (selector && index in sortRule) {
                 selector.value = sortRule[index];
                 const event = new Event('change');
                 selector.dispatchEvent(event);
@@ -406,8 +479,10 @@ const applySortRule = () => {
 
 function addCopyToClipboardButton() {
     const actionBar = document.querySelector(".content .nav");
-    const code = document.querySelector("pre").innerText;
-
+    const preElement = document.querySelector("pre");
+    if (!actionBar || !preElement) return;
+    
+    const code = preElement.innerText;
     const button = createElementByHTMLtext(`
         <li style="cursor: pointer;">
             <a>copy to clipboard</a>
@@ -418,34 +493,41 @@ function addCopyToClipboardButton() {
         navigator.clipboard.writeText(code);
         const copyToClipboardButton = button.querySelector("a");
         copyToClipboardButton.innerHTML = "copied :)";
-        setTimeout(() => {
-            copyToClipboardButton.innerHTML = "copy to clipboard";
-        }, 1000);
+        setTimeout(() => { copyToClipboardButton.innerHTML = "copy to clipboard"; }, 1000);
     });
 
     actionBar.appendChild(button);
 }
 
-if (isSubmitPage()) {
-    loadLanguageSelectorCache();
-    createLanguageSelectorCache();
-    createCodeInputArea();
-    modifySubmitButton();
-}
+const initExtension = () => {
+    if (isSubmitPage()) {
+        loadLanguageSelectorCache();
+        createLanguageSelectorCache();
+        createCodeInputArea();
+        modifySubmitButton();
+    }
 
-if (isProblemPage()) {
-    createTranslationSectionOnSidebar();
-    createTipsSectionOnSidebar();
-    createTagsSectionOnSidebar();
-    createSolutionSectionOnNavbar();
-}
+    if (isProblemPage()) {
+        formatPreBlocks();
+        createTranslationSectionOnSidebar();
+        createTagsSectionOnSidebar();
+        createTipsSectionOnSidebar();
+        createSolutionSectionOnNavbar();
+    }
 
-if (isProblemListPage()) {
-    createCustomSortSelector();
-    generateProblemset();
-    applySortRule();
-}
+    if (isProblemListPage()) {
+        createCustomSortSelector();
+        generateProblemset();
+        applySortRule();
+    }
 
-if (isResultPage()) {
-    addCopyToClipboardButton();
+    if (isResultPage()) {
+        addCopyToClipboardButton();
+    }
+};
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initExtension);
+} else {
+    initExtension();
 }
