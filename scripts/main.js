@@ -400,6 +400,85 @@ const createElementByHTMLtext = (htmlText) => {
     return template.content.firstChild;
 }
 
+const createStatsSection = () => {
+    const tasks = document.querySelectorAll(".task");
+    if (tasks.length === 0) return;
+
+    let solved = 0;
+    let untouched = 0;
+    const attemptedNotAc = [];
+
+    tasks.forEach(task => {
+        const scoreSpan = task.querySelector(".task-score");
+        const aTag = task.querySelector("a");
+        if (scoreSpan) {
+            if (scoreSpan.classList.contains("full")) {
+                solved++;
+            } else if (scoreSpan.classList.contains("zero") || scoreSpan.className.trim() !== "task-score icon") {
+                attemptedNotAc.push({
+                    title: aTag.innerText,
+                    url: aTag.href
+                });
+            } else {
+                untouched++;
+            }
+        } else {
+            untouched++;
+        }
+    });
+
+    const total = solved + untouched + attemptedNotAc.length;
+
+    const container = document.createElement("div");
+    container.style.backgroundColor = "#f8f9fa";
+    container.style.border = "1px solid #d1d5db";
+    container.style.borderRadius = "6px";
+    container.style.padding = "15px";
+    container.style.marginBottom = "20px";
+
+    const title = document.createElement("h3");
+    title.style.marginTop = "0";
+    title.innerHTML = "Your Statistics";
+
+    const statsText = document.createElement("p");
+    statsText.innerHTML = `Total: <strong>${total}</strong> | Solved: <strong style="color:#198754">${solved}</strong> | Untouched: <strong>${untouched}</strong> | Attempted (Not AC): <strong style="color:#dc3545">${attemptedNotAc.length}</strong>`;
+
+    container.appendChild(title);
+    container.appendChild(statsText);
+
+    if (attemptedNotAc.length > 0) {
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.style.cursor = "pointer";
+        summary.style.fontWeight = "bold";
+        summary.style.color = "#d63384";
+        summary.innerHTML = "Show Attempted (Not AC) Problems";
+        
+        const list = document.createElement("ul");
+        list.style.marginTop = "10px";
+        list.style.paddingLeft = "20px";
+
+        attemptedNotAc.forEach(p => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = p.url;
+            a.innerHTML = p.title;
+            li.appendChild(a);
+            list.appendChild(li);
+        });
+
+        details.appendChild(summary);
+        details.appendChild(list);
+        container.appendChild(details);
+    }
+
+    const contentDiv = document.querySelector(".content");
+    const firstH2 = contentDiv.querySelector("h2");
+    if (firstH2) {
+        contentDiv.insertBefore(container, firstH2);
+    }
+}
+
 const generateProblemset = () => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
     if (taskGroups.length === 0) return;
@@ -538,6 +617,7 @@ const initExtension = () => {
     }
 
     if (isProblemListPage()) {
+        createStatsSection();
         createCustomSortSelector();
         generateProblemset();
         applySortRule();
