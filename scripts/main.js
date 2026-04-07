@@ -408,10 +408,18 @@ const generateProblemset = () => {
         problemset[topics[i]] = [];
         const problems = [...taskGroups[i].children];
         problems.forEach((problem, index) => {
-            const solvers = problem.querySelector(".detail").innerText.split("/").at(0).trim();
+            const detailElement = problem.querySelector(".detail");
+            let solvers = 0;
+            let acRate = 0;
+            if (detailElement) {
+                const parts = detailElement.innerText.split("/");
+                solvers = parseInt(parts.at(0)?.trim()) || 0;
+                const submissions = parseInt(parts.at(1)?.trim()) || 1;
+                acRate = solvers / submissions;
+            }
             const defaultIndex = index;
             const html = problem.outerHTML;
-            problemset[topics[i]].push({ defaultIndex, solvers, html });
+            problemset[topics[i]].push({ defaultIndex, solvers, acRate, html });
         });
     }
 };
@@ -434,6 +442,15 @@ const sortBySolvers = (topicIndex) => {
     });
 }
 
+const sortByACRate = (topicIndex) => {
+    const taskGroups = [...document.querySelectorAll(".task-list")];
+    taskGroups.shift();
+    taskGroups[topicIndex].innerHTML = "";
+    problemset[topics[topicIndex]].sort((a, b) => b.acRate - a.acRate).forEach((problem) => {
+        taskGroups[topicIndex].innerHTML += problem.html;
+    });
+}
+
 const createCustomSortSelector = () => {
     const titleList = [...document.querySelectorAll("h2")];
     if (titleList.length === 0) return;
@@ -443,6 +460,7 @@ const createCustomSortSelector = () => {
         <select style="margin-left:0.5rem">
             <option>Sort By Default</option>
             <option>Sort By Number of Solvers</option>
+            <option>Sort By AC Rate</option>
         </select>
         `);
         const sortProblems = () => {
@@ -450,6 +468,8 @@ const createCustomSortSelector = () => {
                 sortByDefault(index);
             } else if (selector.value == "Sort By Number of Solvers") {
                 sortBySolvers(index);
+            } else if (selector.value == "Sort By AC Rate") {
+                sortByACRate(index);
             }
             chromeStorage.get("sort-rule", (result) => {
                 const sortRule = result["sort-rule"] ?? {};
