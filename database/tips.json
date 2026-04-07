@@ -1,12 +1,6 @@
 {
     "1068": [],
-    "1083": [
-        "How to calculate the sum of 1 ~ n?"
-    ],
     "1069": [],
-    "1094": [
-        "When do we need to double x[i]? How much do we need to double?"
-    ],
     "1070": [
         "If k is odd, how to ensure that the difference between any pair of x[k] and x[k+1] is the same?"
     ],
@@ -15,43 +9,26 @@
         "How do you calculate the numbers of other cells through this rule?",
         "What changes will the answer have when the x or y of the coordinate is odd or even?"
     ],
-    "1072": [
-        
+    "1072": [],
+    "1083": [
+        "How to calculate the sum of 1 to n?"
     ],
-    "1092": [
-
+    "1092": [],
+    "1094": [
+        "When do we need to double x[i]? How much do we need to double?"
     ],
     "1617": [
         "How many possible numbers are there for each bit?",
         "How much can each bit actually contribute to the answer?"
     ],
-    "1618": [
-
-    ],
-    "1754": [
-
-    ],
-    "1755": [
-
-    ],
-    "2205": [
-
-    ],
-    "2165": [
-
-    ],
-    "1622": [
-
-    ],
-    "1623": [
-    ],
-    "1624": [
-
-    ],
-    "2431": [
-
-    ],
-    "1625": [
-
-    ]
+    "1618": [],
+    "1622": [],
+    "1623": [],
+    "1624": [],
+    "1625": [],
+    "1754": [],
+    "1755": [],
+    "2165": [],
+    "2205": [],
+    "2431": []
 }

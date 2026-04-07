@@ -1,15 +1,15 @@
 if (typeof browser === "undefined") var browser = chrome;
 
-const getFileFromGithub = (path) =>
+const getJSON = (path) =>
     fetch(path)
         .then(response => response.json());
 
 const getTags = (problemId) =>
-    getFileFromGithub("https://raw.githubusercontent.com/dada878/CSES-Helper/master/database/tags.json")
+    getJSON("../database/tags.json")
         .then(tagsData => tagsData[problemId]);
 
 const getTips = (problemId) =>
-    getFileFromGithub("https://raw.githubusercontent.com/dada878/CSES-Helper/master/database/tips.json")
+    getJSON("../database/tips.json")
         .then(tipsData => tipsData[problemId]);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

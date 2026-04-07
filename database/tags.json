@@ -1,19 +1,10 @@
 {
-    "Problem ID": [
-        "Tags"
-    ],
     "1068": [
-        "Control flow"
-    ],
-    "1083": [
-        "Control flow",
-        "Math"
+        "Simulation"
     ],
     "1069": [
-        "Control flow"
-    ],
-    "1094": [
-        "Control flow"
+        "Simulation",
+        "Implementation"
     ],
     "1070": [
         "Math"
@@ -24,31 +15,284 @@
     "1072": [
         "Math"
     ],
+    "1073": [
+        "Data Structure",
+        "set/multiset"
+    ],
+    "1074": [
+        "Discretization",
+        "Data Structure",
+        "map"
+    ],
+    "1075": [],
+    "1076": [
+        "Data Structure",
+        "set/multiset",
+        "pb_ds",
+        "Ordered-set"
+    ],
+    "1077": [
+        "Data Structure",
+        "set/multiset",
+        "Ordered-set"
+    ],
+    "1078": [],
+    "1079": [
+        "Modular Inverse",
+        "Math",
+        "Combination"
+    ],
+    "1080": [],
+    "1081": [
+        "Harmonic Series",
+        "Math"
+    ],
+    "1082": [
+        "Modular Inverse",
+        "Math",
+        "Exponentiation by Squaring"
+    ],
+    "1083": [
+        "Simulation",
+        "Math"
+    ],
+    "1084": [
+        "Two Pointers",
+        "Greedy",
+        "Binary Search"
+    ],
+    "1085": [
+        "Greedy",
+        "Binary Search"
+    ],
+    "1086": [],
+    "1087": [
+        "Greedy"
+    ],
+    "1090": [
+        "Two Pointers",
+        "Greedy"
+    ],
+    "1091": [
+        "Data Structure",
+        "Greedy",
+        "set/multiset"
+    ],
     "1092": [
         "Math"
     ],
+    "1093": [
+        "Knapsack Problem",
+        "Combination",
+        "Dynamic Programming (DP)"
+    ],
+    "1094": [
+        "Simulation"
+    ],
+    "1095": [
+        "Math",
+        "Exponentiation by Squaring"
+    ],
+    "1096": [
+        "Exponentiation by Squaring",
+        "Matrix",
+        "Math"
+    ],
+    "1097": [
+        "Range DP",
+        "Dynamic Programming (DP)"
+    ],
+    "1098": [
+        "Game Theory",
+        "Math",
+        "Nim game"
+    ],
+    "1099": [
+        "Game Theory",
+        "Math",
+        "Nim game"
+    ],
+    "1110": [
+        "String"
+    ],
+    "1111": [
+        "String"
+    ],
+    "1112": [
+        "String"
+    ],
+    "1113": [],
+    "1130": [
+        "Greedy",
+        "Depth First Search (DFS)",
+        "Graph",
+        "Disjoint Sets Union"
+    ],
+    "1131": [
+        "Tree Diameter",
+        "Graph"
+    ],
+    "1132": [
+        "Tree Diameter",
+        "Graph"
+    ],
+    "1133": [
+        "Rerooting DP",
+        "Graph",
+        "Dynamic Programming (DP)"
+    ],
+    "1134": [
+        "Graph"
+    ],
+    "1135": [
+        "Lowest Common Ancestor（LCA）",
+        "Graph"
+    ],
+    "1136": [
+        "Graph"
+    ],
+    "1137": [
+        "Binary Index Tree (BIT)",
+        "Tree Flatten",
+        "Graph"
+    ],
+    "1138": [
+        "Binary Index Tree (BIT)",
+        "Tree Flatten",
+        "Difference",
+        "Graph"
+    ],
+    "1139": [
+        "Depth First Search (DFS)",
+        "Graph",
+        "Small-to-large Merging"
+    ],
+    "1140": [
+        "Binary Index Tree (BIT)",
+        "set/multiset",
+        "Dynamic Programming (DP)"
+    ],
+    "1141": [
+        "Data Structure",
+        "Sliding Window",
+        "set/multiset"
+    ],
+    "1142": [
+        "Greedy",
+        "Monotonic Stack"
+    ],
+    "1143": [
+        "Data Structure",
+        "Segment Tree",
+        "Binary Search"
+    ],
+    "1144": [
+        "Data Structure",
+        "pb_ds",
+        "Ordered-set"
+    ],
+    "1145": [
+        "Longest Increasing Subsequence (LIS)",
+        "Binary Search",
+        "Dynamic Programming (DP)"
+    ],
+    "1146": [
+        "Math"
+    ],
+    "1147": [],
+    "1148": [],
+    "1149": [],
+    "1157": [],
+    "1158": [
+        "Knapsack Problem",
+        "Dynamic Programming (DP)"
+    ],
+    "1159": [
+        "Knapsack Problem",
+        "Bounded Knapsack Problem",
+        "Binary Optimization",
+        "Dynamic Programming (DP)"
+    ],
+    "1160": [
+        "Graph",
+        "Funtional Graph"
+    ],
+    "1161": [
+        "Huffman Coding",
+        "Data Structure",
+        "Greedy",
+        "priority_queue"
+    ],
+    "1162": [],
+    "1163": [
+        "Data Structure",
+        "set/multiset"
+    ],
+    "1164": [
+        "Greedy",
+        "Sweep Line"
+    ],
+    "1188": [
+        "Data Structure",
+        "Segment Tree",
+        "set/multiset"
+    ],
+    "1189": [],
+    "1190": [
+        "Data Structure"
+    ],
+    "1191": [],
+    "1192": [
+        "Depth First Search (DFS)",
+        "Graph",
+        "Flood-fill"
+    ],
+    "1193": [
+        "Breadth First Search (BFS)",
+        "Graph"
+    ],
+    "1194": [
+        "Breadth First Search (BFS)",
+        "Graph"
+    ],
+    "1195": [
+        "Graph",
+        "Dijkstra"
+    ],
+    "1196": [
+        "Graph",
+        "Dijkstra"
+    ],
+    "1197": [
+        "Cycle",
+        "Graph",
+        "Bellman-Ford"
+    ],
+    "1202": [
+        "Graph",
+        "Dijkstra",
+        "Dynamic Programming (DP)"
+    ],
+    "1203": [],
     "1617": [
         "Math"
     ],
     "1618": [
         "Math"
     ],
-    "1754": [
-        "Math",
+    "1619": [
+        "Data Structure",
+        "Difference"
+    ],
+    "1620": [
         "Searching",
         "Binary Search"
     ],
-    "1755": [
-        "String"
-    ],
-    "2205": [
-        "Recursion",
-        "Enumeration",
-        "Bitmask Enumeration"
-    ],
-    "2165": [
-        "Recursion",
-        "Enumeration"
+    "1621": [
+        "Data Structure",
+        "Simulation",
+        "Sorting",
+        "set/multiset"
     ],
     "1622": [
         "Recursion",
@@ -65,106 +309,17 @@
         "Enumeration",
         "Pruning"
     ],
-    "2431": [
-        "Math"
-    ],
     "1625": [
         "Recursion",
         "Enumeration",
         "Pruning"
     ],
-    "1621": [
-        "Data Structure",
-        "Control flow",
-        "Sorting",
-        "set/multiset"
-    ],
-    "1084": [
-        "Two Pointers",
-        "Greedy",
-        "Binary Search"
-    ],
-    "1090": [
-        "Two Pointers",
-        "Greedy"
-    ],
-    "1091": [
-        "Data Structure",
-        "Greedy",
-        "set/multiset"
-    ],
-    "1619": [
-        "Data Structure",
-        "Difference"
+    "1628": [
+        "Enumeration",
+        "Meet in the Middle"
     ],
     "1629": [
         "Greedy"
-    ],
-    "1640": [
-        "Two Pointers",
-        "Searching",
-        "Binary Search"
-    ],
-    "1643": [
-        "Data Structure",
-        "Prefix Sum",
-        "set/multiset",
-        "Dynamic Programming (DP)"
-    ],
-    "1074": [
-        "Discretization",
-        "Data Structure",
-        "map"
-    ],
-    "2183": [
-        "Greedy"
-    ],
-    "2216": [
-        "Greedy"
-    ],
-    "2217": [
-        "Greedy"
-    ],
-    "1141": [
-        "Data Structure",
-        "Sliding Window",
-        "set/multiset"
-    ],
-    "1073": [
-        "Data Structure",
-        "set/multiset"
-    ],
-    "1163": [
-        "Data Structure",
-        "set/multiset"
-    ],
-    "2162": [
-        "Data Structure",
-        "Linked-list"
-    ],
-    "2163": [
-        "Data Structure",
-        "Binary Index Tree (BIT)",
-        "pb_ds",
-        "Ordered-set"
-    ],
-    "2168": [
-        "Data Structure",
-        "Sorting",
-        "set/multiset"
-    ],
-    "2169": [
-        "Data Structure",
-        "Binary Index Tree (BIT)",
-        "Sorting"
-    ],
-    "1164": [
-        "Greedy",
-        "Sweep Line"
-    ],
-    "1620": [
-        "Searching",
-        "Binary Search"
     ],
     "1630": [
         "Greedy",
@@ -173,69 +328,11 @@
     "1631": [
         "Greedy"
     ],
-    "1641": [
-        "Two Pointers",
-        "Enumeration",
-        "Sorting"
-    ],
-    "1642": [
-        "Data Structure",
-        "Searching",
-        "map"
-    ],
-    "1645": [
-        "Data Structure",
-        "Monotonic Stack",
-        "stack"
-    ],
-    "1660": [
-        "Sliding Window",
-        "Searching"
-    ],
-    "1661": [
-        "Data Structure",
-        "Searching",
-        "Prefix Sum",
-        "map"
-    ],
-    "1662": [
-        "Data Structure",
-        "Enumeration",
-        "Prefix Sum",
-        "map"
-    ],
-    "2428": [
-        "Data Structure",
-        "Sliding Window",
-        "map"
-    ],
-    "1085": [
-        "Greedy",
-        "Binary Search"
-    ],
-    "1076": [
-        "Data Structure",
-        "set/multiset",
-        "pb_ds",
-        "Ordered-set"
-    ],
-    "1077": [
-        "Data Structure",
-        "set/multiset",
-        "Ordered-set"
-    ],
     "1632": [
         "Data Structure",
         "Greedy",
         "Enumeration",
         "Sorting",
-        "set/multiset"
-    ],
-    "1644": [
-        "Two Pointers",
-        "Data Structure",
-        "Greedy",
-        "Sliding Window",
         "set/multiset"
     ],
     "1633": [
@@ -260,217 +357,41 @@
         "Combination",
         "Dynamic Programming (DP)"
     ],
-    "1158": [
-        "Knapsack Problem",
-        "Dynamic Programming (DP)"
-    ],
-    "1746": [
-        "Dynamic Programming (DP)"
-    ],
-    "2413": [
-        "Dynamic Programming (DP)"
-    ],
     "1639": [
         "Dynamic Programming (DP)"
     ],
-    "1744": [
-        "Dynamic Programming (DP)"
+    "1640": [
+        "Two Pointers",
+        "Searching",
+        "Binary Search"
     ],
-    "1745": [
-        "Knapsack Problem",
-        "Bitmask DP",
-        "Dynamic Programming (DP)"
+    "1641": [
+        "Two Pointers",
+        "Enumeration",
+        "Sorting"
     ],
-    "1097": [
-        "Range DP",
-        "Dynamic Programming (DP)"
+    "1642": [
+        "Data Structure",
+        "Searching",
+        "map"
     ],
-    "1093": [
-        "Knapsack Problem",
-        "Combination",
-        "Dynamic Programming (DP)"
-    ],
-    "1145": [
-        "Longest Increasing Subsequence (LIS)",
-        "Binary Search",
-        "Dynamic Programming (DP)"
-    ],
-    "1140": [
-        "Binary Index Tree (BIT)",
+    "1643": [
+        "Data Structure",
+        "Prefix Sum",
         "set/multiset",
         "Dynamic Programming (DP)"
     ],
-    "1653": [
-        "Bitmask DP",
-        "Dynamic Programming (DP)"
+    "1644": [
+        "Two Pointers",
+        "Data Structure",
+        "Greedy",
+        "Sliding Window",
+        "set/multiset"
     ],
-    "2181": [
-        "Broken Profile DP",
-        "Bitmask DP",
-        "Dynamic Programming (DP)"
-    ],
-    "2220": [
-        "Digit DP",
-        "Dynamic Programming (DP)"
-    ],
-    "1192": [
-        "Depth First Search (DFS)",
-        "Graph",
-        "Flood-fill"
-    ],
-    "1193": [
-        "Breadth First Search (BFS)",
-        "Graph"
-    ],
-    "1666": [
-        "Depth First Search (DFS)",
-        "Graph"
-    ],
-    "1667": [
-        "Breadth First Search (BFS)",
-        "Graph"
-    ],
-    "1668": [
-        "Graph",
-        "Bipartite Graph"
-    ],
-    "1669": [
-        "Cycle",
-        "Graph",
-        "Bellman-Ford"
-    ],
-    "1194": [
-        "Breadth First Search (BFS)",
-        "Graph"
-    ],
-    "1671": [
-        "Graph",
-        "Dijkstra"
-    ],
-    "1672": [
-        "Graph",
-        "Floyd-Warshall"
-    ],
-    "1673": [
-        "Depth First Search (DFS)",
-        "Graph",
-        "Bellman-Ford"
-    ],
-    "1195": [
-        "Graph",
-        "Dijkstra"
-    ],
-    "1197": [
-        "Cycle",
-        "Graph",
-        "Bellman-Ford"
-    ],
-    "1196": [
-        "Graph",
-        "Dijkstra"
-    ],
-    "1678": [
-        "Cycle",
-        "Depth First Search (DFS)",
-        "Graph"
-    ],
-    "1679": [
-        "Topological Sort",
-        "Graph"
-    ],
-    "1680": [
-        "Topological Sort",
-        "Graph",
-        "Dynamic Programming (DP)"
-    ],
-    "1681": [
-        "Topological Sort",
-        "Graph",
-        "Dynamic Programming (DP)"
-    ],
-    "1202": [
-        "Graph",
-        "Dijkstra",
-        "Dynamic Programming (DP)"
-    ],
-    "1750": [
-        "Graph",
-        "Binary Lifting",
-        "Funtional Graph"
-    ],
-    "1160": [
-        "Graph",
-        "Funtional Graph"
-    ],
-    "1751": [
-        "Cycle",
-        "Depth First Search (DFS)",
-        "Graph",
-        "Funtional Graph"
-    ],
-    "1675": [
-        "Minimum Spanning Tree (MST)",
-        "Graph",
-        "Disjoint Sets Union"
-    ],
-    "1676": [
-        "Graph",
-        "Disjoint Sets Union"
-    ],
-    "1682": [
-        "Depth First Search (DFS)",
-        "Strongly Connected Components (SCC)",
-        "Graph"
-    ],
-    "1683": [
-        "Strongly Connected Components (SCC)",
-        "Graph"
-    ],
-    "1684": [
-        "Graph",
-        "2-SAT"
-    ],
-    "1686": [
-        "Graph",
-        "Strongly Connected Components (SCC)"
-    ],
-    "1691": [
-        "Eulerian Circuit",
-        "Graph"
-    ],
-    "1692": [
-        "Eulerian Circuit",
-        "Graph"
-    ],
-    "1693": [
-        "Eulerian Path",
-        "Graph"
-    ],
-    "1690": [
-        "Graph",
-        "hamiltonian Path",
-        "Bitmask DP"
-    ],
-    "1689": [
-        "Warnsdorff's Algorithm",
-        "Rollback"
-    ],
-    "1694": [
-        "Maximum flow",
-        "Graph"
-    ],
-    "1695": [
-        "Minimum cut",
-        "Graph"
-    ],
-    "1696": [
-        "Minimum cut",
-        "Maximum flow",
-        "Graph"
-    ],
-    "1711": [
-        "Graph",
-        "Maximum flow"
+    "1645": [
+        "Data Structure",
+        "Monotonic Stack",
+        "stack"
     ],
     "1646": [
         "Data Structure",
@@ -504,79 +425,126 @@
         "Data Structure",
         "Prefix Sum"
     ],
-    "1143": [
+    "1653": [
+        "Bitmask DP",
+        "Dynamic Programming (DP)"
+    ],
+    "1654": [
+        "Bitmask DP",
+        "SOS DP（Sum over subset DP）",
+        "Dynamic Programming (DP)"
+    ],
+    "1655": [
         "Data Structure",
-        "Segment Tree",
-        "Binary Search"
+        "Trie",
+        "Bitmask"
     ],
-    "1749": [
+    "1660": [
+        "Sliding Window",
+        "Searching"
+    ],
+    "1661": [
         "Data Structure",
-        "rope",
-        "pb_ds",
-        "Ordered-set"
+        "Searching",
+        "Prefix Sum",
+        "map"
     ],
-    "1144": [
+    "1662": [
         "Data Structure",
-        "pb_ds",
-        "Ordered-set"
+        "Enumeration",
+        "Prefix Sum",
+        "map"
     ],
-    "2166": [
-        "Data Structure",
-        "Segment Tree"
+    "1664": [
+        "Greedy",
+        "Binary Lifting"
     ],
-    "2206": [
-        "Data Structure",
-        "Segment Tree"
+    "1665": [],
+    "1666": [
+        "Depth First Search (DFS)",
+        "Graph"
     ],
-    "1190": [
-        "Data Structure"
+    "1667": [
+        "Breadth First Search (BFS)",
+        "Graph"
     ],
-    "1734": [
-        "Data Structure",
-        "Binary Index Tree (BIT)",
-        "Sweep Line"
+    "1668": [
+        "Graph",
+        "Bipartite Graph"
     ],
-    "2416": [
-        "Data Structure"
+    "1669": [
+        "Cycle",
+        "Graph",
+        "Bellman-Ford"
     ],
-    "1739": [
-        "Data Structure",
-        "Binary Index Tree (BIT)"
+    "1670": [
+        "Searching",
+        "Breadth First Search (BFS)"
     ],
-    "1735": [
-        "Data Structure",
-        "Segment Tree",
-        "Lazy Tag"
+    "1671": [
+        "Graph",
+        "Dijkstra"
     ],
-    "1736": [
-        "Data Structure"
+    "1672": [
+        "Graph",
+        "Floyd-Warshall"
     ],
-    "1737": [
-        "Data Structure"
+    "1673": [
+        "Depth First Search (DFS)",
+        "Graph",
+        "Bellman-Ford"
     ],
     "1674": [
         "Depth First Search (DFS)",
         "Graph",
         "Dynamic Programming (DP)"
     ],
-    "1130": [
-        "Greedy",
-        "Depth First Search (DFS)",
+    "1675": [
+        "Minimum Spanning Tree (MST)",
         "Graph",
         "Disjoint Sets Union"
     ],
-    "1131": [
-        "Tree Diameter",
+    "1676": [
+        "Graph",
+        "Disjoint Sets Union"
+    ],
+    "1677": [],
+    "1678": [
+        "Cycle",
+        "Depth First Search (DFS)",
         "Graph"
     ],
-    "1132": [
-        "Tree Diameter",
+    "1679": [
+        "Topological Sort",
         "Graph"
     ],
-    "1133": [
-        "Rerooting DP",
+    "1680": [
+        "Topological Sort",
         "Graph",
         "Dynamic Programming (DP)"
+    ],
+    "1681": [
+        "Topological Sort",
+        "Graph",
+        "Dynamic Programming (DP)"
+    ],
+    "1682": [
+        "Depth First Search (DFS)",
+        "Strongly Connected Components (SCC)",
+        "Graph"
+    ],
+    "1683": [
+        "Strongly Connected Components (SCC)",
+        "Graph"
+    ],
+    "1684": [
+        "Graph",
+        "2-SAT"
+    ],
+    "1685": [],
+    "1686": [
+        "Graph",
+        "Strongly Connected Components (SCC)"
     ],
     "1687": [
         "Graph",
@@ -586,49 +554,79 @@
         "Lowest Common Ancestor (LCA)",
         "Graph"
     ],
-    "1135": [
-        "Lowest Common Ancestor（LCA）",
-        "Graph"
+    "1689": [
+        "Warnsdorff's Algorithm",
+        "Rollback"
     ],
-    "1136": [
-        "Graph"
-    ],
-    "1137": [
-        "Binary Index Tree (BIT)",
-        "Tree Flatten",
-        "Graph"
-    ],
-    "1138": [
-        "Binary Index Tree (BIT)",
-        "Tree Flatten",
-        "Difference",
-        "Graph"
-    ],
-    "2134": [
-        "Graph"
-    ],
-    "1139": [
-        "Depth First Search (DFS)",
+    "1690": [
         "Graph",
-        "Small-to-large Merging"
+        "hamiltonian Path",
+        "Bitmask DP"
     ],
-    "2079": [
-        "Depth First Search (DFS)",
+    "1691": [
+        "Eulerian Circuit",
+        "Graph"
+    ],
+    "1692": [
+        "Eulerian Circuit",
+        "Graph"
+    ],
+    "1693": [
+        "Eulerian Path",
+        "Graph"
+    ],
+    "1694": [
+        "Maximum flow",
+        "Graph"
+    ],
+    "1695": [
+        "Minimum cut",
+        "Graph"
+    ],
+    "1696": [
+        "Minimum cut",
+        "Maximum flow",
+        "Graph"
+    ],
+    "1697": [
+        "Greedy",
+        "Havel-Hakimi"
+    ],
+    "1698": [],
+    "1699": [],
+    "1700": [
+        "Hash",
+        "Tree Hash",
+        "Graph"
+    ],
+    "1701": [
+        "Hash",
+        "Tree Hash",
         "Tree Centroid",
         "Graph"
     ],
-    "2080": [
+    "1702": [
+        "Recursion",
         "Graph"
     ],
-    "2081": [
+    "1703": [],
+    "1704": [],
+    "1705": [],
+    "1706": [
+        "Depth First Search (DFS)",
+        "Graph",
+        "Bitmask DP",
+        "Dynamic Programming (DP)"
+    ],
+    "1707": [
+        "Cycle",
+        "Breadth First Search (BFS)",
         "Graph"
     ],
-    "2164": [
-        "Recursion"
-    ],
-    "1095": [
-        "Math",
-        "Exponentiation by Squaring"
+    "1709": [],
+    "1711": [
+        "Graph",
+        "Maximum flow"
     ],
     "1712": [
         "Fermat's Little Theorem",
@@ -637,32 +635,6 @@
     "1713": [
         "Prime Factorization",
         "Math"
-    ],
-    "1081": [
-        "Harmonic Series",
-        "Math"
-    ],
-    "1082": [
-        "Modular Inverse",
-        "Math",
-        "Exponentiation by Squaring"
-    ],
-    "2182": [
-        "Fermat's Little Theorem",
-        
-        "Math"
-    ],
-    "2185": [
-        "Enumeration",
-        "Math",
-        "Inclusion-Exclusion"
-    ],
-    "2417": [],
-    "1079": [
-        "Modular Inverse",
-        
-        "Math",
-        "Combination"
     ],
     "1715": [
         "Math",
@@ -677,20 +649,7 @@
         "Combination",
         "Dynamic Programming (DP)"
     ],
-    "2064": [
-        "Math",
-        "Combination",
-        "Catalan Number"
-    ],
-    "2187": [],
-    "2209": [],
-    "2210": [],
     "1722": [
-        "Exponentiation by Squaring",
-        "Matrix",
-        "Math"
-    ],
-    "1096": [
         "Exponentiation by Squaring",
         "Matrix",
         "Math"
@@ -727,34 +686,10 @@
         "Math",
         "Nim game"
     ],
-    "1098": [
-        "Game Theory",
-        "Math",
-        "Nim game"
-    ],
-    "1099": [
-        "Game Theory",
-        "Math",
-        "Nim game"
-    ],
-    "2207": [
-        "Game Theory",
-        "Math",
-        "Grundy game"
-    ],
-    "2208": [
-        "Game Theory",
-        "Math"
-    ],
     "1731": [
         "Data Structure",
         "Trie",
         "String"
-    ],
-    "1753": [
-        "Hash",
-        "String",
-        "Z-algorithm"
     ],
     "1732": [
         "String"
@@ -762,18 +697,133 @@
     "1733": [
         "String"
     ],
-    "1110": [
+    "1734": [
+        "Data Structure",
+        "Binary Index Tree (BIT)",
+        "Sweep Line"
+    ],
+    "1735": [
+        "Data Structure",
+        "Segment Tree",
+        "Lazy Tag"
+    ],
+    "1736": [
+        "Data Structure"
+    ],
+    "1737": [
+        "Data Structure"
+    ],
+    "1739": [
+        "Data Structure",
+        "Binary Index Tree (BIT)"
+    ],
+    "1740": [
+        "Data Structure",
+        "Binary Index Tree (BIT)",
+        "Sweep Line",
+        "Difference"
+    ],
+    "1741": [
+        "Data Structure",
+        "Segment Tree",
+        "Lazy Tag"
+    ],
+    "1742": [],
+    "1743": [],
+    "1744": [
+        "Dynamic Programming (DP)"
+    ],
+    "1745": [
+        "Knapsack Problem",
+        "Bitmask DP",
+        "Dynamic Programming (DP)"
+    ],
+    "1746": [
+        "Dynamic Programming (DP)"
+    ],
+    "1747": [
+        "Inversion",
+        "Data Structure",
+        "Binary Index Tree (BIT)"
+    ],
+    "1748": [
+        "Data Structure",
+        "Binary Index Tree (BIT)",
+        "Dynamic Programming (DP)"
+    ],
+    "1749": [
+        "Data Structure",
+        "rope",
+        "pb_ds",
+        "Ordered-set"
+    ],
+    "1750": [
+        "Graph",
+        "Binary Lifting",
+        "Funtional Graph"
+    ],
+    "1751": [
+        "Cycle",
+        "Depth First Search (DFS)",
+        "Graph",
+        "Funtional Graph"
+    ],
+    "1752": [],
+    "1753": [
+        "Hash",
+        "String",
+        "Z-algorithm"
+    ],
+    "1754": [
+        "Math",
+        "Searching",
+        "Binary Search"
+    ],
+    "1755": [
         "String"
     ],
-    "1111": [
-        "String"
+    "1756": [
+        "Greedy",
+        "Cycle",
+        "Graph"
     ],
-    "1112": [
-        "String"
+    "1757": [],
+    "2064": [
+        "Math",
+        "Combination",
+        "Catalan Number"
     ],
-    "2420": [
-        "String"
+    "2072": [
+        "Data Structure",
+        "Treap"
     ],
+    "2073": [
+        "Data Structure",
+        "Treap",
+        "Lazy Tag"
+    ],
+    "2074": [],
+    "2075": [],
+    "2076": [],
+    "2077": [],
+    "2078": [],
+    "2079": [
+        "Depth First Search (DFS)",
+        "Tree Centroid",
+        "Graph"
+    ],
+    "2080": [
+        "Graph"
+    ],
+    "2081": [
+        "Graph"
+    ],
+    "2084": [],
+    "2085": [],
+    "2086": [],
+    "2087": [],
+    "2088": [],
+    "2101": [],
     "2102": [
         "String"
     ],
@@ -801,6 +851,95 @@
     "2110": [
         "String"
     ],
+    "2111": [],
+    "2112": [],
+    "2113": [],
+    "2115": [],
+    "2121": [],
+    "2129": [],
+    "2130": [],
+    "2131": [],
+    "2132": [],
+    "2133": [],
+    "2134": [
+        "Graph"
+    ],
+    "2136": [
+        "Enumeration",
+        "Bitmask",
+        "Bit Optimization"
+    ],
+    "2137": [
+        "Hardware Optimization",
+        "Enumeration",
+        "Bitmask",
+        "Bit Optimization"
+    ],
+    "2138": [],
+    "2143": [],
+    "2162": [
+        "Data Structure",
+        "Linked-list"
+    ],
+    "2163": [
+        "Data Structure",
+        "Binary Index Tree (BIT)",
+        "pb_ds",
+        "Ordered-set"
+    ],
+    "2164": [
+        "Recursion"
+    ],
+    "2165": [
+        "Recursion",
+        "Enumeration"
+    ],
+    "2166": [
+        "Data Structure",
+        "Segment Tree"
+    ],
+    "2168": [
+        "Data Structure",
+        "Sorting",
+        "set/multiset"
+    ],
+    "2169": [
+        "Data Structure",
+        "Binary Index Tree (BIT)",
+        "Sorting"
+    ],
+    "2174": [],
+    "2176": [],
+    "2177": [
+        "Bridge",
+        "Graph",
+        "Tarjan"
+    ],
+    "2179": [],
+    "2180": [],
+    "2181": [
+        "Broken Profile DP",
+        "Bitmask DP",
+        "Dynamic Programming (DP)"
+    ],
+    "2182": [
+        "Fermat's Little Theorem",
+        "Math"
+    ],
+    "2183": [
+        "Greedy"
+    ],
+    "2184": [],
+    "2185": [
+        "Enumeration",
+        "Math",
+        "Inclusion-Exclusion"
+    ],
+    "2186": [
+        "Data Structure",
+        "map"
+    ],
+    "2187": [],
     "2189": [
         "Geometry"
     ],
@@ -822,222 +961,78 @@
     "2195": [
         "Geometry"
     ],
-    "1628": [
-        "Enumeration",
-        "Meet in the Middle"
-    ],
-    "2136": [
-        "Enumeration",
-        "Bitmask",
-        "Bit Optimization"
-    ],
-    "2137": [
-        "Hardware Optimization",
-        "Enumeration",
-        "Bitmask",
-        "Bit Optimization"
-    ],
-    "2138": [],
-    "2143": [],
-    "2072": [
-        "Data Structure",
-        "Treap"
-    ],
-    "2073": [
-        "Data Structure",
-        "Treap",
-        "Lazy Tag"
-    ],
-    "2074": [],
-    "2076": [],
-    "2077": [],
-    "2078": [],
-    "2084": [],
-    "2085": [],
-    "2086": [],
-    "2087": [],
-    "2088": [],
-    "2111": [],
-    "2112": [],
-    "2113": [],
-    "2101": [],
-    "2133": [],
-    "2121": [],
-    "2129": [],
-    "2130": [],
-    "1087": [
-        "Greedy"
-    ],
-    "1146": [
-        "Math"
-    ],
-    "1670": [
-        "Searching",
-        "Breadth First Search (BFS)"
-    ],
-    "1134": [
-        "Graph"
-    ],
-    "1756": [
-        "Greedy",
-        "Cycle",
-        "Graph"
-    ],
-    "2177": [
-        "Bridge",
-        "Graph",
-        "Tarjan"
-    ],
-    "2179": [],
-    "2422": [
-        "Searching",
-        "Binary Search"
-    ],
-    "1142": [
-        "Greedy",
-        "Monotonic Stack"
-    ],
-    "2186": [
-        "Data Structure",
-        "map"
-    ],
-    "2229": [],
-    "1655": [
-        "Data Structure",
-        "Trie",
+    "2205": [
+        "Recursion",
         "Bitmask"
     ],
-    "1664": [
-        "Greedy",
-        "Binary Lifting"
-    ],
-    "1697": [
-        "Greedy",
-        "Havel-Hakimi"
-    ],
-    "1702": [
-        "Recursion",
-        "Graph"
-    ],
-    "1704": [],
-    "1707": [
-        "Cycle",
-        "Breadth First Search (BFS)",
-        "Graph"
-    ],
-    "1740": [
+    "2206": [
         "Data Structure",
-        "Binary Index Tree (BIT)",
-        "Sweep Line",
-        "Difference"
+        "Segment Tree"
     ],
+    "2207": [
+        "Game Theory",
+        "Math",
+        "Grundy game"
+    ],
+    "2208": [
+        "Game Theory",
+        "Math"
+    ],
+    "2209": [],
+    "2210": [],
     "2214": [
         "Greedy"
     ],
     "2215": [],
-    "1743": [],
-    "2425": [],
-    "1747": [
-        "Inversion",
-        "Data Structure",
-        "Binary Index Tree (BIT)"
+    "2216": [
+        "Greedy"
     ],
-    "1748": [
-        "Data Structure",
-        "Binary Index Tree (BIT)",
+    "2217": [
+        "Greedy"
+    ],
+    "2220": [
+        "Digit DP",
         "Dynamic Programming (DP)"
     ],
-    "1149": [],
-    "1188": [
-        "Data Structure",
-        "Segment Tree",
-        "set/multiset"
+    "2228": [],
+    "2229": [],
+    "2402": [],
+    "2413": [
+        "Dynamic Programming (DP)"
     ],
+    "2414": [],
+    "2415": [],
+    "2416": [
+        "Data Structure"
+    ],
+    "2417": [],
+    "2418": [],
     "2419": [
         "Math",
         "Bitmask"
     ],
-    "2SAT.html#algorithm": [],
-    "1086": [],
-    "1113": [],
-    "2427": [],
-    "1147": [],
-    "1162": [],
-    "1191": [],
-    "2414": [],
-    "2132": [],
-    "1189": [],
-    "1654": [
-        "Bitmask DP",
-        "SOS DP（Sum over subset DP）",
-        "Dynamic Programming (DP)"
+    "2420": [
+        "String"
     ],
-    "1698": [],
-    "2430": [],
-    "1700": [
-        "Hash",
-        "Tree Hash",
-        "Graph"
-    ],
-    "2228": [],
-    "1703": [],
-    "1706": [
-        "Depth First Search (DFS)",
-        "Graph",
-        "Bitmask DP",
-        "Dynamic Programming (DP)"
-    ],
-    "1709": [],
-    "1742": [],
-    "2426": [],
-    "1757": [],
-    "2174": [],
-    "2180": [],
-    "2176": [],
-    "2432": [],
-    "2131": [],
-    "1080": [],
-    "1078": [],
-    "2115": [],
-    "2075": [],
     "2421": [],
-    "1159": [
-        "Knapsack Problem",
-        "Bounded Knapsack Problem",
-        "Binary Optimization",
-        "Dynamic Programming (DP)"
+    "2422": [
+        "Searching",
+        "Binary Search"
     ],
-    "1677": [],
-    "1203": [],
-    "2184": [],
-    "1157": [],
-    "1148": [],
     "2423": [],
-    "1161": [
-        "Huffman Coding",
+    "2425": [],
+    "2426": [],
+    "2427": [],
+    "2428": [
         "Data Structure",
-        "Greedy",
-        "priority_queue"
-    ],
-    "1665": [],
-    "1699": [],
-    "2402": [],
-    "1701": [
-        "Hash",
-        "Tree Hash",
-        "Tree Centroid",
-        "Graph"
-    ],
-    "1705": [],
-    "1741": [
-        "Data Structure",
-        "Segment Tree",
-        "Lazy Tag"
+        "Sliding Window",
+        "map"
     ],
     "2429": [],
-    "1752": [],
-    "1075": [],
-    "2415": [],
-    "1685": [],
-    "2418": []
+    "2430": [],
+    "2431": [
+        "Math"
+    ],
+    "2432": [],
+    "2SAT.html#algorithm": []
 }

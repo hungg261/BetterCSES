@@ -2,7 +2,6 @@ if (typeof browser === "undefined") var browser = chrome;
 
 const chromeStorage = chrome.storage.local;
 
-
 const problemId = document.querySelector(".nav").children[0].firstChild.href.split("/").at(-2);
 const navbarElement = document.querySelector(".nav");
 const sidebarElement = document.querySelector(".nav.sidebar");
@@ -24,26 +23,36 @@ const getTips = (problemId) =>
 const createTagsSectionOnSidebar = async () => {
     const container = document.createElement("div");
     container.id = "tags-container";
-    sidebarElement.insertBefore(container, sidebarElement.firstChild);
-    const dividerLine = document.createElement("hr");
+    
     const sectionTitle = document.createElement("h4");
     sectionTitle.style.margin = "0.1em 0 0.5em 0";
     sectionTitle.innerHTML = "Tags";
+    
     const showTags = document.createElement("details");
     showTags.id = "show-tags";
     const showTagsSummary = document.createElement("summary");
-    const tagsListElement = document.createElement("ul");
-    tagsListElement.id = "tags"
-    tagsListElement.style.marginTop = "5px";
-    showTags.appendChild(tagsListElement);
-    showTagsSummary.innerHTML = "Show Problem Tags";
+    showTagsSummary.innerHTML = "Show Tags";
+    showTagsSummary.style.cursor = "pointer";
     showTags.appendChild(showTagsSummary);
-    container.insertBefore(dividerLine, container.firstChild);
-    container.insertBefore(showTags, container.firstChild);
-    container.insertBefore(sectionTitle, container.firstChild);
+    
+    const tagsListElement = document.createElement("ul");
+    tagsListElement.id = "tags";
+    tagsListElement.style.marginTop = "10px";
+    tagsListElement.style.padding = "0";
+    tagsListElement.style.display = "flex";
+    tagsListElement.style.flexWrap = "wrap";
+    tagsListElement.style.gap = "6px";
+    showTags.appendChild(tagsListElement);
+    
+    const dividerLine = document.createElement("hr");
+
+    container.appendChild(sectionTitle);
+    container.appendChild(showTags);
+    container.appendChild(dividerLine);
+    
+    sidebarElement.insertBefore(container, sidebarElement.firstChild);
 
     const tagsList = await getTags(problemId);
-    console.log(tagsList);
 
     if (tagsList.length == 0) {
         const noTagsElement = document.createElement("p");
@@ -56,6 +65,15 @@ const createTagsSectionOnSidebar = async () => {
     tagsList.forEach((tag) => {
         const tagElement = document.createElement("li");
         tagElement.innerHTML = tag;
+        tagElement.style.listStyle = "none";
+        tagElement.style.backgroundColor = "#f3f4f6";
+        tagElement.style.color = "#d63384";
+        tagElement.style.padding = "2px 6px";
+        tagElement.style.borderRadius = "4px";
+        tagElement.style.fontFamily = "monospace";
+        tagElement.style.fontSize = "0.9em";
+        tagElement.style.border = "1px solid #d1d5db";
+        
         document.getElementById("tags").appendChild(tagElement);
     });
 }
@@ -63,15 +81,30 @@ const createTagsSectionOnSidebar = async () => {
 const createTipsSectionOnSidebar = async () => {
     const container = document.createElement("div");
     container.id = "tips-container";
+    
     const sectionTitle = document.createElement("h4");
-    const dividerLine = document.createElement("hr");
     sectionTitle.innerHTML = "Tips";
     sectionTitle.style.margin = "0.6em 0 0.5em 0";
-    container.insertBefore(dividerLine, container.firstChild);
-    container.insertBefore(sectionTitle, container.firstChild);
-    sidebarElement.insertBefore(container, sidebarElement.firstChild);
+    
+    const showTips = document.createElement("details");
+    showTips.id = "show-tips";
+    const showTipsSummary = document.createElement("summary");
+    showTipsSummary.innerHTML = "Show Tips";
+    showTipsSummary.style.cursor = "pointer";
+    showTips.appendChild(showTipsSummary);
+    
+    const tipsListElement = document.createElement("ul");
+    tipsListElement.style.marginTop = "8px";
+    tipsListElement.style.paddingLeft = "20px";
+    showTips.appendChild(tipsListElement);
 
-    const containerRef = document.getElementById("tips-container");
+    const dividerLine = document.createElement("hr");
+
+    container.appendChild(sectionTitle);
+    container.appendChild(showTips);
+    container.appendChild(dividerLine);
+    
+    sidebarElement.insertBefore(container, sidebarElement.firstChild);
 
     const tips = await getTips(problemId);
 
@@ -79,20 +112,15 @@ const createTipsSectionOnSidebar = async () => {
         const noTipsElement = document.createElement("p");
         noTipsElement.style.margin = "0px";
         noTipsElement.innerHTML = "No Tips";
-        containerRef.insertBefore(noTipsElement, containerRef.firstChild.nextSibling);
+        document.getElementById("show-tips").outerHTML = noTipsElement.outerHTML;
         return;
     }
 
-    tips.reverse().forEach((tip, index) => {
-        const showTips = document.createElement("details");
-        const showTipsSummary = document.createElement("summary");
-        showTipsSummary.innerHTML = "Show Tip " + (tips.length - index);
-        showTips.appendChild(showTipsSummary);
-        const tipElement = document.createElement("p");
-        tipElement.style.margin = "5px";
+    tips.reverse().forEach((tip) => {
+        const tipElement = document.createElement("li");
+        tipElement.style.margin = "5px 0";
         tipElement.innerHTML = tip;
-        showTips.appendChild(tipElement);
-        containerRef.insertBefore(showTips, containerRef.children[1]);
+        tipsListElement.appendChild(tipElement);
     });
 }
 
@@ -308,11 +336,11 @@ function addCopyToClipboardButton() {
     const actionBar = document.querySelector(".content .nav");
     const code = document.querySelector("pre").innerText;
 
-    const button = createElementByHTMLtext( /* html */ `
+    const button = createElementByHTMLtext(`
         <li style="cursor: pointer;">
             <a>copy to clipboard</a>
         </li>
-    `)
+    `);
 
     button.addEventListener("click", () => {
         navigator.clipboard.writeText(code);
