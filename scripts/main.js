@@ -35,6 +35,90 @@ const translateText = async (text, targetLang) => {
     }
 };
 
+const createElementByHTMLtext = (htmlText) => {
+    const template = document.createElement('template');
+    template.innerHTML = htmlText.trim();
+    return template.content.firstChild;
+}
+
+const injectStyles = () => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+        .ext-container {
+            background-color: #f8f9fa;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .ext-summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            outline: none;
+        }
+        .ext-badge {
+            font-size: 0.75em;
+            background-color: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 10px;
+            color: #495057;
+        }
+        .ext-pre-wrapper {
+            background-color: #f8f9fa;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            margin-bottom: 1.5em;
+        }
+        .ext-pre-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            background-color: #e5e7eb;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom: 1px solid #d1d5db;
+            font-family: sans-serif;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #6b7280;
+        }
+        body.dark .ext-container {
+            background-color: #1e1e1e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+        body.dark .ext-summary {
+            color: #ff80bf;
+        }
+        body.dark .ext-container a {
+            color: #66b3ff;
+        }
+        body.dark .ext-badge {
+            background-color: #333;
+            color: #ccc;
+        }
+        body.dark .ext-pre-wrapper {
+            background-color: #1e1e1e;
+            border-color: #444;
+        }
+        body.dark .ext-pre-header {
+            background-color: #2d2d2d;
+            border-bottom-color: #444;
+            color: #aaa;
+        }
+        body.dark .ext-pre-header button {
+            color: #ddd !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 const createTranslationSectionOnSidebar = () => {
     const sidebarElement = document.querySelector(".nav.sidebar");
     if (!sidebarElement) return;
@@ -310,7 +394,7 @@ const formatPreBlocks = () => {
     
     const preElements = document.querySelectorAll(".content pre");
     preElements.forEach((pre) => {
-        let labelText = "text";
+        let labelText = "Text";
         const prevElement = pre.previousElementSibling;
         
         if (prevElement) {
@@ -322,27 +406,13 @@ const formatPreBlocks = () => {
         }
 
         const wrapper = document.createElement("div");
-        wrapper.style.backgroundColor = "#f8f9fa";
-        wrapper.style.border = "1px solid #d1d5db";
-        wrapper.style.borderRadius = "6px";
-        wrapper.style.marginBottom = "1.5em";
+        wrapper.className = "ext-pre-wrapper";
         
         const header = document.createElement("div");
-        header.style.display = "flex";
-        header.style.justifyContent = "space-between";
-        header.style.alignItems = "center";
-        header.style.padding = "6px 12px";
-        header.style.backgroundColor = "#e5e7eb";
-        header.style.borderTopLeftRadius = "5px";
-        header.style.borderTopRightRadius = "5px";
-        header.style.borderBottom = "1px solid #d1d5db";
-        header.style.fontFamily = "sans-serif";
-        header.style.fontSize = "0.85em";
+        header.className = "ext-pre-header";
         
         const label = document.createElement("span");
         label.innerHTML = labelText;
-        label.style.color = "#6b7280";
-        label.style.fontWeight = "bold";
         
         const copyBtn = document.createElement("button");
         copyBtn.innerHTML = "Copy";
@@ -373,37 +443,22 @@ const formatPreBlocks = () => {
     });
 }
 
-const isSubmitPage = () => location.href.startsWith("https://cses.fi/problemset/submit");
+const buildDashboardAndTOC = () => {
+    document.querySelectorAll("h2").forEach(h2 => {
+        if (h2.innerText.includes("General")) {
+            h2.style.display = "none";
+            
+            const taskList = h2.nextElementSibling;
+            if (taskList && taskList.classList.contains("task-list")) {
+                taskList.style.display = "none";
+            }
+        }
+    });
 
-const isProblemPage = () => {
-    return [
-        "https://cses.fi/problemset/submit/",
-        "https://cses.fi/problemset/task/",
-        "https://cses.fi/problemset/view/",
-        "https://cses.fi/problemset/stats/",
-        "https://cses.fi/problemset/hack/",
-        "https://cses.fi/problemset/result/",
-    ].some(url => location.href.startsWith(url));
-}
-
-const isResultPage = () => location.href.startsWith("https://cses.fi/problemset/result/");
-
-const isProblemListPage = () => [
-    "https://cses.fi/problemset/list/",
-    "https://cses.fi/problemset/list",
-    "https://cses.fi/problemset/",
-    "https://cses.fi/problemset"
-].includes(location.href);
-
-const createElementByHTMLtext = (htmlText) => {
-    const template = document.createElement('template');
-    template.innerHTML = htmlText.trim();
-    return template.content.firstChild;
-}
-
-const createStatsSection = () => {
+    const contentDiv = document.querySelector(".content");
     const tasks = document.querySelectorAll(".task");
-    if (tasks.length === 0) return;
+    const titleList = [...document.querySelectorAll("h2")];
+    if (tasks.length === 0 || titleList.length === 0) return;
 
     let solved = 0;
     let untouched = 0;
@@ -416,44 +471,33 @@ const createStatsSection = () => {
             if (scoreSpan.classList.contains("full")) {
                 solved++;
             } else if (scoreSpan.classList.contains("zero") || scoreSpan.className.trim() !== "task-score icon") {
-                attemptedNotAc.push({
-                    title: aTag.innerText,
-                    url: aTag.href
-                });
-            } else {
-                untouched++;
-            }
-        } else {
-            untouched++;
-        }
+                attemptedNotAc.push({ title: aTag.innerText, url: aTag.href });
+            } else { untouched++; }
+        } else { untouched++; }
     });
 
     const total = solved + untouched + attemptedNotAc.length;
 
-    const container = document.createElement("div");
-    container.id = "stats-container";
-    container.style.backgroundColor = "#f8f9fa";
-    container.style.border = "1px solid #d1d5db";
-    container.style.borderRadius = "6px";
-    container.style.padding = "15px";
-    container.style.marginBottom = "20px";
-
-    const title = document.createElement("h3");
-    title.style.marginTop = "0";
-    title.innerHTML = "Your Statistics";
+    const dashboard = document.createElement("details");
+    dashboard.className = "ext-container";
+    dashboard.open = true;
+    
+    const dashSummary = document.createElement("summary");
+    dashSummary.className = "ext-summary";
+    dashSummary.innerHTML = "Dashboard & Settings";
+    dashboard.appendChild(dashSummary);
 
     const statsText = document.createElement("p");
+    statsText.style.marginTop = "10px";
     statsText.innerHTML = `Total: <strong>${total}</strong> | Solved: <strong style="color:#198754">${solved}</strong> | Untouched: <strong>${untouched}</strong> | Attempted (Not AC): <strong style="color:#dc3545">${attemptedNotAc.length}</strong>`;
-
-    container.appendChild(title);
-    container.appendChild(statsText);
+    dashboard.appendChild(statsText);
 
     if (attemptedNotAc.length > 0) {
         const details = document.createElement("details");
         const summary = document.createElement("summary");
         summary.style.cursor = "pointer";
         summary.style.fontWeight = "bold";
-        summary.style.color = "#d63384";
+        summary.style.color = "#dc3545";
         summary.innerHTML = "Show Attempted (Not AC) Problems";
         
         const list = document.createElement("ul");
@@ -471,71 +515,13 @@ const createStatsSection = () => {
 
         details.appendChild(summary);
         details.appendChild(list);
-        container.appendChild(details);
+        dashboard.appendChild(details);
     }
 
-    const contentDiv = document.querySelector(".content");
-    const firstH2 = contentDiv.querySelector("h2");
-    if (firstH2) {
-        contentDiv.insertBefore(container, firstH2);
-    }
-}
-
-const createTOC = () => {
-    const contentDiv = document.querySelector(".content");
-    const titleList = [...document.querySelectorAll("h2")];
-    if (titleList.length === 0) return;
-
-    const tocContainer = document.createElement("div");
-    tocContainer.id = "toc-container";
-    tocContainer.style.backgroundColor = "#f8f9fa";
-    tocContainer.style.border = "1px solid #d1d5db";
-    tocContainer.style.borderRadius = "6px";
-    tocContainer.style.padding = "15px";
-    tocContainer.style.marginBottom = "20px";
-
-    const tocTitle = document.createElement("h3");
-    tocTitle.style.marginTop = "0";
-    tocTitle.innerHTML = "Table of Contents";
-    tocContainer.appendChild(tocTitle);
-
-    const ul = document.createElement("ul");
-    ul.style.columnCount = "2";
-    ul.style.listStyleType = "none";
-    ul.style.padding = "0";
-
-    titleList.shift();
-
-    titleList.forEach((h2, index) => {
-        h2.id = `topic-${index}`;
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = `#topic-${index}`;
-        a.innerHTML = h2.innerHTML.split("<")[0];
-        a.style.textDecoration = "none";
-        a.style.color = "#0056b3";
-        a.style.display = "block";
-        a.style.marginBottom = "5px";
-        li.appendChild(a);
-        ul.appendChild(li);
-    });
-
-    tocContainer.appendChild(ul);
+    dashboard.appendChild(document.createElement("hr"));
     
-    const stats = document.getElementById("stats-container");
-    if (stats) {
-        stats.parentNode.insertBefore(tocContainer, stats.nextSibling);
-    } else {
-        contentDiv.insertBefore(tocContainer, document.querySelector("h2"));
-    }
-}
-
-const createGlobalViewToggle = () => {
-    const contentDiv = document.querySelector(".content");
-    if (!contentDiv) return;
-
-    const wrapper = document.createElement("div");
-    wrapper.style.marginBottom = "20px";
+    const flattenWrapper = document.createElement("div");
+    flattenWrapper.style.marginTop = "10px";
 
     const label = document.createElement("label");
     label.style.fontWeight = "bold";
@@ -546,12 +532,13 @@ const createGlobalViewToggle = () => {
     checkbox.style.marginRight = "8px";
 
     label.appendChild(checkbox);
-    label.appendChild(document.createTextNode(" Gộp tất cả bài tập thành một danh sách (Flatten)"));
-    wrapper.appendChild(label);
+    label.appendChild(document.createTextNode(" Flatten all problems into a single list"));
+    flattenWrapper.appendChild(label);
 
     const globalContainer = document.createElement("div");
     globalContainer.id = "global-container";
     globalContainer.style.display = "none";
+    globalContainer.style.marginTop = "15px";
 
     const globalSort = document.createElement("select");
     globalSort.style.marginBottom = "10px";
@@ -580,12 +567,7 @@ const createGlobalViewToggle = () => {
             
             const badge = document.createElement("span");
             badge.innerHTML = p.topic;
-            badge.style.fontSize = "0.75em";
-            badge.style.backgroundColor = "#e9ecef";
-            badge.style.padding = "2px 6px";
-            badge.style.borderRadius = "10px";
-            badge.style.marginLeft = "10px";
-            badge.style.color = "#495057";
+            badge.className = "ext-badge";
 
             const aTag = li.querySelector("a");
             if (aTag) aTag.appendChild(badge);
@@ -601,11 +583,47 @@ const createGlobalViewToggle = () => {
 
     globalContainer.appendChild(globalSort);
     globalContainer.appendChild(globalList);
-    wrapper.appendChild(globalContainer);
+    contentDiv.appendChild(globalContainer);
+    flattenWrapper.appendChild(globalContainer);
+    dashboard.appendChild(flattenWrapper);
 
-    const titleList = [...document.querySelectorAll("h2")];
-    if (titleList.length > 1) {
-        contentDiv.insertBefore(wrapper, titleList[1]);
+    const tocContainer = document.createElement("details");
+    tocContainer.className = "ext-container";
+    tocContainer.id = "toc-container";
+    
+    const tocSummary = document.createElement("summary");
+    tocSummary.className = "ext-summary";
+    tocSummary.innerHTML = "Table of Contents";
+    tocContainer.appendChild(tocSummary);
+
+    const ul = document.createElement("ul");
+    ul.style.columnCount = "2";
+    ul.style.listStyleType = "none";
+    ul.style.padding = "0";
+    ul.style.marginTop = "10px";
+
+    const headersForTOC = [...document.querySelectorAll("h2")];
+    headersForTOC.shift();
+
+    headersForTOC.forEach((h2, index) => {
+        h2.id = `topic-${index}`;
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `#topic-${index}`;
+        a.innerHTML = h2.innerHTML.split("<")[0];
+        a.style.textDecoration = "none";
+        a.style.display = "block";
+        a.style.marginBottom = "5px";
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    tocContainer.appendChild(ul);
+
+    const firstH2 = contentDiv.querySelector("h2");
+    if (firstH2) {
+        contentDiv.insertBefore(dashboard, firstH2);
+        contentDiv.insertBefore(tocContainer, firstH2);
     }
 
     const originalElements = [];
@@ -615,18 +633,16 @@ const createGlobalViewToggle = () => {
         originalElements.push(el);
     });
 
-    const toc = document.getElementById("toc-container");
-
     checkbox.addEventListener("change", () => {
         chromeStorage.set({ "flatten-mode": checkbox.checked });
         if (checkbox.checked) {
             originalElements.forEach(el => el.style.display = "none");
-            if (toc) toc.style.display = "none";
+            tocContainer.style.display = "none";
             globalContainer.style.display = "block";
             renderGlobalList();
         } else {
             originalElements.forEach(el => el.style.display = "");
-            if (toc) toc.style.display = "block";
+            tocContainer.style.display = "block";
             globalContainer.style.display = "none";
         }
     });
@@ -643,9 +659,24 @@ const createGlobalViewToggle = () => {
 }
 
 const generateProblemset = () => {
+    document.querySelectorAll("h2").forEach(h2 => {
+        if (h2.innerText.includes("General")) {
+            h2.style.display = "none";
+            
+            const taskList = h2.nextElementSibling;
+            if (taskList && taskList.classList.contains("task-list")) {
+                taskList.style.display = "none";
+            }
+        }
+    });
+
+    const titleList = [...document.querySelectorAll("h2")];
+    titleList.shift();
+    titleList.forEach(el => topics.push(el.innerHTML.split("<")[0]));
+
     const taskGroups = [...document.querySelectorAll(".task-list")];
     if (taskGroups.length === 0) return;
-    taskGroups.shift();
+
     for (let i = 0; i < taskGroups.length; i++) {
         problemset[topics[i]] = [];
         const problems = [...taskGroups[i].children];
@@ -669,7 +700,6 @@ const generateProblemset = () => {
 
 const sortByDefault = (topicIndex) => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
-    taskGroups.shift();
     taskGroups[topicIndex].innerHTML = "";
     problemset[topics[topicIndex]].sort((a, b) => a.defaultIndex - b.defaultIndex).forEach((problem) => {
         taskGroups[topicIndex].innerHTML += problem.html;
@@ -678,7 +708,6 @@ const sortByDefault = (topicIndex) => {
 
 const sortBySolvers = (topicIndex) => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
-    taskGroups.shift();
     taskGroups[topicIndex].innerHTML = "";
     problemset[topics[topicIndex]].sort((a, b) => b.solvers - a.solvers).forEach((problem) => {
         taskGroups[topicIndex].innerHTML += problem.html;
@@ -687,7 +716,6 @@ const sortBySolvers = (topicIndex) => {
 
 const sortByACRate = (topicIndex) => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
-    taskGroups.shift();
     taskGroups[topicIndex].innerHTML = "";
     problemset[topics[topicIndex]].sort((a, b) => b.acRate - a.acRate).forEach((problem) => {
         taskGroups[topicIndex].innerHTML += problem.html;
@@ -722,7 +750,6 @@ const createCustomSortSelector = () => {
         }
         selector.addEventListener("change", () => sortProblems());
         element.appendChild(selector);
-        topics.push(element.innerHTML.split("<")[0]);
     });
 }
 
@@ -750,21 +777,42 @@ function addCopyToClipboardButton() {
     const code = preElement.innerText;
     const button = createElementByHTMLtext(`
         <li style="cursor: pointer;">
-            <a>copy to clipboard</a>
+            <a>Copy to clipboard</a>
         </li>
     `);
 
     button.addEventListener("click", () => {
         navigator.clipboard.writeText(code);
         const copyToClipboardButton = button.querySelector("a");
-        copyToClipboardButton.innerHTML = "copied :)";
-        setTimeout(() => { copyToClipboardButton.innerHTML = "copy to clipboard"; }, 1000);
+        copyToClipboardButton.innerHTML = "Copied! :)";
+        setTimeout(() => { copyToClipboardButton.innerHTML = "Copy to clipboard"; }, 1000);
     });
 
     actionBar.appendChild(button);
 }
 
+const isSubmitPage = () => location.href.startsWith("https://cses.fi/problemset/submit");
+const isProblemPage = () => {
+    return [
+        "https://cses.fi/problemset/submit/",
+        "https://cses.fi/problemset/task/",
+        "https://cses.fi/problemset/view/",
+        "https://cses.fi/problemset/stats/",
+        "https://cses.fi/problemset/hack/",
+        "https://cses.fi/problemset/result/",
+    ].some(url => location.href.startsWith(url));
+}
+const isResultPage = () => location.href.startsWith("https://cses.fi/problemset/result/");
+const isProblemListPage = () => [
+    "https://cses.fi/problemset/list/",
+    "https://cses.fi/problemset/list",
+    "https://cses.fi/problemset/",
+    "https://cses.fi/problemset"
+].includes(location.href);
+
 const initExtension = () => {
+    injectStyles();
+
     if (isSubmitPage()) {
         loadLanguageSelectorCache();
         createLanguageSelectorCache();
@@ -781,11 +829,9 @@ const initExtension = () => {
     }
 
     if (isProblemListPage()) {
-        createStatsSection();
-        createCustomSortSelector();
         generateProblemset();
-        createTOC();
-        createGlobalViewToggle();
+        buildDashboardAndTOC();
+        createCustomSortSelector();
         applySortRule();
     }
 
