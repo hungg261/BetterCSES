@@ -20,10 +20,85 @@ const getTips = (problemId) =>
         problemId: problemId
     }).then(response => response.tips);
 
+const translateText = async (text, targetLang) => {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data[0].map(item => item[0]).join('');
+    } catch (error) {
+        return text;
+    }
+};
+
+const createTranslationSectionOnSidebar = () => {
+    const container = document.createElement("div");
+    container.id = "translate-container";
+
+    const dividerLine = document.createElement("hr");
+    const sectionTitle = document.createElement("h4");
+    sectionTitle.innerHTML = "Translate (Beta)";
+    sectionTitle.style.margin = "0.1em 0 0.5em 0";
+
+    const langSelect = document.createElement("select");
+    langSelect.style.width = "100%";
+    langSelect.style.padding = "4px";
+    langSelect.style.marginBottom = "10px";
+    langSelect.style.cursor = "pointer";
+
+    const languages = [
+        { code: 'en', label: 'Original (English)' },
+        { code: 'vi', label: 'Tiếng Việt' },
+        { code: 'zh-CN', label: '中文 (Chinese)' },
+        { code: 'fr', label: 'Français' }
+    ];
+
+    languages.forEach(lang => {
+        const option = document.createElement("option");
+        option.value = lang.code;
+        option.innerHTML = lang.label;
+        langSelect.appendChild(option);
+    });
+
+    langSelect.addEventListener("change", async () => {
+        const selectedLang = langSelect.value;
+        if (selectedLang === 'en') {
+            location.reload();
+            return;
+        }
+
+        langSelect.disabled = true;
+        const originalOptionText = langSelect.options[langSelect.selectedIndex].text;
+        langSelect.options[langSelect.selectedIndex].text = "Translating...";
+
+        const contentDiv = document.querySelector(".content");
+        const elementsToTranslate = contentDiv.querySelectorAll("p, li:not(.nav li)");
+        
+        for (let el of elementsToTranslate) {
+             if (el.closest('.sidebar')) continue;
+             const originalText = el.innerText;
+             if (originalText.trim().length > 0) {
+                 const translatedText = await translateText(originalText, selectedLang);
+                 el.innerText = translatedText;
+             }
+        }
+        
+        langSelect.options[langSelect.selectedIndex].text = originalOptionText;
+        langSelect.disabled = false;
+    });
+
+    container.appendChild(dividerLine);
+    container.appendChild(sectionTitle);
+    container.appendChild(langSelect);
+
+    sidebarElement.appendChild(container);
+};
+
 const createTagsSectionOnSidebar = async () => {
     const container = document.createElement("div");
     container.id = "tags-container";
     
+    const dividerLine = document.createElement("hr");
     const sectionTitle = document.createElement("h4");
     sectionTitle.style.margin = "0.1em 0 0.5em 0";
     sectionTitle.innerHTML = "Tags";
@@ -43,14 +118,12 @@ const createTagsSectionOnSidebar = async () => {
     tagsListElement.style.flexWrap = "wrap";
     tagsListElement.style.gap = "6px";
     showTags.appendChild(tagsListElement);
-    
-    const dividerLine = document.createElement("hr");
 
+    container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(showTags);
-    container.appendChild(dividerLine);
     
-    sidebarElement.insertBefore(container, sidebarElement.firstChild);
+    sidebarElement.appendChild(container);
 
     const tagsList = await getTags(problemId);
 
@@ -82,6 +155,7 @@ const createTipsSectionOnSidebar = async () => {
     const container = document.createElement("div");
     container.id = "tips-container";
     
+    const dividerLine = document.createElement("hr");
     const sectionTitle = document.createElement("h4");
     sectionTitle.innerHTML = "Tips";
     sectionTitle.style.margin = "0.6em 0 0.5em 0";
@@ -98,13 +172,11 @@ const createTipsSectionOnSidebar = async () => {
     tipsListElement.style.paddingLeft = "20px";
     showTips.appendChild(tipsListElement);
 
-    const dividerLine = document.createElement("hr");
-
+    container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(showTips);
-    container.appendChild(dividerLine);
     
-    sidebarElement.insertBefore(container, sidebarElement.firstChild);
+    sidebarElement.appendChild(container);
 
     const tips = await getTips(problemId);
 
@@ -187,7 +259,7 @@ const submitCodeFile = (fileData) => {
             location.href = response.url;
         }
     }).catch((error) => {
-        console.error('Error:', error);
+        console.error(error);
     });
 };
 
@@ -362,6 +434,7 @@ if (isSubmitPage()) {
 }
 
 if (isProblemPage()) {
+    createTranslationSectionOnSidebar();
     createTipsSectionOnSidebar();
     createTagsSectionOnSidebar();
     createSolutionSectionOnNavbar();
