@@ -3,6 +3,7 @@ if (typeof browser === "undefined") var browser = chrome;
 const chromeStorage = chrome.storage.local;
 const topics = [];
 const problemset = {};
+let allProblemsFlat = [];
 
 const getProblemId = () => {
     const match = location.pathname.match(/\/(task|submit|view|stats|hack|result)\/(\d+)/);
@@ -430,6 +431,7 @@ const createStatsSection = () => {
     const total = solved + untouched + attemptedNotAc.length;
 
     const container = document.createElement("div");
+    container.id = "stats-container";
     container.style.backgroundColor = "#f8f9fa";
     container.style.border = "1px solid #d1d5db";
     container.style.borderRadius = "6px";
@@ -479,6 +481,167 @@ const createStatsSection = () => {
     }
 }
 
+const createTOC = () => {
+    const contentDiv = document.querySelector(".content");
+    const titleList = [...document.querySelectorAll("h2")];
+    if (titleList.length === 0) return;
+
+    const tocContainer = document.createElement("div");
+    tocContainer.id = "toc-container";
+    tocContainer.style.backgroundColor = "#f8f9fa";
+    tocContainer.style.border = "1px solid #d1d5db";
+    tocContainer.style.borderRadius = "6px";
+    tocContainer.style.padding = "15px";
+    tocContainer.style.marginBottom = "20px";
+
+    const tocTitle = document.createElement("h3");
+    tocTitle.style.marginTop = "0";
+    tocTitle.innerHTML = "Table of Contents";
+    tocContainer.appendChild(tocTitle);
+
+    const ul = document.createElement("ul");
+    ul.style.columnCount = "2";
+    ul.style.listStyleType = "none";
+    ul.style.padding = "0";
+
+    titleList.shift();
+
+    titleList.forEach((h2, index) => {
+        h2.id = `topic-${index}`;
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `#topic-${index}`;
+        a.innerHTML = h2.innerHTML.split("<")[0];
+        a.style.textDecoration = "none";
+        a.style.color = "#0056b3";
+        a.style.display = "block";
+        a.style.marginBottom = "5px";
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    tocContainer.appendChild(ul);
+    
+    const stats = document.getElementById("stats-container");
+    if (stats) {
+        stats.parentNode.insertBefore(tocContainer, stats.nextSibling);
+    } else {
+        contentDiv.insertBefore(tocContainer, document.querySelector("h2"));
+    }
+}
+
+const createGlobalViewToggle = () => {
+    const contentDiv = document.querySelector(".content");
+    if (!contentDiv) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.style.marginBottom = "20px";
+
+    const label = document.createElement("label");
+    label.style.fontWeight = "bold";
+    label.style.cursor = "pointer";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.style.marginRight = "8px";
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(" Gộp tất cả bài tập thành một danh sách (Flatten)"));
+    wrapper.appendChild(label);
+
+    const globalContainer = document.createElement("div");
+    globalContainer.id = "global-container";
+    globalContainer.style.display = "none";
+
+    const globalSort = document.createElement("select");
+    globalSort.style.marginBottom = "10px";
+    globalSort.style.padding = "4px";
+    globalSort.innerHTML = `
+        <option value="default">Sort By Default</option>
+        <option value="solvers">Sort By Number of Solvers</option>
+        <option value="acRate">Sort By AC Rate</option>
+    `;
+
+    const globalList = document.createElement("ul");
+    globalList.className = "task-list";
+
+    const renderGlobalList = () => {
+        globalList.innerHTML = "";
+        let sorted = [...allProblemsFlat];
+        if (globalSort.value === "solvers") {
+            sorted.sort((a, b) => b.solvers - a.solvers);
+        } else if (globalSort.value === "acRate") {
+            sorted.sort((a, b) => b.acRate - a.acRate);
+        }
+        sorted.forEach(p => {
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = p.html;
+            const li = tempDiv.firstElementChild;
+            
+            const badge = document.createElement("span");
+            badge.innerHTML = p.topic;
+            badge.style.fontSize = "0.75em";
+            badge.style.backgroundColor = "#e9ecef";
+            badge.style.padding = "2px 6px";
+            badge.style.borderRadius = "10px";
+            badge.style.marginLeft = "10px";
+            badge.style.color = "#495057";
+
+            const aTag = li.querySelector("a");
+            if (aTag) aTag.appendChild(badge);
+
+            globalList.appendChild(li);
+        });
+    };
+
+    globalSort.addEventListener("change", () => {
+        chromeStorage.set({ "global-sort-rule": globalSort.value });
+        renderGlobalList();
+    });
+
+    globalContainer.appendChild(globalSort);
+    globalContainer.appendChild(globalList);
+    wrapper.appendChild(globalContainer);
+
+    const titleList = [...document.querySelectorAll("h2")];
+    if (titleList.length > 1) {
+        contentDiv.insertBefore(wrapper, titleList[1]);
+    }
+
+    const originalElements = [];
+    document.querySelectorAll("h2, .task-list").forEach((el, index) => {
+        if (el.tagName === "H2" && index === 0) return;
+        if (el === globalList) return;
+        originalElements.push(el);
+    });
+
+    const toc = document.getElementById("toc-container");
+
+    checkbox.addEventListener("change", () => {
+        chromeStorage.set({ "flatten-mode": checkbox.checked });
+        if (checkbox.checked) {
+            originalElements.forEach(el => el.style.display = "none");
+            if (toc) toc.style.display = "none";
+            globalContainer.style.display = "block";
+            renderGlobalList();
+        } else {
+            originalElements.forEach(el => el.style.display = "");
+            if (toc) toc.style.display = "block";
+            globalContainer.style.display = "none";
+        }
+    });
+
+    chromeStorage.get(["flatten-mode", "global-sort-rule"]).then(res => {
+        if (res["global-sort-rule"]) {
+            globalSort.value = res["global-sort-rule"];
+        }
+        if (res["flatten-mode"]) {
+            checkbox.checked = true;
+            checkbox.dispatchEvent(new Event('change'));
+        }
+    });
+}
+
 const generateProblemset = () => {
     const taskGroups = [...document.querySelectorAll(".task-list")];
     if (taskGroups.length === 0) return;
@@ -499,6 +662,7 @@ const generateProblemset = () => {
             const defaultIndex = index;
             const html = problem.outerHTML;
             problemset[topics[i]].push({ defaultIndex, solvers, acRate, html });
+            allProblemsFlat.push({ topic: topics[i], defaultIndex, solvers, acRate, html });
         });
     }
 };
@@ -536,7 +700,7 @@ const createCustomSortSelector = () => {
     titleList.shift();
     titleList.forEach((element, index) => {
         const selector = createElementByHTMLtext(`
-        <select style="margin-left:0.5rem">
+        <select style="margin-left:0.5rem; padding: 2px;">
             <option>Sort By Default</option>
             <option>Sort By Number of Solvers</option>
             <option>Sort By AC Rate</option>
@@ -620,6 +784,8 @@ const initExtension = () => {
         createStatsSection();
         createCustomSortSelector();
         generateProblemset();
+        createTOC();
+        createGlobalViewToggle();
         applySortRule();
     }
 
