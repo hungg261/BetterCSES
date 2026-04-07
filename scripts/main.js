@@ -307,15 +307,17 @@ const modifySubmitButton = () => {
 const formatPreBlocks = () => {
     if (!location.href.includes("/task/")) return;
     
-    // Đã nới lỏng bộ lọc để lấy tất cả các thẻ pre nằm trong phần content
     const preElements = document.querySelectorAll(".content pre");
     preElements.forEach((pre) => {
-        
-        // Cố gắng tìm chữ "Input" hoặc "Output" từ thẻ <p> đứng trước nó
         let labelText = "text";
         const prevElement = pre.previousElementSibling;
-        if (prevElement && prevElement.tagName === "P") {
-            labelText = prevElement.innerText.trim().replace(":", "");
+        
+        if (prevElement) {
+            const text = prevElement.innerText.trim();
+            if (/^(Input|Output):?$/i.test(text)) {
+                labelText = text.replace(":", "").charAt(0).toUpperCase() + text.replace(":", "").slice(1).toLowerCase();
+                prevElement.style.display = "none";
+            }
         }
 
         const wrapper = document.createElement("div");
@@ -337,7 +339,7 @@ const formatPreBlocks = () => {
         header.style.fontSize = "0.85em";
         
         const label = document.createElement("span");
-        label.innerHTML = labelText; // Gắn nhãn tự động
+        label.innerHTML = labelText;
         label.style.color = "#6b7280";
         label.style.fontWeight = "bold";
         
