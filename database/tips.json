@@ -1,4 +1,25 @@
 {
+    "1068": [
+        "Use a while loop to simulate the process until n equals 1.",
+        "Use long long (64-bit integers) to prevent overflow during calculations."
+    ],
+    "1069": [
+        "Iterate through the string once, keeping track of the current character and a counter.",
+        "Reset the counter to 1 whenever the character changes; otherwise, increment it.",
+        "Maintain a global maximum to store the longest streak encountered during the loop."
+    ],
+    "1070": [
+        "Handle the edge cases n = 2 and n = 3 by outputting 'NO SOLUTION'.",
+        "For n = 1, the answer is simply 1.",
+        "For larger n, print all even numbers from 2 to n first, then all odd numbers from 1 to n.",
+        "This ensures that no two adjacent numbers differ by exactly 1."
+    ],
+    "1071": [
+        "Determine which layer (max(y, x)) the coordinate (y, x) belongs to.",
+        "Calculate the square of the previous layer (layer - 1) as a starting point.",
+        "Add or subtract the offset based on whether the layer number is even or odd.",
+        "Be careful with the coordinate directions (row/y vs. column/x) and use 64-bit integers."
+    ],
     "1072": [
         "Calculate total ways to place two knights: (n^2 * (n^2 - 1)) / 2.",
         "Subtract the number of 2x3 and 3x2 blocks where knights attack each other."
@@ -18,6 +39,13 @@
     "1077": [
         "Maintain two multisets like the median problem plus their running sums.",
         "The cost is (count1 * median - sum1) + (sum2 - count2 * median)."
+    ],
+    "1078": [
+        "Sort the trap coordinates by row, then by column to process them in path order.",
+        "Use DP to find the number of paths to each trap that do not pass through any other trap first.",
+        "Subtract paths passing through previous traps: dp[i] = ways(1,1 to trap_i) - sum(dp[j] * ways(trap_j to trap_i)).",
+        "Precompute factorials to calculate combinations C(x+y, x) quickly for path counting.",
+        "The final answer is total paths to (n,n) minus paths that hit at least one trap."
     ],
     "1081": [
         "Count the frequency of each number up to 10^6.",
