@@ -230,7 +230,8 @@ const createTagsSectionOnSidebar = async () => {
 
     tagsList.forEach((tag) => {
         const tagElement = document.createElement("li");
-        tagElement.innerHTML = tag;
+        tagElement.textContent = tag.toLowerCase();
+
         tagElement.style.listStyle = "none";
         tagElement.style.backgroundColor = "#f3f4f6";
         tagElement.style.color = "#d63384";
