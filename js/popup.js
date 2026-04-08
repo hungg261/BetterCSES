@@ -15,7 +15,7 @@ const handleSearch = () => {
     return;
   }
 
-  const searchUrl = `https://google.com/search?q=${encodeURIComponent('"cses.fi/problemset"' + name)}&btnI=1`;
+  const searchUrl = `https://google.com/search?q=${encodeURIComponent('site:cses.fi/problemset ' + name)}&btnI=1`;
   window.open(searchUrl, '_blank');
 };
 
