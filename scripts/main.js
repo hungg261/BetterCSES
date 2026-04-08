@@ -185,23 +185,6 @@ const createTipsSectionOnSidebar = async () => {
     showTips.appendChild(ul);
 }
 
-const createSolutionSectionOnNavbar = () => {
-    const navbarElement = document.querySelector(".nav");
-    if (!navbarElement) return;
-    const ele = document.createElement("li");
-    ele.addEventListener("click", () => {
-        const contentDiv = document.querySelector(".content");
-        if(contentDiv) contentDiv.innerHTML = "Solution Page (Coming Soon)";
-        navbarElement.querySelector(".current")?.classList.remove("current");
-        document.getElementById("solution")?.classList.add("current");
-    });
-    const a = document.createElement("a");
-    a.id = "solution";
-    a.innerHTML = "Solution"
-    ele.appendChild(a);
-    navbarElement.appendChild(ele);
-}
-
 const loadLanguageSelectorCache = () => {
     const languageSelector = document.getElementById("lang");
     const languageOption = document.getElementById("option");
@@ -544,7 +527,7 @@ const initExtension = () => {
     const url = location.href;
     if (url.includes("/submit")) { loadLanguageSelectorCache(); createLanguageSelectorCache(); createCodeInputArea(); modifySubmitButton(); }
     if (url.includes("/task/") || url.includes("/view/") || url.includes("/stats/")) {
-        formatPreBlocks(); createTranslationSectionOnSidebar(); createTagsSectionOnSidebar(); createTipsSectionOnSidebar(); createSolutionSectionOnNavbar();
+        formatPreBlocks(); createTranslationSectionOnSidebar(); createTagsSectionOnSidebar(); createTipsSectionOnSidebar();
     }
     if (url.endsWith("/problemset/") || url.endsWith("/problemset") || url.includes("/list")) {
         setupProblemListsAndStats(); buildDashboardAndTOC();
