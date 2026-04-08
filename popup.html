@@ -1,27 +1,34 @@
 <!DOCTYPE html>
-<html lang="zh-tw">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/popup.css" />
-    <title>NO TITLE</title>
-    <style>
-      body {
-        width: 250px;
-        background-color: liner-gradient(45deg, #f3f3f3, #ffffff);
-        padding: 10px;
-        text-align: center;
-        transition: background-color 0.75s ease;
-        font-size: 13px;
-        font-family: 'Helvetica Neue', 'Lucida Grande', sans-serif;
-      }
-      .logo {
-        filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.7));
-      }
-    </style>
-  </head>
-  <body>
-    <p>Made by <a rel="noopener" href="https://github.com/dada878" target="_blank">Dada878</a></p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/popup.css">
+  <title>BetterCSES</title>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <h1 class="title">BetterCSES</h1>
+    </header>
+
+    <div class="search-container">
+      <input type="text" id="problemInput" placeholder="ID, Name, or Link..." autofocus autocomplete="off">
+      <button id="searchBtn">Jump</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+      <div class="repo-info">
+        <span class="label">Current Repo</span>
+        <a href="https://github.com" target="_blank" class="link main">hungg261/BetterCSES</a>
+      </div>
+      <div class="source-info">
+        <span>Forked from <a href="https://github.com/dada878/CSES-Helper" target="_blank" class="link">dada878/CSES-Helper</a></span>
+      </div>
+    </div>
+  </div>
+  <script src="js/popup.js"></script>
+</body>
 </html>

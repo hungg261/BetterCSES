@@ -1,0 +1,93 @@
+body {
+  width: 300px;
+  margin: 0;
+  padding: 16px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.version {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.search-container {
+  display: flex;
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+input {
+  flex: 1;
+  border: none;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  background: transparent;
+}
+
+button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+.divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 16px 0;
+}
+
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.repo-info { margin-bottom: 6px; }
+.label { display: block; font-size: 9px; text-transform: uppercase; color: #94a3b8; margin-bottom: 2px; }
+
+.link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link.main {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.link:hover { text-decoration: underline; }
