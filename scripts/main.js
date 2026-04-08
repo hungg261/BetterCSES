@@ -1,8 +1,6 @@
 if (typeof browser === "undefined") var browser = chrome;
 
 const chromeStorage = chrome.storage.local;
-const topics = [];
-const problemset = {};
 let allProblemsFlat = [];
 
 const getProblemId = () => {
@@ -44,77 +42,18 @@ const createElementByHTMLtext = (htmlText) => {
 const injectStyles = () => {
     const style = document.createElement("style");
     style.innerHTML = `
-        .ext-container {
-            background-color: #f8f9fa;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .ext-summary {
-            cursor: pointer;
-            font-weight: bold;
-            color: #d63384;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-            outline: none;
-        }
-        .ext-badge {
-            font-size: 0.75em;
-            background-color: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 10px;
-            color: #495057;
-        }
-        .ext-pre-wrapper {
-            background-color: #f8f9fa;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            margin-bottom: 1.5em;
-        }
-        .ext-pre-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 12px;
-            background-color: #e5e7eb;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            border-bottom: 1px solid #d1d5db;
-            font-family: sans-serif;
-            font-size: 0.85em;
-            font-weight: bold;
-            color: #6b7280;
-        }
-        body.dark .ext-container {
-            background-color: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
-        }
-        body.dark .ext-summary {
-            color: #ff80bf;
-        }
-        body.dark .ext-container a {
-            color: #66b3ff;
-        }
-        body.dark .ext-badge {
-            background-color: #333;
-            color: #ccc;
-        }
-        body.dark .ext-pre-wrapper {
-            background-color: #1e1e1e;
-            border-color: #444;
-        }
-        body.dark .ext-pre-header {
-            background-color: #2d2d2d;
-            border-bottom-color: #444;
-            color: #aaa;
-        }
-        body.dark .ext-pre-header button {
-            color: #ddd !important;
-        }
+        .ext-container { background-color: #f8f9fa; border: 1px solid #d1d5db; border-radius: 6px; padding: 15px; margin-bottom: 20px; color: #333; }
+        .ext-summary { cursor: pointer; font-weight: bold; color: #d63384; font-size: 1.1em; margin-bottom: 5px; outline: none; }
+        .ext-badge { font-size: 0.75em; background-color: #e9ecef; padding: 2px 6px; border-radius: 10px; margin-left: 10px; color: #495057; }
+        .ext-topic-stats { font-size: 0.8em; color: #666; margin-top: -10px; margin-bottom: 10px; font-weight: normal; }
+        .ext-pre-wrapper { background-color: #f8f9fa; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 1.5em; }
+        .ext-pre-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; background-color: #e5e7eb; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom: 1px solid #d1d5db; font-family: sans-serif; font-size: 0.85em; font-weight: bold; color: #6b7280; }
+        body.dark .ext-container { background-color: #1e1e1e; border-color: #444; color: #e0e0e0; }
+        body.dark .ext-summary { color: #ff80bf; }
+        body.dark .ext-badge { background-color: #333; color: #ccc; }
+        body.dark .ext-topic-stats { color: #aaa; }
+        body.dark .ext-pre-wrapper { background-color: #1e1e1e; border-color: #444; }
+        body.dark .ext-pre-header { background-color: #2d2d2d; border-bottom-color: #444; color: #aaa; }
     `;
     document.head.appendChild(style);
 }
@@ -122,62 +61,43 @@ const injectStyles = () => {
 const createTranslationSectionOnSidebar = () => {
     const sidebarElement = document.querySelector(".nav.sidebar");
     if (!sidebarElement) return;
-
     const container = document.createElement("div");
     container.id = "translate-container";
-
     const dividerLine = document.createElement("hr");
     const sectionTitle = document.createElement("h4");
     sectionTitle.innerHTML = "Translate (Beta)";
     sectionTitle.style.margin = "0.1em 0 0.5em 0";
-
     const langSelect = document.createElement("select");
     langSelect.style.width = "100%";
     langSelect.style.padding = "4px";
     langSelect.style.marginBottom = "10px";
-    langSelect.style.cursor = "pointer";
-
     const languages = [
         { code: 'en', label: 'Original (English)' },
-        { code: 'vi', label: 'Tiếng Việt' },
+        { code: 'vi', label: 'Tiếng Việt (Vietnamese)' },
         { code: 'zh-CN', label: '中文 (Chinese)' },
-        { code: 'fr', label: 'Français' }
+        { code: 'fr', label: 'Français (French)' },
+        { code: 'ru', label: 'Русский (Russian)' }
     ];
-
     languages.forEach(lang => {
         const option = document.createElement("option");
         option.value = lang.code;
         option.innerHTML = lang.label;
         langSelect.appendChild(option);
     });
-
     langSelect.addEventListener("change", async () => {
         const selectedLang = langSelect.value;
-        if (selectedLang === 'en') {
-            location.reload();
-            return;
-        }
-
+        if (selectedLang === 'en') { location.reload(); return; }
         langSelect.disabled = true;
-        const originalOptionText = langSelect.options[langSelect.selectedIndex].text;
-        langSelect.options[langSelect.selectedIndex].text = "Translating...";
-
-        const contentDiv = document.querySelector(".content");
-        const elementsToTranslate = contentDiv.querySelectorAll("p, li:not(.nav li)");
-        
+        const elementsToTranslate = document.querySelector(".content").querySelectorAll("p, li:not(.nav li)");
         for (let el of elementsToTranslate) {
              if (el.closest('.sidebar')) continue;
              const originalText = el.innerText;
              if (originalText.trim().length > 0) {
-                 const translatedText = await translateText(originalText, selectedLang);
-                 el.innerText = translatedText;
+                 el.innerText = await translateText(originalText, selectedLang);
              }
         }
-        
-        langSelect.options[langSelect.selectedIndex].text = originalOptionText;
         langSelect.disabled = false;
     });
-
     container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(langSelect);
@@ -188,118 +108,90 @@ const createTagsSectionOnSidebar = async () => {
     const sidebarElement = document.querySelector(".nav.sidebar");
     const problemId = getProblemId();
     if (!sidebarElement || !problemId) return;
-
     const tagsList = await getTags(problemId);
-
     const container = document.createElement("div");
-    container.id = "tags-container";
-    
     const dividerLine = document.createElement("hr");
     const sectionTitle = document.createElement("h4");
     sectionTitle.style.margin = "0.1em 0 0.5em 0";
     sectionTitle.innerHTML = "Tags";
-    
     const showTags = document.createElement("details");
-    showTags.id = "show-tags";
     const showTagsSummary = document.createElement("summary");
     showTagsSummary.innerHTML = "Show Tags";
     showTagsSummary.style.cursor = "pointer";
     showTags.appendChild(showTagsSummary);
-    
     container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(showTags);
     sidebarElement.appendChild(container);
-
     if (!tagsList || tagsList.length === 0) {
-        const noTagsElement = document.createElement("p");
-        noTagsElement.style.margin = "10px 0 0 0";
-        noTagsElement.innerHTML = "No Tags";
-        showTags.appendChild(noTagsElement);
+        const noTags = document.createElement("p");
+        noTags.innerHTML = "No Tags";
+        showTags.appendChild(noTags);
         return;
     }
-
-    const tagsListElement = document.createElement("ul");
-    tagsListElement.id = "tags";
-    tagsListElement.style.marginTop = "10px";
-    tagsListElement.style.padding = "0";
-    tagsListElement.style.display = "flex";
-    tagsListElement.style.flexWrap = "wrap";
-    tagsListElement.style.gap = "6px";
-    showTags.appendChild(tagsListElement);
-
+    const tagsUl = document.createElement("ul");
+    tagsUl.style.marginTop = "10px";
+    tagsUl.style.padding = "0";
+    tagsUl.style.display = "flex";
+    tagsUl.style.flexWrap = "wrap";
+    tagsUl.style.gap = "6px";
     tagsList.forEach((tag) => {
-        const tagElement = document.createElement("li");
-        tagElement.textContent = tag.toLowerCase();
-
-        tagElement.style.listStyle = "none";
-        tagElement.style.backgroundColor = "#f3f4f6";
-        tagElement.style.color = "#d63384";
-        tagElement.style.padding = "2px 6px";
-        tagElement.style.borderRadius = "4px";
-        tagElement.style.fontFamily = "monospace";
-        tagElement.style.fontSize = "0.9em";
-        tagElement.style.border = "1px solid #d1d5db";
-        tagsListElement.appendChild(tagElement);
+        const li = document.createElement("li");
+        li.innerHTML = tag;
+        li.style.listStyle = "none";
+        li.style.backgroundColor = "#f3f4f6";
+        li.style.color = "#d63384";
+        li.style.padding = "2px 6px";
+        li.style.borderRadius = "4px";
+        li.style.fontSize = "0.9em";
+        li.style.border = "1px solid #d1d5db";
+        tagsUl.appendChild(li);
     });
+    showTags.appendChild(tagsUl);
 }
 
 const createTipsSectionOnSidebar = async () => {
     const sidebarElement = document.querySelector(".nav.sidebar");
     const problemId = getProblemId();
     if (!sidebarElement || !problemId) return;
-
     const tips = await getTips(problemId);
-
     const container = document.createElement("div");
-    container.id = "tips-container";
-    
     const dividerLine = document.createElement("hr");
     const sectionTitle = document.createElement("h4");
     sectionTitle.innerHTML = "Tips";
     sectionTitle.style.margin = "0.6em 0 0.5em 0";
-    
     const showTips = document.createElement("details");
-    showTips.id = "show-tips";
     const showTipsSummary = document.createElement("summary");
     showTipsSummary.innerHTML = "Show Tips";
     showTipsSummary.style.cursor = "pointer";
     showTips.appendChild(showTipsSummary);
-    
     container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(showTips);
     sidebarElement.appendChild(container);
-
     if (!tips || tips.length === 0) {
-        const noTipsElement = document.createElement("p");
-        noTipsElement.style.margin = "10px 0 0 0";
-        noTipsElement.innerHTML = "No Tips";
-        showTips.appendChild(noTipsElement);
+        const noTips = document.createElement("p");
+        noTips.innerHTML = "No Tips";
+        showTips.appendChild(noTips);
         return;
     }
-
-    const tipsListElement = document.createElement("ul");
-    tipsListElement.style.marginTop = "8px";
-    tipsListElement.style.paddingLeft = "20px";
-    showTips.appendChild(tipsListElement);
-
+    const ul = document.createElement("ul");
+    ul.style.marginTop = "8px";
     tips.reverse().forEach((tip) => {
-        const tipElement = document.createElement("li");
-        tipElement.style.margin = "5px 0";
-        tipElement.innerHTML = tip;
-        tipsListElement.appendChild(tipElement);
+        const li = document.createElement("li");
+        li.innerHTML = tip;
+        ul.appendChild(li);
     });
+    showTips.appendChild(ul);
 }
 
 const createSolutionSectionOnNavbar = () => {
     const navbarElement = document.querySelector(".nav");
     if (!navbarElement) return;
     const ele = document.createElement("li");
-    ele.style.cursor = "pointer";
     ele.addEventListener("click", () => {
         const contentDiv = document.querySelector(".content");
-        if(contentDiv) contentDiv.innerHTML = "Solution Page";
+        if(contentDiv) contentDiv.innerHTML = "Solution Page (Coming Soon)";
         navbarElement.querySelector(".current")?.classList.remove("current");
         document.getElementById("solution")?.classList.add("current");
     });
@@ -314,7 +206,6 @@ const loadLanguageSelectorCache = () => {
     const languageSelector = document.getElementById("lang");
     const languageOption = document.getElementById("option");
     if(!languageSelector || !languageOption) return;
-
     chromeStorage.get(["language", "option"]).then((result) => {
         setTimeout(() => {
             if (result.language) languageSelector.value = result.language;
@@ -331,465 +222,302 @@ const createLanguageSelectorCache = () => {
     const languageSelector = document.getElementById("lang");
     const languageOption = document.getElementById("option");
     if(!languageSelector || !languageOption) return;
-    languageSelector.addEventListener("change", () => {
-        chromeStorage.set({ language: languageSelector.value });
-    });
-    languageOption.addEventListener("change", () => {
-        chromeStorage.set({ option: languageOption.value });
-    });
+    languageSelector.addEventListener("change", () => chromeStorage.set({ language: languageSelector.value }));
+    languageOption.addEventListener("change", () => chromeStorage.set({ option: languageOption.value }));
 }
 
 const submitCodeFile = (fileData) => {
     const problemId = getProblemId();
     if (!problemId) return;
     const formData = new FormData();
-    const languageSelector = document.getElementById("lang");
-    const languageOption = document.getElementById("option");
     const csrfToken = document.querySelector("input[name='csrf_token']").value;
     formData.append('csrf_token', csrfToken);
     formData.append('task', problemId);
-    formData.append('lang', languageSelector.value);
-    if (!languageOption.disabled) formData.append('option', languageOption.value);
+    formData.append('lang', document.getElementById("lang").value);
+    const opt = document.getElementById("option");
+    if (!opt.disabled) formData.append('option', opt.value);
     formData.append('target', 'problemset');
     formData.append('type', 'course');
     formData.append('file', fileData, 'code.cpp');
-    fetch('/course/send.php', {
-        method: 'POST',
-        body: formData
-    }).then((response) => {
-        if (response.ok) {
-            location.href = response.url;
-        }
-    }).catch((error) => console.error(error));
+    fetch('/course/send.php', { method: 'POST', body: formData }).then((r) => { if (r.ok) location.href = r.url; });
 };
 
 const createCodeInputArea = () => {
     const form = document.querySelector("form");
     if (!form) return;
-    const codeInputArea = document.createElement("textarea");
-    codeInputArea.id = "code";
-    codeInputArea.style.width = "500px";
-    codeInputArea.style.height = "300px";
-    form.insertBefore(codeInputArea, form.children[5] || form.firstChild);
+    const codeArea = document.createElement("textarea");
+    codeArea.id = "code";
+    codeArea.style.width = "100%";
+    codeArea.style.height = "300px";
+    codeArea.style.marginBottom = "10px";
+    form.insertBefore(codeArea, form.children[5] || form.firstChild);
 }
 
 const modifySubmitButton = () => {
-    const submitButton = document.querySelector("input[type='submit']");
-    if (!submitButton) return;
-    submitButton.addEventListener("click", (event) => {
-        const codeElement = document.getElementById("code");
-        if (!codeElement) return;
-        const code = codeElement.value;
-        if (code == "") {
+    const submitBtn = document.querySelector("input[type='submit']");
+    if (!submitBtn) return;
+    submitBtn.addEventListener("click", (e) => {
+        const code = document.getElementById("code")?.value;
+        if (!code) {
             const fileInput = document.querySelector("input[type='file']");
-            if (fileInput && fileInput.files.length > 0) submitCodeFile(fileInput.files[0]);
+            if (fileInput?.files.length > 0) submitCodeFile(fileInput.files[0]);
             return;
         }
-        submitCodeFile(new Blob([code], { type: 'text/plain' }))
-        event.preventDefault();
+        submitCodeFile(new Blob([code], { type: 'text/plain' }));
+        e.preventDefault();
     });
 }
 
 const formatPreBlocks = () => {
     if (!location.href.includes("/task/")) return;
-    
-    const preElements = document.querySelectorAll(".content pre");
-    preElements.forEach((pre) => {
-        let labelText = "Text";
-        const prevElement = pre.previousElementSibling;
-        
-        if (prevElement) {
-            const text = prevElement.innerText.trim();
-            if (/^(Input|Output):?$/i.test(text)) {
-                labelText = text.replace(":", "").charAt(0).toUpperCase() + text.replace(":", "").slice(1).toLowerCase();
-                prevElement.style.display = "none";
-            }
+    document.querySelectorAll(".content pre").forEach((pre) => {
+        let labelText = "Data";
+        const prev = pre.previousElementSibling;
+        if (prev && /^(Input|Output):?$/i.test(prev.innerText.trim())) {
+            labelText = prev.innerText.replace(":", "").trim();
+            prev.style.display = "none";
         }
-
         const wrapper = document.createElement("div");
         wrapper.className = "ext-pre-wrapper";
-        
         const header = document.createElement("div");
         header.className = "ext-pre-header";
-        
         const label = document.createElement("span");
         label.innerHTML = labelText;
-        
         const copyBtn = document.createElement("button");
         copyBtn.innerHTML = "Copy";
         copyBtn.style.cursor = "pointer";
         copyBtn.style.border = "none";
         copyBtn.style.background = "transparent";
-        copyBtn.style.color = "#374151";
-        copyBtn.style.fontWeight = "600";
-        
         copyBtn.addEventListener("click", () => {
             navigator.clipboard.writeText(pre.innerText);
             copyBtn.innerHTML = "Copied!";
             setTimeout(() => { copyBtn.innerHTML = "Copy"; }, 2000);
         });
-        
         header.appendChild(label);
         header.appendChild(copyBtn);
-        
         pre.parentNode.insertBefore(wrapper, pre);
         wrapper.appendChild(header);
         wrapper.appendChild(pre);
-        
-        pre.style.margin = "0";
-        pre.style.border = "none";
-        pre.style.padding = "12px";
-        pre.style.backgroundColor = "transparent";
-        pre.style.overflowX = "auto";
+        pre.style.margin = "0"; pre.style.border = "none"; pre.style.padding = "12px"; pre.style.backgroundColor = "transparent";
     });
 }
 
-const buildDashboardAndTOC = () => {
-    document.querySelectorAll("h2").forEach(h2 => {
+const setupProblemListsAndStats = () => {
+    const headers = document.querySelectorAll("h2");
+    if (headers.length === 0) return;
+
+    let globalSolved = 0, globalUntouched = 0;
+    const attemptedNotAc = [];
+    allProblemsFlat = [];
+
+    headers.forEach((h2, index) => {
+        if (index === 0) return;
         if (h2.innerText.includes("General")) {
             h2.style.display = "none";
-            
-            const taskList = h2.nextElementSibling;
-            if (taskList && taskList.classList.contains("task-list")) {
-                taskList.style.display = "none";
-            }
+            if (h2.nextElementSibling?.classList.contains("task-list")) h2.nextElementSibling.style.display = "none";
+            return;
         }
-    });
 
-    const contentDiv = document.querySelector(".content");
-    const tasks = document.querySelectorAll(".task");
-    const titleList = [...document.querySelectorAll("h2")];
-    if (tasks.length === 0 || titleList.length === 0) return;
+        const taskList = h2.nextElementSibling;
+        if (!taskList?.classList.contains("task-list")) return;
 
-    let solved = 0;
-    let untouched = 0;
-    const attemptedNotAc = [];
+        const tasks = Array.from(taskList.children);
+        let total = tasks.length, ac = 0;
 
-    tasks.forEach(task => {
-        const scoreSpan = task.querySelector(".task-score");
-        const aTag = task.querySelector("a");
-        if (scoreSpan) {
-            if (scoreSpan.classList.contains("full")) {
-                solved++;
-            } else if (scoreSpan.classList.contains("zero") || scoreSpan.className.trim() !== "task-score icon") {
+        const originalTitle = h2.childNodes[0].nodeValue ? h2.childNodes[0].nodeValue.trim() : h2.innerText.trim();
+        h2.innerText = originalTitle; 
+        h2.id = `topic-${index}`;
+
+        const topicData = [];
+        tasks.forEach((task, pIdx) => {
+            const score = task.querySelector(".task-score");
+            const aTag = task.querySelector("a");
+            if (score?.classList.contains("full")) { globalSolved++; ac++; }
+            else if (score?.classList.contains("zero") || (score && score.className.trim() !== "task-score icon")) {
                 attemptedNotAc.push({ title: aTag.innerText, url: aTag.href });
-            } else { untouched++; }
-        } else { untouched++; }
+            } else { globalUntouched++; }
+
+            const detail = task.querySelector(".detail");
+            const solvers = detail ? parseInt(detail.innerText.split("/")[0].replace(/,/g, '')) || 0 : 0;
+            const submissions = detail ? parseInt(detail.innerText.split("/")[1].replace(/,/g, '')) || 1 : 1;
+            const acRate = solvers / submissions;
+            topicData.push({ defaultIndex: pIdx, solvers, acRate, html: task.outerHTML });
+            allProblemsFlat.push({ topic: originalTitle, defaultIndex: pIdx, solvers, acRate, html: task.outerHTML });
+        });
+
+        const statsDiv = document.createElement("div");
+        statsDiv.className = "ext-topic-stats";
+        statsDiv.innerHTML = `Solved: ${ac}/${total}${ac === total && total > 0 ? ' ✅' : ''}`;
+        h2.parentNode.insertBefore(statsDiv, h2.nextSibling);
+
+        const selector = createElementByHTMLtext(`
+            <select style="margin-left:10px; font-size: 0.6em; font-weight: normal; vertical-align: middle; cursor: pointer;">
+                <option value="default">Sort: Default</option>
+                <option value="solvers">Sort: Solvers</option>
+                <option value="acRate">Sort: AC Rate</option>
+            </select>
+        `);
+
+        selector.addEventListener("change", () => {
+            taskList.innerHTML = "";
+            let sorted = [...topicData];
+            if (selector.value === "solvers") sorted.sort((a, b) => b.solvers - a.solvers);
+            else if (selector.value === "acRate") sorted.sort((a, b) => b.acRate - a.acRate);
+            else sorted.sort((a, b) => a.defaultIndex - b.defaultIndex);
+            sorted.forEach(p => taskList.innerHTML += p.html);
+        });
+        h2.appendChild(selector);
     });
 
-    const total = solved + untouched + attemptedNotAc.length;
+    window.csesExtStats = { total: globalSolved + globalUntouched + attemptedNotAc.length, solved: globalSolved, untouched: globalUntouched, attemptedNotAc };
+};
+
+const buildDashboardAndTOC = () => {
+    const contentDiv = document.querySelector(".content");
+    if (!contentDiv || !window.csesExtStats) return;
+    const { total, solved, untouched, attemptedNotAc } = window.csesExtStats;
 
     const dashboard = document.createElement("details");
     dashboard.className = "ext-container";
     dashboard.open = true;
-    
     const dashSummary = document.createElement("summary");
     dashSummary.className = "ext-summary";
     dashSummary.innerHTML = "Dashboard & Settings";
     dashboard.appendChild(dashSummary);
 
     const statsText = document.createElement("p");
-    statsText.style.marginTop = "10px";
-    statsText.innerHTML = `Total: <strong>${total}</strong> | Solved: <strong style="color:#198754">${solved}</strong> | Untouched: <strong>${untouched}</strong> | Attempted (Not AC): <strong style="color:#dc3545">${attemptedNotAc.length}</strong>`;
+    statsText.innerHTML = `Total: <strong>${total}</strong> | Solved: <strong style="color:#198754">${solved}</strong> | Untouched: <strong>${untouched}</strong> | Unsolved: <strong style="color:#dc3545">${attemptedNotAc.length}</strong>`;
     dashboard.appendChild(statsText);
 
     if (attemptedNotAc.length > 0) {
-        const details = document.createElement("details");
-        const summary = document.createElement("summary");
-        summary.style.cursor = "pointer";
-        summary.style.fontWeight = "bold";
-        summary.style.color = "#dc3545";
-        summary.innerHTML = "Show Attempted (Not AC) Problems";
-        
-        const list = document.createElement("ul");
-        list.style.marginTop = "10px";
-        list.style.paddingLeft = "20px";
-
-        attemptedNotAc.forEach(p => {
-            const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = p.url;
-            a.innerHTML = p.title;
-            li.appendChild(a);
-            list.appendChild(li);
-        });
-
-        details.appendChild(summary);
-        details.appendChild(list);
-        dashboard.appendChild(details);
+        const det = document.createElement("details");
+        const sum = document.createElement("summary");
+        sum.innerHTML = "Show unsolved problems";
+        sum.style.cursor = "pointer"; sum.style.color = "#dc3545";
+        const ul = document.createElement("ul");
+        attemptedNotAc.forEach(p => { ul.innerHTML += `<li><a href="${p.url}">${p.title}</a></li>`; });
+        det.appendChild(sum); det.appendChild(ul);
+        dashboard.appendChild(det);
     }
 
     dashboard.appendChild(document.createElement("hr"));
-    
-    const flattenWrapper = document.createElement("div");
-    flattenWrapper.style.marginTop = "10px";
-
-    const label = document.createElement("label");
-    label.style.fontWeight = "bold";
-    label.style.cursor = "pointer";
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.style.marginRight = "8px";
-
-    label.appendChild(checkbox);
-    label.appendChild(document.createTextNode(" Flatten all problems into a single list"));
-    flattenWrapper.appendChild(label);
+    const flatLabel = document.createElement("label");
+    flatLabel.style.cursor = "pointer";
+    const flatCheck = document.createElement("input");
+    flatCheck.type = "checkbox";
+    flatCheck.style.marginRight = "8px";
+    flatLabel.appendChild(flatCheck);
+    flatLabel.appendChild(document.createTextNode("Flatten problem list"));
+    dashboard.appendChild(flatLabel);
 
     const globalContainer = document.createElement("div");
-    globalContainer.id = "global-container";
     globalContainer.style.display = "none";
-    globalContainer.style.marginTop = "15px";
-
     const globalSort = document.createElement("select");
-    globalSort.style.marginBottom = "10px";
-    globalSort.style.padding = "4px";
-    globalSort.innerHTML = `
-        <option value="default">Sort By Default</option>
-        <option value="solvers">Sort By Number of Solvers</option>
-        <option value="acRate">Sort By AC Rate</option>
-    `;
-
+    globalSort.style.margin = "10px 0";
+    globalSort.innerHTML = `<option value="default">Sort: Default</option><option value="solvers">Sort: Solvers</option><option value="acRate">Sort: AC Rate</option>`;
     const globalList = document.createElement("ul");
     globalList.className = "task-list";
 
-    const renderGlobalList = () => {
+    const renderGlobal = () => {
         globalList.innerHTML = "";
         let sorted = [...allProblemsFlat];
-        if (globalSort.value === "solvers") {
-            sorted.sort((a, b) => b.solvers - a.solvers);
-        } else if (globalSort.value === "acRate") {
-            sorted.sort((a, b) => b.acRate - a.acRate);
-        }
+        if (globalSort.value === "solvers") sorted.sort((a, b) => b.solvers - a.solvers);
+        else if (globalSort.value === "acRate") sorted.sort((a, b) => b.acRate - a.acRate);
         sorted.forEach(p => {
-            const tempDiv = document.createElement("div");
-            tempDiv.innerHTML = p.html;
-            const li = tempDiv.firstElementChild;
-            
+            const temp = document.createElement("div");
+            temp.innerHTML = p.html;
+            const li = temp.firstElementChild;
             const badge = document.createElement("span");
-            badge.innerHTML = p.topic;
-            badge.className = "ext-badge";
-
-            const aTag = li.querySelector("a");
-            if (aTag) aTag.appendChild(badge);
-
+            badge.innerHTML = p.topic; badge.className = "ext-badge";
+            li.querySelector("a")?.appendChild(badge);
             globalList.appendChild(li);
         });
     };
 
-    globalSort.addEventListener("change", () => {
-        chromeStorage.set({ "global-sort-rule": globalSort.value });
-        renderGlobalList();
-    });
-
+    globalSort.addEventListener("change", renderGlobal);
     globalContainer.appendChild(globalSort);
     globalContainer.appendChild(globalList);
-    contentDiv.appendChild(globalContainer);
-    flattenWrapper.appendChild(globalContainer);
-    dashboard.appendChild(flattenWrapper);
+    dashboard.appendChild(globalContainer);
 
-    const tocContainer = document.createElement("details");
-    tocContainer.className = "ext-container";
-    tocContainer.id = "toc-container";
-    
-    const tocSummary = document.createElement("summary");
-    tocSummary.className = "ext-summary";
-    tocSummary.innerHTML = "Table of Contents";
-    tocContainer.appendChild(tocSummary);
-
-    const ul = document.createElement("ul");
-    ul.style.columnCount = "2";
-    ul.style.listStyleType = "none";
-    ul.style.padding = "0";
-    ul.style.marginTop = "10px";
-
-    const headersForTOC = [...document.querySelectorAll("h2")];
-    headersForTOC.shift();
-
-    headersForTOC.forEach((h2, index) => {
-        h2.id = `topic-${index}`;
+    const toc = document.createElement("details");
+    toc.className = "ext-container";
+    const tocSum = document.createElement("summary");
+    tocSum.className = "ext-summary"; tocSum.innerHTML = "Table of Contents";
+    toc.appendChild(tocSum);
+    const tocUl = document.createElement("ul");
+    tocUl.style.columnCount = "2"; tocUl.style.listStyle = "none"; tocUl.style.padding = "0";
+    document.querySelectorAll("h2").forEach(h2 => {
+        if (h2.style.display === "none" || h2 === document.querySelectorAll("h2")[0]) return;
         const li = document.createElement("li");
         const a = document.createElement("a");
-        a.href = `#topic-${index}`;
-        a.innerHTML = h2.innerHTML.split("<")[0];
-        a.style.textDecoration = "none";
-        a.style.display = "block";
-        a.style.marginBottom = "5px";
-        li.appendChild(a);
-        ul.appendChild(li);
+        a.href = `#${h2.id}`; a.innerHTML = h2.innerText.split("Sort:")[0].trim();
+        li.appendChild(a); tocUl.appendChild(li);
     });
-
-    tocContainer.appendChild(ul);
+    toc.appendChild(tocUl);
 
     const firstH2 = contentDiv.querySelector("h2");
-    if (firstH2) {
-        contentDiv.insertBefore(dashboard, firstH2);
-        contentDiv.insertBefore(tocContainer, firstH2);
-    }
+    if (firstH2) { contentDiv.insertBefore(dashboard, firstH2); contentDiv.insertBefore(toc, firstH2); }
 
-    const originalElements = [];
-    document.querySelectorAll("h2, .task-list").forEach((el, index) => {
-        if (el.tagName === "H2" && index === 0) return;
-        if (el === globalList) return;
-        originalElements.push(el);
+    const originalElements = Array.from(document.querySelectorAll("h2, .task-list, .ext-topic-stats")).filter(el => {
+        if (el.tagName === "H2" && el === document.querySelectorAll("h2")[0]) return false;
+        return el.style.display !== "none" && !dashboard.contains(el);
     });
 
-    checkbox.addEventListener("change", () => {
-        chromeStorage.set({ "flatten-mode": checkbox.checked });
-        if (checkbox.checked) {
-            originalElements.forEach(el => el.style.display = "none");
-            tocContainer.style.display = "none";
-            globalContainer.style.display = "block";
-            renderGlobalList();
-        } else {
-            originalElements.forEach(el => el.style.display = "");
-            tocContainer.style.display = "block";
-            globalContainer.style.display = "none";
-        }
-    });
-
-    chromeStorage.get(["flatten-mode", "global-sort-rule"]).then(res => {
-        if (res["global-sort-rule"]) {
-            globalSort.value = res["global-sort-rule"];
-        }
-        if (res["flatten-mode"]) {
-            checkbox.checked = true;
-            checkbox.dispatchEvent(new Event('change'));
-        }
-    });
-}
-
-const generateProblemset = () => {
-    document.querySelectorAll("h2").forEach(h2 => {
-        if (h2.innerText.includes("General")) {
-            h2.style.display = "none";
-            
-            const taskList = h2.nextElementSibling;
-            if (taskList && taskList.classList.contains("task-list")) {
-                taskList.style.display = "none";
-            }
-        }
-    });
-
-    const titleList = [...document.querySelectorAll("h2")];
-    titleList.shift();
-    titleList.forEach(el => topics.push(el.innerHTML.split("<")[0]));
-
-    const taskGroups = [...document.querySelectorAll(".task-list")];
-    if (taskGroups.length === 0) return;
-
-    for (let i = 0; i < taskGroups.length; i++) {
-        problemset[topics[i]] = [];
-        const problems = [...taskGroups[i].children];
-        problems.forEach((problem, index) => {
-            const detailElement = problem.querySelector(".detail");
-            let solvers = 0;
-            let acRate = 0;
-            if (detailElement) {
-                const parts = detailElement.innerText.split("/");
-                solvers = parseInt(parts.at(0)?.trim()) || 0;
-                const submissions = parseInt(parts.at(1)?.trim()) || 1;
-                acRate = solvers / submissions;
-            }
-            const defaultIndex = index;
-            const html = problem.outerHTML;
-            problemset[topics[i]].push({ defaultIndex, solvers, acRate, html });
-            allProblemsFlat.push({ topic: topics[i], defaultIndex, solvers, acRate, html });
-        });
-    }
-};
-
-const sortByDefault = (topicIndex) => {
-    const taskGroups = [...document.querySelectorAll(".task-list")];
-    taskGroups[topicIndex].innerHTML = "";
-    problemset[topics[topicIndex]].sort((a, b) => a.defaultIndex - b.defaultIndex).forEach((problem) => {
-        taskGroups[topicIndex].innerHTML += problem.html;
-    });
-}
-
-const sortBySolvers = (topicIndex) => {
-    const taskGroups = [...document.querySelectorAll(".task-list")];
-    taskGroups[topicIndex].innerHTML = "";
-    problemset[topics[topicIndex]].sort((a, b) => b.solvers - a.solvers).forEach((problem) => {
-        taskGroups[topicIndex].innerHTML += problem.html;
-    });
-}
-
-const sortByACRate = (topicIndex) => {
-    const taskGroups = [...document.querySelectorAll(".task-list")];
-    taskGroups[topicIndex].innerHTML = "";
-    problemset[topics[topicIndex]].sort((a, b) => b.acRate - a.acRate).forEach((problem) => {
-        taskGroups[topicIndex].innerHTML += problem.html;
-    });
-}
-
-const createCustomSortSelector = () => {
-    const titleList = [...document.querySelectorAll("h2")];
-    if (titleList.length === 0) return;
-    titleList.shift();
-    titleList.forEach((element, index) => {
-        const selector = createElementByHTMLtext(`
-        <select style="margin-left:0.5rem; padding: 2px;">
-            <option>Sort By Default</option>
-            <option>Sort By Number of Solvers</option>
-            <option>Sort By AC Rate</option>
-        </select>
-        `);
-        const sortProblems = () => {
-            if (selector.value == "Sort By Default") {
-                sortByDefault(index);
-            } else if (selector.value == "Sort By Number of Solvers") {
-                sortBySolvers(index);
-            } else if (selector.value == "Sort By AC Rate") {
-                sortByACRate(index);
-            }
-            chromeStorage.get("sort-rule", (result) => {
-                const sortRule = result["sort-rule"] ?? {};
-                sortRule[index] = selector.value;
-                chromeStorage.set({ "sort-rule": sortRule });
-            });
-        }
-        selector.addEventListener("change", () => sortProblems());
-        element.appendChild(selector);
-    });
-}
-
-const applySortRule = () => {
-    const titleList = [...document.querySelectorAll("h2")];
-    chromeStorage.get("sort-rule", (result) => {
-        const sortRule = result["sort-rule"] ?? {};
-        titleList.shift();
-        titleList.forEach((element, index) => {
-            const selector = element.querySelector("select");
-            if (selector && index in sortRule) {
-                selector.value = sortRule[index];
-                const event = new Event('change');
-                selector.dispatchEvent(event);
-            }
-        });
+    flatCheck.addEventListener("change", () => {
+        const isChecked = flatCheck.checked;
+        originalElements.forEach(el => el.style.display = isChecked ? "none" : "");
+        toc.style.display = isChecked ? "none" : "";
+        globalContainer.style.display = isChecked ? "block" : "none";
+        if (isChecked) renderGlobal();
     });
 }
 
 function addCopyToClipboardButton() {
-    const actionBar = document.querySelector(".content .nav");
-    const preElement = document.querySelector("pre");
-    if (!actionBar || !preElement) return;
-    
-    const code = preElement.innerText;
-    const button = createElementByHTMLtext(`
-        <li style="cursor: pointer;">
-            <a>Copy to clipboard</a>
-        </li>
-    `);
+    const preElement = document.querySelector(".content pre");
+    if (!preElement) return;
 
-    button.addEventListener("click", () => {
-        navigator.clipboard.writeText(code);
-        const copyToClipboardButton = button.querySelector("a");
-        copyToClipboardButton.innerHTML = "Copied! :)";
-        setTimeout(() => { copyToClipboardButton.innerHTML = "Copy to clipboard"; }, 1000);
-    });
+    let actionBar = document.querySelector(".content .nav");
 
-    actionBar.appendChild(button);
+    if (actionBar) {
+        const btn = createElementByHTMLtext(`
+            <li style="cursor: pointer;">
+                <a>Copy to clipboard</a>
+            </li>
+        `);
+
+        btn.addEventListener("click", () => {
+            navigator.clipboard.writeText(preElement.innerText);
+            const aTag = btn.querySelector("a");
+            aTag.innerHTML = "Copied! :)";
+            setTimeout(() => { aTag.innerHTML = "Copy to clipboard"; }, 1000);
+        });
+
+        actionBar.appendChild(btn);
+        actionBar.style.marginBottom = "10px";
+        preElement.parentNode.insertBefore(actionBar, preElement);
+    } else {
+        const copyBar = document.createElement("div");
+        copyBar.style.display = "flex";
+        copyBar.style.justifyContent = "flex-end";
+        copyBar.style.marginBottom = "8px";
+        copyBar.style.fontFamily = "sans-serif";
+        copyBar.style.fontSize = "0.9em";
+
+        const btn = document.createElement("a");
+        btn.innerHTML = "Copy to clipboard";
+        btn.style.cursor = "pointer";
+        btn.style.fontWeight = "bold";
+        btn.style.color = "#0066cc";
+
+        btn.addEventListener("click", () => {
+            navigator.clipboard.writeText(preElement.innerText);
+            btn.innerHTML = "Copied! :)";
+            setTimeout(() => { btn.innerHTML = "Copy to clipboard"; }, 1000);
+        });
+
+        copyBar.appendChild(btn);
+        preElement.parentNode.insertBefore(copyBar, preElement);
+    }
 }
 
 const isSubmitPage = () => location.href.startsWith("https://cses.fi/problemset/submit");
@@ -803,7 +531,7 @@ const isProblemPage = () => {
         "https://cses.fi/problemset/result/",
     ].some(url => location.href.startsWith(url));
 }
-const isResultPage = () => location.href.startsWith("https://cses.fi/problemset/result/");
+
 const isProblemListPage = () => [
     "https://cses.fi/problemset/list/",
     "https://cses.fi/problemset/list",
@@ -813,36 +541,17 @@ const isProblemListPage = () => [
 
 const initExtension = () => {
     injectStyles();
-
-    if (isSubmitPage()) {
-        loadLanguageSelectorCache();
-        createLanguageSelectorCache();
-        createCodeInputArea();
-        modifySubmitButton();
+    const url = location.href;
+    if (url.includes("/submit")) { loadLanguageSelectorCache(); createLanguageSelectorCache(); createCodeInputArea(); modifySubmitButton(); }
+    if (url.includes("/task/") || url.includes("/view/") || url.includes("/stats/")) {
+        formatPreBlocks(); createTranslationSectionOnSidebar(); createTagsSectionOnSidebar(); createTipsSectionOnSidebar(); createSolutionSectionOnNavbar();
     }
-
-    if (isProblemPage()) {
-        formatPreBlocks();
-        createTranslationSectionOnSidebar();
-        createTagsSectionOnSidebar();
-        createTipsSectionOnSidebar();
-        createSolutionSectionOnNavbar();
+    if (url.endsWith("/problemset/") || url.endsWith("/problemset") || url.includes("/list")) {
+        setupProblemListsAndStats(); buildDashboardAndTOC();
     }
-
-    if (isProblemListPage()) {
-        generateProblemset();
-        buildDashboardAndTOC();
-        createCustomSortSelector();
-        applySortRule();
-    }
-
-    if (isResultPage()) {
+    if (url.includes("/result/") || url.includes("/paste/")) {
         addCopyToClipboardButton();
     }
 };
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initExtension);
-} else {
-    initExtension();
-}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initExtension); else initExtension();
