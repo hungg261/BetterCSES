@@ -1,11 +1,8 @@
-# CSES Helper
-![](https://img.shields.io/chrome-web-store/users/ncenmkbjgidphaobkklmhhgnakcgmghi)
-![](https://img.shields.io/chrome-web-store/rating/ncenmkbjgidphaobkklmhhgnakcgmghi)
+# BetterCSES
 
 ## Introduction
-A browser extension that improve user experience on CSES Online Judge.
 
-[Donwload from chrome extension store](https://chromewebstore.google.com/detail/cses-helper/ncenmkbjgidphaobkklmhhgnakcgmghi)
+Forked from [CSES Helper](https://github.com/dada878/CSES-Helper), this is a browser extension that improve user experience on CSES Online Judge.
 
 ## Features
 ### Problem Tags
