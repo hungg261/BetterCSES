@@ -55,6 +55,10 @@
         "Use Square Root Decomposition for divisor sums (Contribution technique).",
         "The sum of floor(n/i) changes at most 2*sqrt(n) times."
     ],
+    "1083": [
+        "Use XOR technique: XOR all numbers from 1 to n with the input.",
+        "Or use Sum formula: n*(n+1)/2 minus the sum of input numbers."
+    ],
     "1084": [
         "Sort both applicant demands and apartment sizes.",
         "Use two pointers to match the smallest available apartment to the smallest fitting demand."
