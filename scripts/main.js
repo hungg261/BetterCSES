@@ -90,11 +90,36 @@ const createTranslationSectionOnSidebar = () => {
         langSelect.disabled = true;
         const elementsToTranslate = document.querySelector(".content").querySelectorAll("p, li:not(.nav li)");
         for (let el of elementsToTranslate) {
-             if (el.closest('.sidebar')) continue;
-             const originalText = el.innerText;
-             if (originalText.trim().length > 0) {
-                 el.innerText = await translateText(originalText, selectedLang);
-             }
+            if (el.closest('.sidebar')) continue;
+            if (!el.hasAttribute("data-original-html")) {
+                el.setAttribute("data-original-html", el.innerHTML);
+            }
+
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = el.getAttribute("data-original-html"); 
+            let protectedItems = [];
+
+
+            let specialNodes = tempDiv.querySelectorAll(".math, code");
+            specialNodes.forEach((node, i) => {
+                protectedItems.push(node.outerHTML);
+                let placeholder = document.createTextNode(` MTH${i}XXX `);
+                node.parentNode.replaceChild(placeholder, node);
+            });
+
+            let textToTranslate = tempDiv.innerText;
+
+            if (textToTranslate.trim().length > 0) {
+                let translated = await translateText(textToTranslate, selectedLang);
+                
+                protectedItems.forEach((itemHTML, i) => {
+                    let regex = new RegExp(`MTH\\s*${i}\\s*XXX`, "gi");
+                    translated = translated.replace(regex, itemHTML);
+                });
+                
+                el.innerHTML = translated;
+            }
+
         }
         langSelect.disabled = false;
     });
