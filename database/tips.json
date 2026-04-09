@@ -740,5 +740,8 @@
     "2432": [
         "Construct a grid with given row and column sums.",
         "Model as a Max Flow problem with supply/demand at each row and column node."
+    ],
+    "3154": [
+        "Use Gaussian Elimination."
     ]
 }
