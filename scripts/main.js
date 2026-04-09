@@ -202,7 +202,7 @@ const createTipsSectionOnSidebar = async () => {
     }
     const ul = document.createElement("ul");
     ul.style.marginTop = "8px";
-    tips.reverse().forEach((tip) => {
+    tips.forEach((tip) => {
         const li = document.createElement("li");
         li.innerHTML = tip;
         ul.appendChild(li);
@@ -357,7 +357,7 @@ const setupProblemListsAndStats = () => {
 
         const statsDiv = document.createElement("div");
         statsDiv.className = "ext-topic-stats";
-        statsDiv.innerHTML = `Solved: ${ac}/${total}${ac === total && total > 0 ? ' ✅' : ''}`;
+        statsDiv.innerHTML = `Solved: ${ac}/${total}${ac === total && total > 0 ? ' \u2705' : ''}`; // checkmark
         h2.parentNode.insertBefore(statsDiv, h2.nextSibling);
 
         const selector = createElementByHTMLtext(`
