@@ -233,6 +233,8 @@ const createCodeInputArea = () => {
     codeArea.style.width = "100%";
     codeArea.style.height = "300px";
     codeArea.style.marginBottom = "10px";
+    codeArea.placeholder = "Paste your code here...";
+    
     form.insertBefore(codeArea, form.children[5] || form.firstChild);
 }
 
@@ -527,7 +529,7 @@ const initExtension = () => {
     const url = location.href;
     if (url.includes("/submit")) { loadLanguageSelectorCache(); createLanguageSelectorCache(); createCodeInputArea(); modifySubmitButton(); }
     if (url.includes("/task/") || url.includes("/view/") || url.includes("/stats/")) {
-        formatPreBlocks(); createTranslationSectionOnSidebar(); createTagsSectionOnSidebar(); createTipsSectionOnSidebar();
+        formatPreBlocks(); createTranslationSectionOnSidebar(); createTagsSectionOnSidebar().then(() => createTipsSectionOnSidebar());
     }
     if (url.endsWith("/problemset/") || url.endsWith("/problemset") || url.includes("/list")) {
         setupProblemListsAndStats(); buildDashboardAndTOC();
