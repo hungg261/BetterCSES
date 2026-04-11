@@ -3,7 +3,7 @@
   "name": "CSES Helper",
   "description": "Tools for CSES Online Judge",
   "homepage_url": "https://github.com/hungg261/BetterCSES",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "hungg261",
   "action": {
     "default_icon": "assets/favicon.png",
@@ -19,7 +19,17 @@
     "storage"
   ],
   "host_permissions": [
-    "https://cses.fi/*"
+    "https://cses.fi/*",
+    "https://raw.githubusercontent.com/*" 
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "database/tags.json",
+        "database/tips.json"
+      ],
+      "matches": ["*://cses.fi/*"]
+    }
   ],
   "content_scripts": [
     {
@@ -32,9 +42,6 @@
       "run_at": "document_idle"
     }
   ],
-  "background": {
-    "service_worker": "./scripts/background.js"
-  },
   "content_security_policy": {
     "extension_pages": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none';"
   }
