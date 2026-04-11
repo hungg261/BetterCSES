@@ -8,18 +8,54 @@ const getProblemId = () => {
     return match ? match[2] : null;
 };
 
-const getTags = async (problemId) => {
+let tagsDB = null;
+let tipsDB = null;
+
+const fetchWithTimeout = async (url, timeout = 2000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
     try {
-        const response = await browser.runtime.sendMessage({ command: "fetch-tags", problemId });
-        return response?.tags || [];
-    } catch (e) { return []; }
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(id);
+        if (!response.ok) throw new Error("HTTP error");
+        return await response.json();
+    } catch (error) {
+        clearTimeout(id);
+        throw error;
+    }
+};
+
+const loadDataWithFallback = async (remoteUrl, localUrl) => {
+    try {
+        return await fetchWithTimeout(remoteUrl, 2000);
+    } catch (e) {
+        try {
+            const localResponse = await fetch(localUrl);
+            return await localResponse.json();
+        } catch (localErr) {
+            return {};
+        }
+    }
+};
+
+const getTags = async (problemId) => {
+    if (!tagsDB) {
+        tagsDB = await loadDataWithFallback(
+            "https://raw.githubusercontent.com/hungg261/BetterCSES/refs/heads/master/database/tags.json",
+            browser.runtime.getURL("database/tags.json")
+        );
+    }
+    return tagsDB[problemId] || [];
 };
 
 const getTips = async (problemId) => {
-    try {
-        const response = await browser.runtime.sendMessage({ command: "fetch-tips", problemId });
-        return response?.tips || [];
-    } catch (e) { return []; }
+    if (!tipsDB) {
+        tipsDB = await loadDataWithFallback(
+            "https://raw.githubusercontent.com/hungg261/BetterCSES/refs/heads/master/database/tips.json",
+            browser.runtime.getURL("database/tips.json")
+        );
+    }
+    return tipsDB[problemId] || [];
 };
 
 const translateText = async (text, targetLang) => {
