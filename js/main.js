@@ -1,3 +1,5 @@
+// 21.04.2026 - 23:44 +7
+
 if (typeof browser === "undefined") var browser = chrome;
 
 const chromeStorage = chrome.storage.local;
@@ -93,6 +95,151 @@ const injectStyles = () => {
     `;
     document.head.appendChild(style);
 }
+
+const addSubmitHotkey = () => {
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            const submitFormBtn = document.querySelector('input[type="submit"], button[type="submit"]');
+            if (submitFormBtn) {
+                e.preventDefault();
+                submitFormBtn.click();
+                return;
+            }
+
+            const submitLink = document.querySelector('a[href^="/problemset/submit/"]');
+            if (submitLink) {
+                e.preventDefault();
+                window.location.href = submitLink.href;
+            }
+        }
+    });
+};
+
+const addProblemNavigation = () => {
+    const sidebarLinks = Array.from(document.querySelectorAll('.nav.sidebar a[href*="/task/"]'));
+    if (sidebarLinks.length === 0) return;
+
+    const currentIndex = sidebarLinks.findIndex(a => 
+        window.location.pathname.includes(a.getAttribute('href')) || a.classList.contains('current')
+    );
+    
+    if (currentIndex === -1) return;
+
+    const navContainer = document.createElement("div");
+    Object.assign(navContainer.style, {
+        position: "fixed",
+        bottom: "80px",
+        right: "30px",
+        display: "flex",
+        gap: "5px",
+        zIndex: "10000",
+        opacity: "0",
+        transition: "opacity 0.3s ease-in-out",
+        pointerEvents: "none"
+    });
+
+    const btnStyle = {
+        width: "40px",
+        height: "40px",
+        backgroundColor: "#e9ecef",
+        color: "#000",
+        border: "1px solid #000",
+        borderRadius: "0",
+        fontSize: "20px",
+        cursor: "pointer",
+        padding: "0",
+        boxSizing: "border-box",
+        textAlign: "center",
+        lineHeight: "38px"
+    };
+
+    if (currentIndex > 0) {
+        const prevLink = sidebarLinks[currentIndex - 1].href;
+        const prevBtn = document.createElement("button");
+        prevBtn.innerHTML = "\u25C0"; // <|
+        prevBtn.title = "Previous Problem";
+        Object.assign(prevBtn.style, btnStyle);
+        prevBtn.addEventListener("click", () => window.location.href = prevLink);
+        navContainer.appendChild(prevBtn);
+    }
+
+    if (currentIndex < sidebarLinks.length - 1) {
+        const nextLink = sidebarLinks[currentIndex + 1].href;
+        const nextBtn = document.createElement("button");
+        nextBtn.innerHTML = "\u25B6"; // |>
+        nextBtn.title = "Next Problem";
+        Object.assign(nextBtn.style, btnStyle);
+        nextBtn.addEventListener("click", () => window.location.href = nextLink);
+        navContainer.appendChild(nextBtn);
+    }
+
+    if (navContainer.children.length === 0) return;
+    document.body.appendChild(navContainer);
+
+    document.addEventListener("mousemove", (e) => {
+        const rect = navContainer.getBoundingClientRect();
+        if (rect.width === 0) return; 
+
+        const containerX = rect.left + rect.width / 2;
+        const containerY = rect.top + rect.height / 2;
+        const distance = Math.hypot(e.clientX - containerX, e.clientY - containerY);
+
+        if (distance < 200) {
+            navContainer.style.opacity = "1";
+            navContainer.style.pointerEvents = "auto";
+        } else {
+            navContainer.style.opacity = "0";
+            navContainer.style.pointerEvents = "none";
+        }
+    });
+};
+
+
+const createBackToTopButton = () => {
+    const btn = document.createElement("button");
+    btn.innerHTML = "\u2191" // upwards arrow;
+    btn.title = "Back to Top";
+    
+    Object.assign(btn.style, {
+        position: "fixed",
+        bottom: "30px",
+        right: "30px",
+        width: "40px",
+        height: "40px",
+        backgroundColor: "#e9ecef",
+        color: "#000",
+        border: "1px solid #000",
+        borderRadius: "0",
+        fontSize: "20px",
+        fontWeight: "bold",
+        cursor: "pointer",
+        display: "none",
+        zIndex: "10000",
+        transition: "opacity 0.3s ease-in-out",
+        padding: "0",
+        boxSizing: "border-box",
+        textAlign: "center",
+        lineHeight: "38px"
+    });
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+            btn.style.display = "block";
+            setTimeout(() => btn.style.opacity = "1", 10);
+        } else {
+            btn.style.opacity = "0";
+            setTimeout(() => {
+                if (window.scrollY <= 300) btn.style.display = "none";
+            }, 300);
+        }
+    });
+
+    btn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.body.appendChild(btn);
+};
 
 const createTranslationSectionOnSidebar = () => {
     const sidebarElement = document.querySelector(".nav.sidebar");
@@ -297,6 +444,8 @@ const createCodeInputArea = () => {
     codeArea.placeholder = "Paste your code here...";
     
     form.insertBefore(codeArea, form.children[5] || form.firstChild);
+
+    codeArea.focus();
 }
 
 const modifySubmitButton = () => {
@@ -587,6 +736,11 @@ const isProblemListPage = () => [
 
 const initExtension = () => {
     injectStyles();
+
+    createBackToTopButton();
+    addSubmitHotkey();
+    addProblemNavigation();
+
     const url = location.href;
     if (url.includes("/submit")) { loadLanguageSelectorCache(); createLanguageSelectorCache(); createCodeInputArea(); modifySubmitButton(); }
     if (url.includes("/task/") || url.includes("/view/") || url.includes("/stats/")) {
