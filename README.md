@@ -1,4 +1,4 @@
-# BetterCSES v1.1.1
+# BetterCSES v1.2.0
 
 **BetterCSES** is a browser extension designed to enhance the user experience on the CSES Online Judge. This project is a fork of [CSES Helper](https://github.com/dada878/CSES-Helper).
 
@@ -19,4 +19,6 @@ The following enhancements are integrated directly into the CSES interface to st
 | **Quick submission** | Submit code via text area without file upload. | <img src="/assets/extension/submit_code.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
 | **Clipboard tools** | Copy source code and shared solutions. | <img src="/assets/extension/copy_code.png" width="400" style="border: 1px solid #ddd; border-radius: 4px; margin-bottom: 4px;"> <br> <img src="/assets/extension/copy_shared_code.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
 | **Translation** | Translate problem statements (Beta). | <img src="assets/extension/translate_languages.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
+| **Problem navigator** | Go to the previous or next problem. | <img src="assets/extension/problem_navigation.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
+| **Back to Top** | Scroll back to the top of the page. | <img src="assets/extension/back_to_top.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
 | **Search problem** | Search problems by link, ID, or title. | <img src="assets/extension/search_problem.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
