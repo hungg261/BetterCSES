@@ -248,7 +248,7 @@ const createTranslationSectionOnSidebar = () => {
     container.id = "translate-container";
     const dividerLine = document.createElement("hr");
     const sectionTitle = document.createElement("h4");
-    sectionTitle.innerHTML = "Translate (Beta)";
+    sectionTitle.textContent = "Translate (Beta)";
     sectionTitle.style.margin = "0.1em 0 0.5em 0";
     const langSelect = document.createElement("select");
     langSelect.style.width = "100%";
@@ -264,13 +264,34 @@ const createTranslationSectionOnSidebar = () => {
     languages.forEach(lang => {
         const option = document.createElement("option");
         option.value = lang.code;
-        option.innerHTML = lang.label;
+        option.textContent = lang.label;
         langSelect.appendChild(option);
     });
+    
     langSelect.addEventListener("change", async () => {
         const selectedLang = langSelect.value;
         if (selectedLang === 'en') { location.reload(); return; }
         langSelect.disabled = true;
+
+        const mdContainer = document.querySelector(".content .md");
+        if (mdContainer) {
+            let currentP = null;
+            Array.from(mdContainer.childNodes).forEach(node => {
+                const isNotEmptyText = node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "";
+                const isInlineElement = node.nodeType === Node.ELEMENT_NODE && ["SPAN", "A", "B", "I", "STRONG", "EM", "CODE", "SUB", "SUP", "BR"].includes(node.tagName.toUpperCase());
+                
+                if (isNotEmptyText || isInlineElement || (currentP && node.nodeType === Node.TEXT_NODE)) {
+                    if (!currentP) {
+                        currentP = document.createElement("p");
+                        node.parentNode.insertBefore(currentP, node);
+                    }
+                    currentP.appendChild(node);
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    currentP = null;
+                }
+            });
+        }
+
         const elementsToTranslate = document.querySelector(".content").querySelectorAll("p, li:not(.nav li)");
         for (let el of elementsToTranslate) {
             if (el.closest('.sidebar')) continue;
@@ -280,11 +301,11 @@ const createTranslationSectionOnSidebar = () => {
 
             let tempDiv = document.createElement("div");
             tempDiv.innerHTML = el.getAttribute("data-original-html"); 
-            let protectedItems = [];
+            let protectedNodes = [];
 
-            let specialNodes = tempDiv.querySelectorAll(".math, .MathJax, mjx-container, script[type^='math/tex'], code");
+            let specialNodes = tempDiv.querySelectorAll(".math, code");
             specialNodes.forEach((node, i) => {
-                protectedItems.push(node.outerHTML);
+                protectedNodes.push(node);
                 let placeholder = document.createTextNode(` MTH${i}XXX `);
                 node.parentNode.replaceChild(placeholder, node);
             });
@@ -294,18 +315,24 @@ const createTranslationSectionOnSidebar = () => {
             if (textToTranslate.trim().length > 0) {
                 let translated = await translateText(textToTranslate, selectedLang);
                 
-                protectedItems.forEach((itemHTML, i) => {
-                    let regex = new RegExp(`MTH\\s*${i}\\s*XXX`, "gi");
-                    
-                    translated = translated.replace(regex, () => itemHTML);
-                });
+                el.textContent = ""; 
+                let parts = translated.split(/MTH\s*(\d+)\s*XXX/gi);
                 
-                el.innerHTML = translated;
+                parts.forEach((part, index) => {
+                    if (index % 2 === 1) { 
+                        let i = parseInt(part, 10);
+                        if (protectedNodes[i]) {
+                            el.appendChild(protectedNodes[i].cloneNode(true));
+                        }
+                    } else if (part) { 
+                        el.appendChild(document.createTextNode(part));
+                    }
+                });
             }
-
         }
         langSelect.disabled = false;
     });
+
     container.appendChild(dividerLine);
     container.appendChild(sectionTitle);
     container.appendChild(langSelect);
