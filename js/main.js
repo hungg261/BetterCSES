@@ -1,4 +1,4 @@
-// 21.04.2026 - 23:44 +7
+// 28.04.26
 
 if (typeof browser === "undefined") var browser = chrome;
 
@@ -282,8 +282,7 @@ const createTranslationSectionOnSidebar = () => {
             tempDiv.innerHTML = el.getAttribute("data-original-html"); 
             let protectedItems = [];
 
-
-            let specialNodes = tempDiv.querySelectorAll(".math, code");
+            let specialNodes = tempDiv.querySelectorAll(".math, .MathJax, mjx-container, script[type^='math/tex'], code");
             specialNodes.forEach((node, i) => {
                 protectedItems.push(node.outerHTML);
                 let placeholder = document.createTextNode(` MTH${i}XXX `);
@@ -297,7 +296,8 @@ const createTranslationSectionOnSidebar = () => {
                 
                 protectedItems.forEach((itemHTML, i) => {
                     let regex = new RegExp(`MTH\\s*${i}\\s*XXX`, "gi");
-                    translated = translated.replace(regex, itemHTML);
+                    
+                    translated = translated.replace(regex, () => itemHTML);
                 });
                 
                 el.innerHTML = translated;
@@ -679,7 +679,7 @@ const buildDashboardAndTOC = () => {
 }
 
 function addCopyToClipboardButton() {
-    const preElement = document.querySelector(".content pre");
+    const preElement = document.querySelector("pre.prettyprint") || document.querySelector(".content pre");
     if (!preElement) return;
 
     let actionBar = document.querySelector(".content .nav");
