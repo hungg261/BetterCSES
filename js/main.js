@@ -299,8 +299,7 @@ const createTranslationSectionOnSidebar = () => {
                 el.setAttribute("data-original-html", el.innerHTML);
             }
 
-            let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = el.getAttribute("data-original-html"); 
+            const tempDiv = new DOMParser().parseFromString(el.getAttribute("data-original-html"), "text/html").body;
             let protectedNodes = [];
 
             let specialNodes = tempDiv.querySelectorAll(".math, code");
