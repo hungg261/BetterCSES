@@ -345,7 +345,7 @@ const createTagsSectionOnSidebar = async () => {
     tagsUl.style.gap = "6px";
     tagsList.forEach((tag) => {
         const li = document.createElement("li");
-        li.innerHTML = tag;
+        li.textContent = tag;
         li.style.listStyle = "none";
         li.style.backgroundColor = "#f3f4f6";
         li.style.color = "#d63384";
@@ -387,7 +387,7 @@ const createTipsSectionOnSidebar = async () => {
     ul.style.marginTop = "8px";
     tips.forEach((tip) => {
         const li = document.createElement("li");
-        li.innerHTML = tip;
+        li.textContent = tip;
         ul.appendChild(li);
     });
     showTips.appendChild(ul);
@@ -477,7 +477,7 @@ const formatPreBlocks = () => {
         const header = document.createElement("div");
         header.className = "ext-pre-header";
         const label = document.createElement("span");
-        label.innerHTML = labelText;
+        label.textContent = labelText;
         const copyBtn = document.createElement("button");
         copyBtn.innerHTML = "Copy";
         copyBtn.style.cursor = "pointer";
@@ -542,7 +542,7 @@ const setupProblemListsAndStats = () => {
 
         const statsDiv = document.createElement("div");
         statsDiv.className = "ext-topic-stats";
-        statsDiv.innerHTML = `Solved: ${ac}/${total}${ac === total && total > 0 ? ' \u2705' : ''}`; // checkmark
+        statsDiv.textContent = `Solved: ${ac}/${total}${ac === total && total > 0 ? ' \u2705' : ''}`; // checkmark
         h2.parentNode.insertBefore(statsDiv, h2.nextSibling);
 
         const selector = createElementByHTMLtext(`
@@ -589,9 +589,18 @@ const buildDashboardAndTOC = () => {
         const sum = document.createElement("summary");
         sum.innerHTML = "Show unsolved problems";
         sum.style.cursor = "pointer"; sum.style.color = "#dc3545";
+        
         const ul = document.createElement("ul");
-        attemptedNotAc.forEach(p => { ul.innerHTML += `<li><a href="${p.url}">${p.title}</a></li>`; });
+        attemptedNotAc.forEach(p => { 
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = p.url;
+            a.textContent = p.title;
+            li.appendChild(a);
+            ul.appendChild(li); 
+        });
         det.appendChild(sum); det.appendChild(ul);
+
         dashboard.appendChild(det);
     }
 
@@ -623,7 +632,7 @@ const buildDashboardAndTOC = () => {
             temp.innerHTML = p.html;
             const li = temp.firstElementChild;
             const badge = document.createElement("span");
-            badge.innerHTML = p.topic; badge.className = "ext-badge";
+            badge.textContent = p.topic; badge.className = "ext-badge";
             li.querySelector("a")?.appendChild(badge);
             globalList.appendChild(li);
         });
@@ -644,8 +653,10 @@ const buildDashboardAndTOC = () => {
     document.querySelectorAll("h2").forEach(h2 => {
         if (h2.style.display === "none" || h2 === document.querySelectorAll("h2")[0]) return;
         const li = document.createElement("li");
+
         const a = document.createElement("a");
-        a.href = `#${h2.id}`; a.innerHTML = h2.innerText.split("Sort:")[0].trim();
+        a.href = `#${h2.id}`; 
+        a.textContent = h2.innerText.split("Sort:")[0].trim();
         li.appendChild(a); tocUl.appendChild(li);
     });
     toc.appendChild(tocUl);
