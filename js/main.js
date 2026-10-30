@@ -80,18 +80,66 @@ const createElementByHTMLtext = (htmlText) => {
 const injectStyles = () => {
     const style = document.createElement("style");
     style.innerHTML = `
-        .ext-container { background-color: #f8f9fa; border: 1px solid #d1d5db; border-radius: 6px; padding: 15px; margin-bottom: 20px; color: #333; }
-        .ext-summary { cursor: pointer; font-weight: bold; color: #d63384; font-size: 1.1em; margin-bottom: 5px; outline: none; }
-        .ext-badge { font-size: 0.75em; background-color: #e9ecef; padding: 2px 6px; border-radius: 10px; margin-left: 10px; color: #495057; }
-        .ext-topic-stats { font-size: 0.8em; color: #666; margin-top: -10px; margin-bottom: 10px; font-weight: normal; }
+        .ext-container {
+            margin: 0 0 1.2em;
+            padding: 0;
+            color: inherit;
+        }
+        .ext-summary {
+            cursor: pointer;
+            color: inherit;
+            font-size: 1.17em;
+            font-weight: bold;
+            outline: none;
+            margin: .6em 0;
+        }
+        .ext-dashboard-content { padding-top: 2px; }
+        .ext-stats-line { margin: 0 0 8px; line-height: 1.6; }
+        .ext-stat-solved { color: #198754; }
+        .ext-stat-unsolved { color: #dc3545; }
+        .ext-dashboard-settings {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin-top: 8px;
+            padding-top: 7px;
+            border-top: 1px solid gray;
+        }
+        .ext-setting-toggle { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+        .ext-unsolved { margin: 7px 0; }
+        .ext-unsolved > summary { cursor: pointer; color: #dc3545; }
+        .ext-unsolved-list { columns: 2; column-gap: 32px; margin: 6px 0; padding-left: 24px; list-style: disc; }
+        .ext-unsolved-list li { padding: 1px 0; break-inside: avoid; }
+        .ext-unsolved-list a { color: #009; text-decoration: none; }
+        .ext-unsolved-list a:hover { text-decoration: underline; }
+        .ext-flat-container { margin-top: 10px; }
+        .ext-flat-sort { max-width: 100%; margin: 0 0 10px; }
+        .ext-badge { display: inline-block; font-size: .72em; background: #eaeaea; padding: 2px 6px; border-radius: 0; margin-left: 8px; color: #333; vertical-align: middle; }
+        .ext-topic-stats { font-size: .8em; color: #666; margin: -4px 0 10px; font-weight: normal; }
+        .ext-topic-sort { margin-left: 10px; font-size: .68em; font-weight: 500; vertical-align: middle; cursor: pointer; }
+        .ext-toc-list { columns: 2; column-gap: 30px; margin: 10px 0 0; padding: 0; list-style: none; }
+        .ext-toc-list li { margin: 2px 0; break-inside: avoid; }
+        .ext-toc-list a { color: #009; text-decoration: none; }
+        .ext-toc-list a:hover { background-color: #ebebeb; text-decoration: none; }
         .ext-pre-wrapper { background-color: #f8f9fa; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 1.5em; }
         .ext-pre-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; background-color: #e5e7eb; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom: 1px solid #d1d5db; font-family: sans-serif; font-size: 0.85em; font-weight: bold; color: #6b7280; }
-        body.dark .ext-container { background-color: #1e1e1e; border-color: #444; color: #e0e0e0; }
-        body.dark .ext-summary { color: #ff80bf; }
+        body.dark .ext-container { color: #e0e0e0; }
+        body.dark .ext-summary { color: inherit; }
+        body.dark .ext-stat-solved { color: #4ade80; }
+        body.dark .ext-stat-unsolved { color: #f87171; }
+        body.dark .ext-dashboard-settings { border-top-color: #777; }
+        body.dark .ext-unsolved > summary,
+        body.dark .ext-unsolved-list a { color: #ff8a8a; }
         body.dark .ext-badge { background-color: #333; color: #ccc; }
         body.dark .ext-topic-stats { color: #aaa; }
+        body.dark .ext-toc-list a { color: #8ab4f8; }
         body.dark .ext-pre-wrapper { background-color: #1e1e1e; border-color: #444; }
         body.dark .ext-pre-header { background-color: #2d2d2d; border-bottom-color: #444; color: #aaa; }
+        @media (max-width: 600px) {
+            .ext-unsolved-list, .ext-toc-list { columns: 1; }
+            .ext-topic-sort { display: block; margin: 7px 0 0; }
+        }
     `;
     document.head.appendChild(style);
 }
@@ -578,6 +626,7 @@ const setupProblemListsAndStats = () => {
                 <option value="acRate">Sort: AC Rate</option>
             </select>
         `);
+        selector.className = "ext-topic-sort";
 
         selector.addEventListener("change", () => {
             taskList.innerHTML = "";
@@ -599,24 +648,45 @@ const buildDashboardAndTOC = () => {
     const { total, solved, untouched, attemptedNotAc } = window.csesExtStats;
 
     const dashboard = document.createElement("details");
-    dashboard.className = "ext-container";
+    dashboard.className = "ext-container ext-dashboard";
     dashboard.open = true;
     const dashSummary = document.createElement("summary");
     dashSummary.className = "ext-summary";
-    dashSummary.innerHTML = "Dashboard & Settings";
+    dashSummary.textContent = "Dashboard & Settings";
     dashboard.appendChild(dashSummary);
 
+    const dashboardContent = document.createElement("div");
+    dashboardContent.className = "ext-dashboard-content";
     const statsText = document.createElement("p");
-    statsText.innerHTML = `Total: <strong>${total}</strong> | Solved: <strong style="color:#198754">${solved}</strong> | Untouched: <strong>${untouched}</strong> | Unsolved: <strong style="color:#dc3545">${attemptedNotAc.length}</strong>`;
-    dashboard.appendChild(statsText);
+    statsText.className = "ext-stats-line";
+    statsText.append("Total: ");
+    const totalValue = document.createElement("strong");
+    totalValue.textContent = total.toLocaleString();
+    statsText.append(totalValue, " | Solved: ");
+    const solvedValue = document.createElement("strong");
+    solvedValue.className = "ext-stat-solved";
+    solvedValue.textContent = solved.toLocaleString();
+    statsText.append(solvedValue, " | Untouched: ");
+    const untouchedValue = document.createElement("strong");
+    untouchedValue.textContent = untouched.toLocaleString();
+    statsText.append(untouchedValue, " | Unsolved: ");
+    const unsolvedValue = document.createElement("strong");
+    unsolvedValue.className = "ext-stat-unsolved";
+    unsolvedValue.textContent = attemptedNotAc.length.toLocaleString();
+    statsText.appendChild(unsolvedValue);
+    dashboardContent.appendChild(statsText);
+
+    const settings = document.createElement("div");
+    settings.className = "ext-dashboard-settings";
 
     if (attemptedNotAc.length > 0) {
         const det = document.createElement("details");
+        det.className = "ext-unsolved";
         const sum = document.createElement("summary");
-        sum.innerHTML = "Show unsolved problems";
-        sum.style.cursor = "pointer"; sum.style.color = "#dc3545";
+        sum.textContent = `Show unsolved problems (${attemptedNotAc.length})`;
         
         const ul = document.createElement("ul");
+        ul.className = "ext-unsolved-list";
         attemptedNotAc.forEach(p => { 
             const li = document.createElement("li");
             const a = document.createElement("a");
@@ -627,23 +697,23 @@ const buildDashboardAndTOC = () => {
         });
         det.appendChild(sum); det.appendChild(ul);
 
-        dashboard.appendChild(det);
+        dashboardContent.appendChild(det);
     }
 
-    dashboard.appendChild(document.createElement("hr"));
     const flatLabel = document.createElement("label");
-    flatLabel.style.cursor = "pointer";
+    flatLabel.className = "ext-setting-toggle";
     const flatCheck = document.createElement("input");
     flatCheck.type = "checkbox";
-    flatCheck.style.marginRight = "8px";
     flatLabel.appendChild(flatCheck);
     flatLabel.appendChild(document.createTextNode("Flatten problem list"));
-    dashboard.appendChild(flatLabel);
+    settings.appendChild(flatLabel);
+    dashboardContent.appendChild(settings);
 
     const globalContainer = document.createElement("div");
+    globalContainer.className = "ext-flat-container";
     globalContainer.style.display = "none";
     const globalSort = document.createElement("select");
-    globalSort.style.margin = "10px 0";
+    globalSort.className = "ext-flat-sort";
     globalSort.innerHTML = `<option value="default">Sort: Default</option><option value="solvers">Sort: Solvers</option><option value="acRate">Sort: AC Rate</option>`;
     const globalList = document.createElement("ul");
     globalList.className = "task-list";
@@ -667,22 +737,24 @@ const buildDashboardAndTOC = () => {
     globalSort.addEventListener("change", renderGlobal);
     globalContainer.appendChild(globalSort);
     globalContainer.appendChild(globalList);
-    dashboard.appendChild(globalContainer);
+    dashboardContent.appendChild(globalContainer);
+    dashboard.appendChild(dashboardContent);
 
     const toc = document.createElement("details");
-    toc.className = "ext-container";
+    toc.className = "ext-container ext-toc";
     const tocSum = document.createElement("summary");
-    tocSum.className = "ext-summary"; tocSum.innerHTML = "Table of Contents";
+    tocSum.className = "ext-summary";
+    tocSum.textContent = "Table of Contents";
     toc.appendChild(tocSum);
     const tocUl = document.createElement("ul");
-    tocUl.style.columnCount = "2"; tocUl.style.listStyle = "none"; tocUl.style.padding = "0";
+    tocUl.className = "ext-toc-list";
     document.querySelectorAll("h2").forEach(h2 => {
         if (h2.style.display === "none" || h2 === document.querySelectorAll("h2")[0]) return;
         const li = document.createElement("li");
 
         const a = document.createElement("a");
         a.href = `#${h2.id}`; 
-        a.textContent = h2.innerText.split("Sort:")[0].trim();
+        a.textContent = h2.childNodes[0].nodeValue.trim();
         li.appendChild(a); tocUl.appendChild(li);
     });
     toc.appendChild(tocUl);
