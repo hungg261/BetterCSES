@@ -120,6 +120,8 @@ const injectStyles = () => {
         .ext-tag-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
         .ext-tag-filter { display: flex; flex-wrap: wrap; gap: 4px 12px; }
         .ext-tag-option { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+        .ext-tag-settings { margin: 8px 0 10px; padding: 6px 0; border-bottom: 1px solid gray; }
+        .ext-tag-exclude { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; }
         .ext-tag-random { font: inherit; font-size: .82em; padding: .15em .6em; cursor: pointer; }
         .ext-tag-result-count { margin: 6px 0; font-size: .85em; }
         .ext-tag-results { margin-top: 8px; }
@@ -623,12 +625,14 @@ const setupProblemListsAndStats = () => {
             const submissions = detail ? parseInt(detail.innerText.split("/")[1].replace(/,/g, '')) || 1 : 1;
             const acRate = solvers / submissions;
             const problemId = aTag?.getAttribute("href")?.match(/\/task\/(\d+)/)?.[1];
+            const isSolved = Boolean(score?.classList.contains("full"));
             topicData.push({ defaultIndex: pIdx, solvers, acRate, html: task.outerHTML });
             allProblemsFlat.push({
                 id: problemId,
                 title: aTag?.textContent.trim() || "",
                 url: aTag?.href || "",
                 topic: originalTitle,
+                solved: isSolved,
                 defaultIndex: pIdx,
                 solvers,
                 acRate,
@@ -736,6 +740,14 @@ const buildDashboardAndTOC = () => {
     const selectedTags = new Set();
     tagFilter.setAttribute("role", "group");
     tagFilter.setAttribute("aria-label", "Filter problems by tags");
+    const excludeSolvedLabel = document.createElement("label");
+    excludeSolvedLabel.className = "ext-tag-exclude";
+    const excludeSolvedCheck = document.createElement("input");
+    excludeSolvedCheck.type = "checkbox";
+    excludeSolvedLabel.append(excludeSolvedCheck, document.createTextNode("Exclude solved problems"));
+    const tagSettings = document.createElement("div");
+    tagSettings.className = "ext-tag-settings";
+    tagSettings.appendChild(excludeSolvedLabel);
     const randomButton = document.createElement("button");
     randomButton.className = "ext-tag-random";
     randomButton.type = "button";
@@ -753,12 +765,16 @@ const buildDashboardAndTOC = () => {
     tagResultCount.textContent = "Open this section to load tags.";
     const tagResults = document.createElement("ul");
     tagResults.className = "task-list ext-tag-results";
-    tagBrowser.append(tagControls, tagResultCount, tagResults);
+    tagBrowser.append(tagSettings, tagControls, tagResultCount, tagResults);
 
     let tagDataLoaded = false;
+    const getAvailableProblems = () => excludeSolvedCheck.checked
+        ? allProblemsFlat.filter(problem => !problem.solved)
+        : allProblemsFlat;
     const getFilteredProblems = () => {
-        if (selectedTags.size === 0) return allProblemsFlat;
-        return allProblemsFlat.filter(problem => [...selectedTags].every(tag => problem.tags.includes(tag)));
+        const availableProblems = getAvailableProblems();
+        if (selectedTags.size === 0) return availableProblems;
+        return availableProblems.filter(problem => [...selectedTags].every(tag => problem.tags.includes(tag)));
     };
     const renderTagResults = () => {
         const matchingProblems = getFilteredProblems();
@@ -779,6 +795,33 @@ const buildDashboardAndTOC = () => {
             tagResults.appendChild(task);
         });
     };
+    const renderTagOptions = () => {
+        const availableProblems = getAvailableProblems();
+        const availableTags = [...new Set(availableProblems.flatMap(problem => problem.tags))]
+            .sort((a, b) => a.localeCompare(b));
+        [...selectedTags].forEach(tag => {
+            if (!availableTags.includes(tag)) selectedTags.delete(tag);
+        });
+        tagFilter.replaceChildren();
+        availableTags.forEach(tag => {
+            const label = document.createElement("label");
+            label.className = "ext-tag-option";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.value = tag;
+            checkbox.checked = selectedTags.has(tag);
+            checkbox.addEventListener("change", () => {
+                if (checkbox.checked) selectedTags.add(tag);
+                else selectedTags.delete(tag);
+                clearTagsButton.hidden = selectedTags.size === 0;
+                renderTagResults();
+            });
+            label.append(checkbox, document.createTextNode(tag));
+            tagFilter.appendChild(label);
+        });
+        clearTagsButton.hidden = selectedTags.size === 0;
+        randomButton.disabled = availableProblems.length === 0;
+    };
     const loadTagBrowser = async () => {
         if (tagDataLoaded) return;
         tagResultCount.textContent = "Loading tags...";
@@ -786,25 +829,15 @@ const buildDashboardAndTOC = () => {
             await Promise.all(allProblemsFlat.map(async problem => {
                 if (problem.id) problem.tags = await getTags(problem.id);
             }));
-            const tags = [...new Set(allProblemsFlat.flatMap(problem => problem.tags))].sort((a, b) => a.localeCompare(b));
-            tags.forEach(tag => {
-                const label = document.createElement("label");
-                label.className = "ext-tag-option";
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.value = tag;
-                checkbox.addEventListener("change", () => {
-                    if (checkbox.checked) selectedTags.add(tag);
-                    else selectedTags.delete(tag);
-                    clearTagsButton.hidden = selectedTags.size === 0;
-                    renderTagResults();
-                });
-                label.append(checkbox, document.createTextNode(tag));
-                tagFilter.appendChild(label);
-            });
-            randomButton.disabled = allProblemsFlat.length === 0;
+            renderTagOptions();
             tagDataLoaded = true;
-            if (tags.length === 0) {
+            const availableProblems = getAvailableProblems();
+            if (availableProblems.length === 0) {
+                tagResultCount.textContent = "No unsolved problems are available.";
+                renderTagResults();
+                return;
+            }
+            if (availableProblems.every(problem => problem.tags.length === 0)) {
                 tagResultCount.textContent = "No tags available; showing all problems.";
                 renderTagResults();
                 return;
@@ -816,6 +849,11 @@ const buildDashboardAndTOC = () => {
         }
     };
     tagFilter.addEventListener("change", renderTagResults);
+    excludeSolvedCheck.addEventListener("change", () => {
+        if (!tagDataLoaded) return;
+        renderTagOptions();
+        renderTagResults();
+    });
     clearTagsButton.addEventListener("click", () => {
         selectedTags.clear();
         tagFilter.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
@@ -831,7 +869,9 @@ const buildDashboardAndTOC = () => {
             return;
         }
         const selectedProblem = matchingProblems[Math.floor(Math.random() * matchingProblems.length)];
-        window.location.assign(selectedProblem.url);
+        const problemCode = selectedProblem.id || "Unknown ID";
+        const shouldOpen = window.confirm(`Randomly selected: [${problemCode}] ${selectedProblem.title}\n\nOpen this problem?`);
+        if (shouldOpen) window.location.assign(selectedProblem.url);
     });
     tagBrowser.addEventListener("toggle", () => {
         if (tagBrowser.open) loadTagBrowser();
