@@ -1,4 +1,4 @@
-# BetterCSES v1.2.3
+# BetterCSES v1.2.4
 
 **BetterCSES** is a browser extension designed to enhance the user experience on the CSES Online Judge. This project is a fork of [CSES Helper](https://github.com/dada878/CSES-Helper).
 

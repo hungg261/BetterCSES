@@ -1,751 +1,1261 @@
 {
     "1068": [
-        "Use a while loop to simulate the process until n equals 1.",
-        "Use long long (64-bit integers) to prevent overflow during calculations."
+        "Simulate the process using a while loop until n equals 1.",
+        "Use 64-bit integers (long long) to prevent overflow."
     ],
     "1069": [
-        "Iterate through the string once, keeping track of the current character and a counter.",
-        "Reset the counter to 1 whenever the character changes; otherwise, increment it.",
-        "Maintain a global maximum to store the longest streak encountered during the loop."
+        "Iterate through the string, keeping track of the current character and a counter.",
+        "Update the maximum streak whenever the character changes."
     ],
     "1070": [
-        "Handle the edge cases n = 2 and n = 3 by outputting 'NO SOLUTION'.",
-        "For n = 1, the answer is simply 1.",
-        "For larger n, print all even numbers from 2 to n first, then all odd numbers from 1 to n.",
-        "This ensures that no two adjacent numbers differ by exactly 1."
+        "Handle edge cases n = 2 and n = 3 by outputting 'NO SOLUTION'.",
+        "For n = 1, output 1.",
+        "For n > 3, print all even numbers from 2 to n, then all odd numbers from 1 to n."
     ],
     "1071": [
-        "Determine which layer (max(y, x)) the coordinate (y, x) belongs to.",
-        "Calculate the square of the previous layer (layer - 1) as a starting point.",
-        "Add or subtract the offset based on whether the layer number is even or odd.",
-        "Be careful with the coordinate directions (row/y vs. column/x) and use 64-bit integers."
+        "Determine the layer of the cell (y, x) using max(y, x).",
+        "Calculate the starting point of the previous layer and add/subtract the offset based on layer parity."
     ],
     "1072": [
-        "Calculate total ways to place two knights: (n^2 * (n^2 - 1)) / 2.",
-        "Subtract the number of 2x3 and 3x2 blocks where knights attack each other."
+        "Total ways to place two knights is (n^2 * (n^2 - 1)) / 2.",
+        "Subtract the number of attacking pairs within 2x3 and 3x2 blocks."
     ],
     "1073": [
-        "Process towers greedily using a multiset.",
-        "For each new cube, use 'upper_bound' to find the smallest tower it can be placed on and update that tower."
+        "Use a multiset to maintain tower sizes.",
+        "For each cube, use upper_bound to find the smallest tower it can be placed on."
     ],
     "1074": [
         "The optimal length is the median of the array.",
-        "Sort the array and calculate the sum of absolute differences from the middle element."
+        "Sort the array and sum the absolute differences from the middle element."
+    ],
+    "1075": [
+        "Count permutations with a given number of inversions using DP."
     ],
     "1076": [
-        "Use two balanced multisets or a Fenwick tree to maintain elements in a sliding window.",
+        "Maintain a sliding window with two balanced multisets or a Fenwick tree.",
         "The median is the largest element of the smaller half."
     ],
     "1077": [
-        "Maintain two multisets like the median problem plus their running sums.",
-        "The cost is (count1 * median - sum1) + (sum2 - count2 * median)."
+        "Maintain two multisets and their running sums.",
+        "Cost = (count1 * median - sum1) + (sum2 - count2 * median)."
     ],
     "1078": [
-        "Sort the trap coordinates by row, then by column to process them in path order.",
-        "Use DP to find the number of paths to each trap that do not pass through any other trap first.",
-        "Subtract paths passing through previous traps: dp[i] = ways(1,1 to trap_i) - sum(dp[j] * ways(trap_j to trap_i)).",
-        "Precompute factorials to calculate combinations C(x+y, x) quickly for path counting.",
-        "The final answer is total paths to (n,n) minus paths that hit at least one trap."
+        "Sort traps by row, then by column.",
+        "Use DP to count paths to each trap avoiding previous traps.",
+        "Precompute factorials for combinations."
+    ],
+    "1079": [
+        "Compute C(n, k) mod 10^9+7 using factorials and modular inverse."
+    ],
+    "1080": [
+        "Interval DP on strings.",
+        "dp[i][j] = ways to empty s[i..j].",
+        "If s[i] == s[k], match them and combine ways to empty the inside and outside."
     ],
     "1081": [
-        "Count the frequency of each number up to 10^6.",
-        "Iterate downwards from 10^6 and check if a number's multiples appear at least twice."
+        "Count frequencies of all numbers.",
+        "Iterate downwards from the maximum value and check if a number has at least two multiples in the array."
     ],
     "1082": [
-        "Use Square Root Decomposition for divisor sums (Contribution technique).",
-        "The sum of floor(n/i) changes at most 2*sqrt(n) times."
+        "Contribution technique: each divisor d contributes d * floor(n/d).",
+        "Group ranges with constant floor(n/d) for O(sqrt(n)) complexity."
     ],
     "1083": [
-        "Use XOR technique: XOR all numbers from 1 to n with the input.",
-        "Or use Sum formula: n*(n+1)/2 minus the sum of input numbers."
+        "Calculate n*(n+1)/2 and subtract the sum of the given numbers.",
+        "Alternatively, use XOR."
     ],
     "1084": [
-        "Sort both applicant demands and apartment sizes.",
-        "Use two pointers to match the smallest available apartment to the smallest fitting demand."
+        "Sort demands and apartment sizes.",
+        "Use two pointers to greedily match the smallest fitting apartment."
     ],
     "1085": [
-        "Binary search for the answer (the maximum sum).",
-        "Use a greedy check function to see if the array can be split into k parts with the given max sum."
+        "Binary search on the maximum subarray sum.",
+        "Greedily split the array into at most k parts."
     ],
     "1086": [
-        "Count occurrences of each digit from 1 to x using Digit DP.",
-        "Binary search for the smallest x such that the digit count reaches the target."
+        "Use digit DP to count digits from 1 to x.",
+        "Binary search for the smallest x reaching the target count."
     ],
     "1087": [
-        "Greedy approach: Find the shortest subsequence that is NOT a subsequence.",
-        "Divide the string into the shortest possible blocks that each contain all possible characters (A, C, G, T)."
+        "Find the shortest subsequence not present in the string.",
+        "Divide the string into shortest blocks containing all 4 characters (A, C, G, T)."
     ],
     "1090": [
-        "Sort the children's weights.",
-        "Use two pointers: try to pair the heaviest child with the lightest one in one gondola."
+        "Sort weights.",
+        "Use two pointers to pair the heaviest with the lightest if they fit."
     ],
     "1091": [
-        "Store ticket prices in a sorted structure that allows fast searching (like multiset in C++).",
-        "Use 'lower_bound' or 'upper_bound' to find the best price without exceeding the customer's max."
+        "Use a multiset for ticket prices.",
+        "For each customer, use upper_bound to find the most expensive ticket within budget."
     ],
     "1092": [
-        "Check if the sum of 1 to n is even; if not, a split is impossible.",
-        "Use a greedy approach: iterate from n down to 1 to fill the target sum."
+        "Total sum must be even.",
+        "Greedily add numbers from n down to 1 to the first set until it reaches half the total sum."
     ],
     "1093": [
-        "The problem is finding the number of ways to pick a subset with sum = total_sum / 2.",
-        "This is a 0-1 Knapsack variant; divide the final result by 2 (modular inverse)."
+        "Count subsets with sum equal to half the total sum (0-1 knapsack).",
+        "Divide the result by 2."
+    ],
+    "1094": [
+        "Iterate through the array. If a[i] < a[i-1], add the difference to the answer and set a[i] = a[i-1]."
     ],
     "1095": [
-        "Use Binary Exponentiation (Fast Power) to compute a^b % mod in O(log b)."
+        "Use binary exponentiation to compute a^b mod m in O(log b)."
     ],
     "1096": [
-        "Represent the Fibonacci-like transition as a 2x2 matrix.",
-        "Use Matrix Exponentiation to find the n-th state in O(2^3 * log n)."
+        "Use a 2x2 transition matrix and matrix exponentiation."
     ],
     "1097": [
-        "Define dp[i][j] as the max score difference the first player can get from subarray [i, j].",
-        "Transition: dp[i][j] = max(arr[i] - dp[i+1][j], arr[j] - dp[i][j-1])."
+        "dp[i][j] = max(arr[i] - dp[i+1][j], arr[j] - dp[i][j-1])."
+    ],
+    "1098": [
+        "Nim game: XOR all pile sizes. First player wins if XOR is non-zero."
+    ],
+    "1099": [
+        "Stair game: Only consider piles at odd positions from the bottom."
     ],
     "1110": [
-        "Find the lexicographically smallest rotation of a string.",
-        "Use Booth's algorithm or Duval algorithm in O(n) to find the starting index."
+        "Find the lexicographically smallest rotation.",
+        "Use Booth's or Duval's algorithm in O(n)."
     ],
     "1111": [
-        "Longest Palindromic Substring: Use Manacher's algorithm to find it in O(n).",
-        "Alternatively, use String Hashing and Binary Search for an O(n log n) solution."
+        "Longest palindromic substring: use Manacher's algorithm or hashing + binary search."
     ],
     "1112": [
-        "Count strings of length n that contain a specific pattern.",
-        "Build a KMP automaton or Aho-Corasick, then use Matrix Exponentiation for DP transitions."
+        "Build a KMP automaton and use matrix exponentiation to count strings avoiding the pattern."
+    ],
+    "1113": [
+        "Burrows-Wheeler Transform (BWT).",
+        "Sort suffixes and take the last character of each rotation."
     ],
     "1130": [
-        "Greedy approach: Process nodes bottom-up, matching a leaf with its parent if both are available.",
-        "Alternatively, use Tree DP: dp[u][0/1] (u is matched or not)."
+        "Greedy bottom-up: match a leaf with its parent if both are unmatched."
     ],
     "1131": [
-        "Find the tree diameter: Run two BFS/DFS calls.",
-        "The first finds the farthest node from any start; the second finds the farthest node from that result."
+        "Tree diameter: run BFS/DFS twice from any node."
     ],
     "1132": [
-        "Use Rerooting DP or find the two ends of the tree diameter.",
-        "The max distance for any node is the distance to one of the two diameter endpoints."
+        "The maximum distance from any node is the max of its distances to the two endpoints of the diameter."
     ],
     "1133": [
-        "Rerooting DP: calculate total distance from root, then adjust as you move to a child.",
-        "New_Sum = Parent_Sum - subtree_size[child] + (total_nodes - subtree_size[child])."
+        "Rerooting DP: calculate the sum of distances from the root, then shift the root to a child."
     ],
     "1134": [
-        "Construct a tree from its Prüfer sequence.",
-        "Use a priority queue to maintain leaves and connect them to the first element in the sequence."
+        "Prüfer code: use a priority queue to find the smallest leaf and connect it to the next element."
     ],
     "1135": [
-        "Compute distance as: depth[u] + depth[v] - 2 * depth[LCA(u,v)].",
-        "Use Binary Lifting to find LCA in O(log n)."
+        "Distance = depth[u] + depth[v] - 2 * depth[LCA].",
+        "Use binary lifting to find LCA."
     ],
     "1136": [
-        "Count how many paths pass through each node.",
-        "Use tree difference arrays: for a path (u, v), add +1 to nodes u and v, and -1 to LCA(u, v) and its parent."
+        "Tree difference array: +1 at u and v, -1 at LCA and parent of LCA. Post-order sum."
     ],
     "1137": [
-        "Flatten the tree using Euler Tour (entry and exit times).",
-        "Map subtree queries to range queries on an array and use a Fenwick Tree."
+        "Flatten the tree with Euler tour.",
+        "Use a Fenwick tree for subtree queries."
     ],
     "1138": [
-        "Flatten the tree and use a Fenwick Tree to update the path from root to node.",
-        "Use the property: value at node affects all nodes in its subtree."
+        "Use a Fenwick tree with difference arrays for path updates and subtree queries."
     ],
     "1139": [
-        "Use 'Small-to-Large Merging' with sets or Mo's Algorithm on the tree flattening."
+        "Use small-to-large merging with sets to count distinct colors in subtrees."
     ],
     "1140": [
-        "Sort projects by their end times.",
-        "Use DP with binary search: dp[i] = max(dp[i-1], profit[i] + dp[index of last non-overlapping project])."
+        "Sort projects by end time.",
+        "dp[i] = max(dp[i-1], profit[i] + dp[last non-overlapping])."
     ],
     "1141": [
-        "Use a sliding window with two pointers.",
-        "Store the positions of elements in a map to jump the left pointer when a duplicate is found."
+        "Sliding window.",
+        "Use a map to store the latest occurrence of each song."
     ],
     "1142": [
-        "Calculate the maximum area of a rectangle in a histogram.",
-        "Use a monotonic stack to find the nearest smaller element to the left and right for each bar."
+        "Maximum rectangle in a histogram: use a monotonic stack."
     ],
     "1143": [
-        "Use a Segment Tree to store the max room availability in each range.",
-        "Walk down the tree: if left child's max >= needed, go left; otherwise go right."
+        "Segment tree storing max available rooms.",
+        "Walk down left if max >= k, else right."
     ],
     "1144": [
-        "Use Coordinate Compression to map large salaries to a smaller range.",
-        "Use a Fenwick Tree or Segment Tree to track frequencies and range counts."
+        "Coordinate compression on salaries.",
+        "Use a Fenwick tree to count people in a salary range."
     ],
     "1145": [
-        "Use a tail array where tail[i] is the smallest ending element of an IS of length i+1.",
-        "For each new element, use binary search (lower_bound) to update the tail array."
+        "LIS: maintain a tail array and use binary search (lower_bound)."
+    ],
+    "1146": [
+        "Count set bits from 1 to n: use digit DP or bit manipulation patterns."
     ],
     "1147": [
-        "For each row, treat it as a histogram where the height of a bar is the number of consecutive empty cells above it.",
-        "Apply the 'Maximum Rectangle in Histogram' algorithm for each row."
+        "For each row, treat it as a histogram.",
+        "Apply the maximum rectangle in histogram algorithm."
+    ],
+    "1148": [
+        "Similar to 1147, but sum the areas of all rectangles."
     ],
     "1149": [
-        "Count distinct subsequences using DP.",
-        "dp[i] = 2 * dp[i-1] - dp[last_occurrence[char] - 1]."
+        "Distinct subsequences: dp[i] = 2 * dp[i-1] - dp[last_occurrence[char] - 1]."
     ],
-    "1153": [
-        "String Hashing: Precompute powers and prefix hashes.",
-        "Check if hash(forward) equals hash(backward) for each cyclic shift."
+    "1157": [
+        "Construct a mex grid using a set and greedily filling the smallest possible number."
     ],
     "1158": [
-        "Classic 0-1 Knapsack problem.",
-        "Optimize space by using a 1D array and iterating backwards through the weight."
+        "0-1 Knapsack: use a 1D array and iterate weights backwards."
+    ],
+    "1159": [
+        "0-1 Knapsack with item limits (bounded knapsack)."
     ],
     "1160": [
-        "Functional Graph: Each node has exactly one outgoing edge.",
-        "Use Binary Lifting to jump through the successor paths and handle cycle entries."
+        "Functional graph: each node has one outgoing edge.",
+        "Use binary lifting to jump k steps."
+    ],
+    "1161": [
+        "Stick divisions: use a priority queue (Huffman coding) to combine the two smallest sticks."
+    ],
+    "1162": [
+        "Sort the array, use DP or Fenwick tree to count inversions during the sorting process."
     ],
     "1163": [
-        "Use a sorted set to keep track of light positions and another to track gap lengths.",
-        "When adding a light, split the existing gap and update the max gap."
+        "Use a multiset for gap lengths.",
+        "When adding a light, split the containing gap."
     ],
     "1164": [
-        "Sort rooms by arrival time.",
-        "Use a priority queue to keep track of when rooms become free and reuse the lowest room ID."
-    ],
-    "1169": [
-        "This is a classic Josephus problem variation.",
-        "Use a Fenwick tree or Segment tree to efficiently find and remove the k-th person."
+        "Sort customers by arrival.",
+        "Use a priority queue for room departure times and reuse the smallest room ID."
     ],
     "1188": [
-        "Maintain the string in a Segment Tree or use a Set to track boundaries of consecutive character blocks.",
-        "Store the lengths of all blocks in a multiset to query the maximum length in O(log n)."
+        "Use a segment tree or multiset to maintain lengths of consecutive identical characters."
     ],
     "1189": [
-        "Food Division: This is a 'Circle Sorting' problem.",
-        "Optimal point is the median; transform the circular constraints into a linear sequence of differences."
+        "Convert circular constraints to linear by prefix sums.",
+        "The optimal point is the median."
+    ],
+    "1190": [
+        "Segment tree storing sum, max prefix sum, max suffix sum, and max subarray sum."
+    ],
+    "1191": [
+        "Binary search on the maximum jump length.",
+        "Greedy check function."
     ],
     "1192": [
-        "Standard Connected Components problem.",
-        "Use DFS or BFS to traverse each room and count the number of calls to the search function."
+        "Count connected components on a grid using DFS/BFS."
     ],
     "1193": [
-        "Breadth-First Search (BFS) to find the shortest path in an unweighted grid.",
-        "Store the parent of each cell to reconstruct the path string (L, R, U, D)."
+        "BFS for shortest path on a grid.",
+        "Store parents to reconstruct the path."
     ],
     "1194": [
-        "Multi-source BFS: Run one BFS for all monsters to find the earliest time they reach each cell.",
-        "Run a second BFS for the player and only move to cells where the player arrives earlier than any monster."
+        "Multi-source BFS from monsters.",
+        "Then BFS from the player, only moving to cells reached earlier than monsters."
+    ],
+    "1195": [
+        "Dijkstra with state (node, used_discount)."
+    ],
+    "1196": [
+        "Modified Dijkstra: keep the k shortest distances to each node."
+    ],
+    "1197": [
+        "Bellman-Ford to find a negative cycle.",
+        "Trace parents to print the cycle."
     ],
     "1202": [
-        "Dijkstra variant to track four values: min price, number of min price paths, min flights, and max flights.",
-        "Update all four states whenever a shorter or equal distance is found."
+        "Dijkstra tracking 4 values: distance, path count, min flights, max flights."
+    ],
+    "1203": [
+        "Find shortest paths, then check which nodes are on all shortest paths from start to end."
+    ],
+    "1617": [
+        "Compute 2^n mod 10^9+7 using binary exponentiation."
     ],
     "1618": [
-        "The number of trailing zeros is determined by the count of factor 5 in n!.",
-        "Count multiples of 5, 25, 125, etc., within the range up to n."
+        "Number of trailing zeros in n! is floor(n/5) + floor(n/25) + ..."
     ],
     "1619": [
-        "Treat arrivals as +1 and departures as -1.",
-        "Sort all time events and maintain a running sum to find the peak overlap."
+        "Events: +1 for arrival, -1 for departure.",
+        "Sort and find the max running sum."
+    ],
+    "1620": [
+        "Binary search on the minimum time.",
+        "Check if total products >= t."
     ],
     "1621": [
-        "Use a set data structure or sort the array and count unique adjacent elements."
+        "Sort the array and count distinct elements."
     ],
     "1622": [
-        "Use recursion to generate all permutations or use a built-in library function.",
-        "Sort the string initially to handle duplicate characters easily."
+        "Generate all permutations using recursion or next_permutation.",
+        "Sort the string first."
     ],
     "1623": [
-        "Since n is small, use bitmask or recursion to try all 2^n partitions.",
-        "Calculate the absolute difference between the two subsets and track the minimum."
+        "Apple division: use bitmask or recursion to try all 2^n partitions (n <= 20)."
     ],
     "1624": [
-        "Use backtracking to place queens row by row.",
-        "Maintain arrays to track occupied columns and diagonals (both directions)."
+        "8 Queens: backtracking.",
+        "Track occupied columns and diagonals."
     ],
     "1625": [
-        "Use DFS with pruning to find a path of exactly 48 steps.",
-        "Optimization: If the path hits a wall and splits the empty area, backtrack early."
+        "48-step grid path: DFS with pruning.",
+        "Prune if the path splits the empty grid into disconnected parts."
     ],
     "1628": [
-        "Split the array into two halves (n/2 each) and calculate all possible subset sums for both.",
-        "Sort one list of sums and use binary search to find pairs that sum to x."
+        "Meet-in-the-middle: split the array, generate all subset sums, sort, and binary search."
     ],
     "1629": [
-        "Classic interval scheduling: always pick the movie that ends the earliest.",
-        "Sort by end times and update the current time after each selection."
+        "Sort movies by end time.",
+        "Greedily pick the earliest finishing movie."
+    ],
+    "1630": [
+        "Sort tasks by duration.",
+        "Greedy."
+    ],
+    "1631": [
+        "If the longest book > sum of others, answer is 2 * max.",
+        "Else, answer is total sum."
+    ],
+    "1632": [
+        "Sort movies by end time.",
+        "Use a multiset to track available members."
     ],
     "1633": [
-        "Define dp[i] as the number of ways to get sum i.",
-        "Transition: sum of dp[i-k] for k from 1 to 6."
+        "dp[i] = sum(dp[i-k]) for k = 1..6."
     ],
     "1634": [
-        "Define dp[i] as the minimum coins for sum i, initialized to infinity.",
-        "Transition: dp[i] = min(dp[i], dp[i - coin] + 1) for each coin."
+        "dp[i] = min(dp[i-coin] + 1)."
     ],
     "1635": [
-        "This is an 'Unbounded Knapsack' where order matters.",
-        "Loop through the sum first, then the coins: dp[i] = (dp[i] + dp[i - coin])."
+        "Ordered coin combinations: loop sums first, then coins."
     ],
     "1636": [
-        "This is an 'Unbounded Knapsack' where order doesn't matter.",
-        "Loop through the coins first, then the sum: dp[i] = (dp[i] + dp[i - coin])."
+        "Unordered coin combinations: loop coins first, then sums."
     ],
     "1637": [
-        "Define dp[i] as the min steps to reach 0.",
-        "Transition: dp[i] = min(dp[i], dp[i - digit] + 1) for each digit in i."
+        "dp[i] = min(dp[i - digit] + 1) for each digit in i."
     ],
     "1638": [
-        "Standard 2D DP on a grid.",
-        "If the cell is not a '*', dp[i][j] = dp[i-1][j] + dp[i][j-1]."
+        "dp[i][j] = dp[i-1][j] + dp[i][j-1] if cell is not a trap."
     ],
     "1639": [
-        "Standard 2D DP for Edit Distance.",
-        "If chars match, dp[i][j] = dp[i-1][j-1]; else, take min of insert, delete, or replace + 1."
+        "Edit distance: if match dp[i-1][j-1], else 1 + min(insert, delete, replace)."
     ],
     "1640": [
-        "Sort the array while keeping track of original indices.",
-        "Use two pointers from both ends to find the target sum."
+        "Two-sum: sort with original indices and use two pointers."
     ],
     "1641": [
-        "Sort the array and fix one element.",
-        "Use two pointers on the remaining part to find a pair that completes the target sum."
+        "Three-sum: sort, fix one element, use two pointers."
     ],
     "1642": [
-        "Fix two elements using nested loops.",
-        "Use two pointers on the rest of the array to find the other two values."
+        "Four-sum: fix two elements, use two pointers."
     ],
     "1643": [
-        "Use Kadane's algorithm.",
-        "Maintain the current sum and reset to zero if it becomes negative."
+        "Kadane's algorithm for maximum subarray sum."
+    ],
+    "1644": [
+        "Max subarray sum with length in [a, b]: prefix sums + multiset."
     ],
     "1645": [
-        "Use a monotonic stack to store values and their indices.",
-        "For each element, pop from the stack until you find a smaller value."
+        "Monotonic stack for nearest smaller element to the left."
     ],
     "1646": [
-        "Build a prefix sum array: pref[i] = pref[i-1] + arr[i].",
-        "Answer each query in O(1) as pref[r] - pref[l-1]."
+        "Prefix sums: pref[r] - pref[l-1]."
     ],
     "1647": [
-        "Use a Sparse Table for O(1) range minimum queries after O(n log n) preprocessing.",
-        "Alternatively, use a Segment Tree for O(log n) queries."
+        "Sparse table or segment tree for range minimum queries."
     ],
     "1648": [
-        "Use a Binary Indexed Tree (BIT) or a Segment Tree for O(log n) updates and sum queries."
+        "Fenwick tree or segment tree for point updates and range sums."
     ],
     "1649": [
-        "Use a Segment Tree to handle point updates and range minimum queries in O(log n)."
+        "Segment tree for point updates and range minimum queries."
     ],
     "1650": [
-        "Similar to prefix sums, but use the XOR operator: pref[i] = pref[i-1] ^ arr[i].",
-        "The answer is pref[r] ^ pref[l-1]."
+        "Prefix XOR: pref[r] ^ pref[l-1]."
     ],
     "1651": [
-        "Use a Segment Tree with Lazy Propagation or a BIT with difference arrays to handle range updates and point queries."
+        "Fenwick tree with difference array for range updates and point queries."
     ],
     "1652": [
-        "Use 2D Prefix Sums.",
-        "Query (y1,x1) to (y2,x2) as: S[y2][x2] - S[y1-1][x2] - S[y2][x1-1] + S[y1-1][x1-1]."
+        "2D prefix sums."
     ],
     "1653": [
-        "Exponential DP with bitmask: dp[mask] = {min_rides, min_weight_of_last_ride}.",
-        "For each person not in mask, try adding them to the current ride or a new one."
+        "Bitmask DP: dp[mask] = (min_rides, min_weight_last_ride)."
     ],
     "1654": [
-        "SOS DP (Sum Over Subsets) in O(n * 2^n).",
-        "For each x, calculate sums for subsets, supersets, and non-intersecting sets using bitmask transitions."
+        "SOS DP (Sum Over Subsets) in O(n * 2^n)."
     ],
     "1655": [
-        "Insert all numbers into a Bitwise Trie (binary tree of bits).",
-        "For each number, traverse the Trie to find the path that maximizes the XOR bit-by-bit."
+        "Bitwise trie to find maximum XOR subarray."
     ],
     "1660": [
-        "Use two pointers (sliding window) to maintain a sum equal to x.",
-        "Alternatively, use prefix sums with a map to count occurrences."
+        "Sliding window for subarray sum equal to x."
     ],
     "1661": [
-        "Maintain a running prefix sum and store its frequency in a map.",
-        "For each prefix sum, check if (prefix_sum - x) exists in the map."
+        "Prefix sum with a map counting frequencies."
     ],
     "1662": [
-        "Calculate prefix sums modulo n.",
-        "Use a map or array to count how many times each remainder occurs; identical remainders mean the subarray sum is a multiple of n."
+        "Prefix sum modulo n.",
+        "Count pairs with the same remainder."
+    ],
+    "1664": [
+        "Binary lifting on a tree + greedy."
+    ],
+    "1665": [
+        "DP counting ways to form teams."
     ],
     "1666": [
-        "Count connected components using DSU or DFS.",
-        "The number of roads needed is (number of components - 1)."
+        "DSU for connected components.",
+        "Answer is components - 1."
     ],
     "1667": [
-        "Standard BFS to find the shortest path from computer 1 to computer n.",
-        "Track distance and parent nodes for path reconstruction."
+        "BFS from node 1 to n.",
+        "Store parents to reconstruct the path."
     ],
     "1668": [
-        "Check if the graph is bipartite using 2-coloring (DFS or BFS).",
-        "If you encounter an edge between two nodes of the same color, it's impossible."
+        "Bipartite coloring using DFS/BFS."
     ],
     "1669": [
-        "Find a cycle in an undirected graph using DFS.",
-        "Keep track of the parent and the path; if you hit a visited node that isn't the direct parent, a cycle exists."
+        "Find a cycle in an undirected graph using DFS, checking for back edges."
     ],
     "1670": [
-        "The puzzle has 3x3=9 cells, total permutations are 9! = 362,880.",
-        "Run a single BFS from the target state to all possible states and store the minimum moves in a map."
+        "3x3 permutation game: BFS from the target state, store minimum moves."
     ],
     "1671": [
-        "Standard Dijkstra's algorithm using a priority queue.",
-        "Ensure you use long long for distances to avoid overflow."
+        "Dijkstra with a priority queue."
     ],
     "1672": [
-        "All-pairs shortest paths using the Floyd-Warshall algorithm.",
-        "Pre-initialize the distance matrix with infinity and 0 on the diagonal."
+        "Floyd-Warshall for all-pairs shortest paths."
     ],
     "1673": [
-        "Use Bellman-Ford algorithm to find the longest path.",
-        "To handle cycles, run the algorithm n times; if a node's distance changes in the nth iteration and is on a path from 1 to n, a positive cycle exists."
+        "Bellman-Ford for longest path.",
+        "Check for positive cycles."
     ],
     "1674": [
-        "Standard tree DP: size[u] = 1 + sum(size[v]) for all children v.",
-        "Perform a single DFS from the root."
+        "Count subordinates: size[u] = 1 + sum(size[child])."
+    ],
+    "1675": [
+        "Minimum Spanning Tree: Kruskal + DSU."
+    ],
+    "1676": [
+        "DSU counting components and max component size."
+    ],
+    "1677": [
+        "Offline DSU in reverse: add edges from last to first, count components."
     ],
     "1678": [
-        "Topological Sort: Use Kahn's algorithm or DFS to find an ordering of nodes.",
-        "If the result doesn't contain all nodes, the graph has a cycle."
+        "Find a cycle in a directed graph using DFS."
     ],
     "1679": [
-        "Standard Topological Sort problem.",
-        "Use a queue and in-degrees of nodes to find a valid linear ordering."
+        "Topological sort using Kahn's algorithm."
     ],
     "1680": [
-        "Longest path in a Directed Acyclic Graph (DAG).",
-        "Use Topological Sort + DP: dp[v] = max(dp[u] + 1) for all edges u -> v."
+        "Longest path in a DAG: topological sort + DP.",
+        "dp[v] = max(dp[u] + 1)."
     ],
     "1681": [
-        "Count paths in a DAG.",
-        "Use Topological Sort + DP: dp[v] = sum(dp[u]) for all edges u -> v."
+        "Count paths in a DAG: dp[v] = sum(dp[u])."
+    ],
+    "1682": [
+        "Check if a graph is strongly connected using Kosaraju's algorithm."
+    ],
+    "1683": [
+        "Find Strongly Connected Components using Kosaraju's or Tarjan's."
     ],
     "1684": [
-        "Construct a 2-SAT graph where each variable and its negation are nodes.",
-        "Use Tarjan's or Kosaraju's to find SCCs; a solution exists if no variable is in the same SCC as its negation."
+        "2-SAT: use SCC to check for contradictions."
+    ],
+    "1685": [
+        "Add edges to make the graph strongly connected: count source and sink SCCs."
+    ],
+    "1686": [
+        "Condense SCCs into a DAG, then DP for max coin sum."
+    ],
+    "1687": [
+        "Binary lifting to find the k-th ancestor."
+    ],
+    "1688": [
+        "Find LCA using binary lifting."
+    ],
+    "1689": [
+        "Knight's tour: backtracking with Warnsdorff's heuristic."
+    ],
+    "1690": [
+        "Bitmask DP counting Hamiltonian paths from 1 to n."
+    ],
+    "1691": [
+        "Eulerian circuit in an undirected graph: Hierholzer's algorithm."
+    ],
+    "1692": [
+        "De Bruijn sequence: Eulerian circuit on a De Bruijn graph."
+    ],
+    "1693": [
+        "Eulerian path in a directed graph: check in/out degrees."
     ],
     "1694": [
-        "Max Flow problem: Use Edmonds-Karp or Dinic's algorithm.",
-        "Build an adjacency list with residual capacities and find augmenting paths until none remain."
+        "Max flow: Dinic's or Edmonds-Karp."
     ],
     "1695": [
-        "Find the Max Flow first (Dinic's recommended).",
-        "The min-cut edges are those from nodes reachable in the residual graph to nodes that are not."
+        "Min cut: reachable nodes from source in the residual graph."
     ],
     "1696": [
-        "Model as a Bipartite Matching problem.",
-        "Create a source connected to all nodes in set A and a sink connected to all in set B, then find Max Flow."
+        "Bipartite matching: max flow with a super source and sink."
     ],
     "1697": [
-        "Havel-Hakimi Algorithm: Always try to connect the node with the highest remaining degree to other nodes with the highest degrees.",
-        "Use a priority queue to maintain and update degrees greedily."
+        "Havel-Hakimi algorithm for graph degree sequences."
+    ],
+    "1698": [
+        "Sort swap rounds by using a position array."
+    ],
+    "1699": [
+        "Dynamic connectivity queries: offline processing or DSU with rollback."
     ],
     "1700": [
-        "Tree Isomorphism: Assign a canonical string or hash to each tree.",
-        "Use a recursive function: hash(u) = '(' + sorted(hash(v) for v in children) + ')'."
+        "Tree isomorphism: canonical hashing by sorting children hashes."
     ],
     "1701": [
-        "Tree Isomorphism II: Check if two rooted trees are identical.",
-        "Assign a unique tuple-based hash to each node based on its children's hashes and sort them."
+        "Rooted tree isomorphism: compare subtree hashes."
     ],
     "1702": [
-        "Construct a tree given its preorder and inorder traversals.",
-        "Use recursion: the first element of preorder is the root, which splits the inorder array into left and right subtrees."
+        "Build a tree from preorder and inorder traversals using recursion."
     ],
     "1703": [
-        "Find critical paths (edges that belong to all shortest paths from 1 to n).",
-        "Build the Shortest Path DAG and use flow or dominator tree concepts to find bridges."
+        "Find critical cities (dominators) on shortest paths."
     ],
     "1704": [
-        "Find the minimum number of edges to make a tree 2-edge-connected.",
-        "Connect leaves of the tree; specifically, match leaves from different subtrees of the centroid."
+        "Minimum edges to make a tree 2-edge-connected: (leaves + 1) / 2."
     ],
     "1705": [
-        "Check if there is a path between two nodes that does not pass through a forbidden node.",
-        "Find articulation points or build a Block-Cut Tree to identify biconnected components."
+        "Path avoiding forbidden cities: use articulation points or block-cut tree."
     ],
     "1706": [
-        "Find the size of each connected component.",
-        "Check which total sums are possible using a bitset-optimized Knapsack DP (subset sum)."
+        "DP with bitsets to count possible subset sums."
     ],
     "1707": [
-        "Find the shortest cycle (girth) of the graph.",
-        "For each node, run a BFS to find the shortest cycle passing through it."
+        "Graph girth (shortest cycle): BFS from each node."
     ],
     "1709": [
-        "Kőnig's Theorem: In a bipartite graph, the minimum vertex cover equals the maximum matching.",
-        "Find the Max Flow/Matching and use it to identify the minimum set of rows and columns."
+        "Kőnig's theorem: min vertex cover = max bipartite matching."
     ],
     "1711": [
-        "Find the maximum number of edge-disjoint paths from source to sink.",
-        "Use Dinic's algorithm for max flow, then use DFS to extract the actual paths from the residual graph."
+        "Max edge-disjoint paths = max flow."
     ],
     "1712": [
-        "Use Fermat's Little Theorem: a^(b^c % (mod-1)) % mod.",
-        "Handle the case where mod is prime."
+        "Fermat's Little Theorem: a^(b^c) mod p = a^(b^c mod (p-1)) mod p."
     ],
     "1713": [
-        "Precompute primes using a Sieve up to 10^6.",
-        "Number of divisors is the product of (exponent + 1) for all prime factors."
+        "Count divisors: prime factorization, multiply (exponent + 1)."
+    ],
+    "1715": [
+        "Create strings II: n! / (freq1! * freq2! * ...)."
+    ],
+    "1716": [
+        "Distribute apples: stars and bars: C(n+k-1, k)."
+    ],
+    "1717": [
+        "Derangements: permutations with no fixed points."
+    ],
+    "1722": [
+        "Fibonacci: 2x2 matrix exponentiation."
     ],
     "1723": [
-        "Count paths of length k in a directed graph.",
-        "Use Matrix Exponentiation: the (i, j) entry of adjacency_matrix^k is the number of paths."
+        "Count paths of length k: adjacency matrix exponentiation."
     ],
     "1724": [
-        "Find the shortest path of length exactly k.",
-        "Use Matrix Exponentiation with a 'min-plus' matrix multiplication instead of 'sum-product'."
+        "Shortest path of exactly length k: min-plus matrix exponentiation."
+    ],
+    "1725": [
+        "Dice probability: DP over sum."
+    ],
+    "1726": [
+        "Moving robots: DP on grid probabilities."
+    ],
+    "1727": [
+        "Candy lottery: linearity of expectation."
+    ],
+    "1728": [
+        "Inversion probability: check each pair (i, j) with i < j."
+    ],
+    "1729": [
+        "Stick game: DP win/lose states."
+    ],
+    "1730": [
+        "Nim game: XOR all piles."
     ],
     "1731": [
-        "Insert all dictionary words into a Trie.",
-        "Use DP: dp[i] is ways to form the suffix starting at i. Traverse the Trie to find transitions."
+        "Word combinations: Trie + DP."
     ],
     "1732": [
-        "KMP algorithm: Precompute the 'pi' array (longest proper prefix that is also a suffix)."
+        "KMP prefix function to find borders."
     ],
     "1733": [
-        "Use KMP's prefix function or Z-algorithm to check for periodic suffixes."
+        "Find string periods using KMP."
     ],
     "1734": [
-        "Process queries offline by sorting them by their end positions.",
-        "Use a Fenwick Tree to store the last seen position of each value and count distinct elements in range."
+        "Distinct values queries: sort queries by right endpoint, use Fenwick tree."
     ],
     "1735": [
-        "Segment Tree with Lazy Propagation.",
-        "Maintain two lazy tags: one for 'set' (assignment) and one for 'add' (increment)."
+        "Segment tree with lazy propagation (range set, range add)."
+    ],
+    "1736": [
+        "Segment tree with polynomial lazy updates."
+    ],
+    "1737": [
+        "Persistent segment tree for array copies and queries."
     ],
     "1739": [
-        "Use a 2D Fenwick Tree or 2D Segment Tree for point updates and subgrid sums."
+        "2D Fenwick tree for point updates and rectangle sums."
     ],
     "1740": [
-        "Coordinate compression on Y-coordinates + Sweep-line on X-coordinates.",
-        "Use a Fenwick Tree to count active horizontal segments that intersect with the current vertical segment."
+        "Sweep line + Fenwick tree to count segment intersections."
+    ],
+    "1741": [
+        "Sweep line + segment tree for rectangle area union."
     ],
     "1742": [
-        "Snake game: Find if the path intersects itself.",
-        "Use a Segment Tree with a Sweep-line to check for any segment-segment intersections."
+        "Sweep line + segment tree to detect self-intersections."
     ],
     "1743": [
-        "Construct the string greedily character by character.",
-        "Always pick the smallest available character that doesn't violate the palindrome constraint and still allows a valid completion."
+        "Greedy string construction: pick the smallest valid character."
+    ],
+    "1744": [
+        "Rectangle cutting: dp[i][j] = min cuts."
+    ],
+    "1745": [
+        "Money sums: boolean array or bitset for possible sums."
     ],
     "1746": [
-        "Define dp[i][v] as the number of ways to have value v at index i.",
-        "v must be close to the previous value: dp[i][v] = dp[i-1][v-1] + dp[i-1][v] + dp[i-1][v+1]."
+        "Array description: dp[i][v] = ways with a[i] = v."
     ],
     "1747": [
-        "Count inversions while moving the smallest element to the correct position.",
-        "Use a Fenwick Tree to count elements and simulate the pyramid-style sorting."
+        "Pyramid array: Fenwick tree to count inversions."
     ],
     "1748": [
-        "Count increasing subsequences of all lengths.",
-        "Use a Fenwick Tree to maintain the sum of dp[value] for all values smaller than the current one."
+        "Increasing subsequence II: Fenwick tree with coordinate compression."
     ],
     "1749": [
-        "Use a Segment Tree or Fenwick Tree to store available positions (initialized to 1).",
-        "Find the k-th available position using binary lifting or walking down the Segment Tree."
+        "List removals: Fenwick tree to find the k-th element."
+    ],
+    "1750": [
+        "Planets queries I: binary lifting on functional graph."
+    ],
+    "1751": [
+        "Planets cycles: DFS with state tracking."
+    ],
+    "1752": [
+        "Creating offices: Tree DP + greedy."
     ],
     "1753": [
-        "Use KMP algorithm (Prefix Function) or String Hashing to find all occurrences in O(n + m)."
+        "String matching: KMP or Z-algorithm."
     ],
     "1754": [
-        "The total sum of coins must be divisible by 3.",
-        "Ensure the larger pile is not more than twice the size of the smaller pile."
+        "Coin piles: sum divisible by 3 and max <= 2 * min."
     ],
     "1755": [
-        "A palindrome can have at most one character with an odd frequency.",
-        "Construct the half-string, then mirror it around the odd character (if any)."
+        "Palindrome reorder: at most one character with odd frequency."
+    ],
+    "1756": [
+        "Acyclic graph edges: add edges in topological order."
+    ],
+    "1757": [
+        "Course schedule II: find cycle or bipartite coloring."
+    ],
+    "2064": [
+        "Bracket sequences I: n-th Catalan number."
+    ],
+    "2072": [
+        "Cut and paste: Treap or Splay tree."
+    ],
+    "2073": [
+        "Substring reversals: Treap with lazy reversal."
+    ],
+    "2074": [
+        "Reversals and sums: Treap with lazy propagation."
+    ],
+    "2075": [
+        "Reversal sorting: simulate with data structures."
     ],
     "2076": [
-        "Find all bridges in an undirected graph.",
-        "Use Tarjan's or DFS-based algorithm (tin/low arrays) to identify edges whose removal increases components."
+        "Necessary roads: find bridges using Tarjan's."
     ],
     "2077": [
-        "Find all articulation points in an undirected graph.",
-        "Use DFS-based algorithm (tin/low arrays) to find nodes that, if removed, disconnect the graph."
+        "Necessary cities: find articulation points using Tarjan's."
     ],
     "2078": [
-        "Find an Eulerian Circuit in an undirected graph.",
-        "Ensure all nodes have even degrees and the graph is connected, then use Hierholzer's algorithm."
+        "Eulerian subgraphs: DSU and degree counts."
     ],
     "2079": [
-        "Find the Centroid of a tree.",
-        "A node is a centroid if all its subtrees have size <= n/2. Run one DFS."
+        "Finding a centroid: node with all subtrees <= n/2."
     ],
     "2080": [
-        "Count paths of length k in a tree.",
-        "Use Centroid Decomposition to solve in O(n log n)."
+        "Fixed-length paths I: Centroid decomposition."
     ],
     "2081": [
-        "Count paths of length [k1, k2] in a tree.",
-        "Centroid Decomposition combined with a Fenwick Tree to handle range path counts."
+        "Fixed-length paths II: Centroid decomposition + Fenwick tree."
+    ],
+    "2084": [
+        "Monster game I: DP + geometry."
+    ],
+    "2085": [
+        "Monster game II: DP + advanced data structures."
+    ],
+    "2086": [
+        "Subarray squares: DP + Convex Hull Trick."
+    ],
+    "2087": [
+        "Houses and schools: Divide and conquer DP optimization."
+    ],
+    "2088": [
+        "Knuth division: Knuth's optimization."
     ],
     "2101": [
-        "Find the minimum max-edge on a path between two nodes.",
-        "Build a Minimum Spanning Tree and find the maximum edge on the path using Binary Lifting (LCA)."
+        "New roads queries: MST + binary lifting for path maximum edge."
     ],
     "2102": [
-        "Build an Aho-Corasick automaton for the dictionary words.",
-        "Process the text through the automaton to mark reached patterns."
+        "Finding patterns: Aho-Corasick automaton."
     ],
     "2103": [
-        "Build a Suffix Automaton or Suffix Array with LCP array.",
-        "The number of occurrences is the size of the endpos set in the SAM or the range in the Suffix Array."
+        "Counting patterns: Suffix automaton or suffix array."
+    ],
+    "2104": [
+        "Pattern positions: Suffix automaton to find occurrences."
     ],
     "2105": [
-        "Count distinct substrings.",
-        "Use a Suffix Automaton: sum of (len[i] - minlen[i]) for all states."
+        "Distinct substrings: Suffix automaton."
+    ],
+    "2106": [
+        "Repeating substring: Suffix array + LCP array."
+    ],
+    "2107": [
+        "String functions: Prefix function and Z-function."
+    ],
+    "2108": [
+        "Substring order I: Suffix automaton or suffix array."
+    ],
+    "2109": [
+        "Substring order II: Suffix automaton."
     ],
     "2110": [
-        "Suffix Array: Build the LCP (Longest Common Prefix) array.",
-        "The number of substrings of length k that appear at least once can be derived from LCP values."
+        "Substring distribution: Suffix automaton."
     ],
     "2111": [
-        "Use FFT (Fast Fourier Transform) to multiply polynomials in O(n log n).",
-        "The coefficients of the resulting polynomial give the counts for each possible sum."
+        "Apples and bananas: FFT for polynomial multiplication."
     ],
     "2112": [
-        "Similar to Apple Division but for large n: use FFT.",
-        "The distance between two '1's corresponds to the power of x in the polynomial multiplication."
+        "One bit positions: FFT for convolution."
     ],
     "2113": [
-        "Signal Processing using FFT.",
-        "Multiply two polynomials where coefficients represent the signal values to find the convolution."
+        "Signal processing: FFT."
+    ],
+    "2115": [
+        "Bit substrings: Prefix sums."
     ],
     "2121": [
-        "Minimum Cost Maximum Flow.",
-        "Use successive shortest path algorithm (Dijkstra with potentials or SPFA) to find augmenting paths."
+        "Parcel delivery: Min-cost max-flow."
+    ],
+    "2129": [
+        "Task assignment: Max flow with costs."
+    ],
+    "2130": [
+        "Distinct routes II: Max flow with edge capacities."
+    ],
+    "2131": [
+        "Grid puzzle II: Max flow modeling."
     ],
     "2132": [
-        "Slope Trick: Maintain a piecewise linear convex cost function using two priority queues.",
-        "For each element, adjust the 'peaks' of the cost function to minimize the absolute differences."
+        "Increasing array II: Slope trick with two priority queues."
     ],
     "2133": [
-        "Dynamic Connectivity: Count components as edges are added and removed.",
-        "Use a Segment Tree over the 'time' of queries and DSU with rollback (no path compression)."
+        "Dynamic connectivity: DSU with rollback + segment tree over time."
     ],
     "2134": [
-        "Path Queries on a tree with point updates.",
-        "Use Heavy-Light Decomposition (HLD) to map tree paths to segments in a Segment Tree."
+        "Path queries II: Heavy-Light Decomposition."
+    ],
+    "2136": [
+        "Hamming distance: count differing bits using XOR."
     ],
     "2137": [
-        "Count rectangles with all four corners as '1' in a bit grid.",
-        "Use bitsets to find intersections of rows in O(n^3 / 64)."
+        "Corner subgrid count: bitsets."
     ],
     "2138": [
-        "Find reachability between all pairs in a DAG.",
-        "Use bitsets to perform a bitwise OR of reachability vectors in reverse topological order."
+        "Reachable nodes: bitsets in a DAG."
+    ],
+    "2143": [
+        "Reachability queries: bitsets."
     ],
     "2162": [
-        "Josephus Problem I: Use a Segment Tree or Fenwick Tree to find the k-th person.",
-        "Alternatively, use the mathematical pattern for k=2: 2*(n - 2^floor(log2 n))."
+        "Josephus problem I: Fenwick tree."
+    ],
+    "2163": [
+        "Josephus problem II: Fenwick tree with step k."
     ],
     "2164": [
-        "Josephus Queries: Use recursion to find the position.",
-        "If k <= (n+1)/2, the answer is 2k; otherwise, map the remaining n/2 elements back to a smaller problem."
+        "Josephus queries: recursion."
     ],
     "2165": [
-        "Recursive logic: move n-1 disks to the auxiliary peg, then move the nth disk.",
-        "The total moves for n disks will always be 2^n - 1."
+        "Tower of Hanoi: recursion, 2^n - 1 moves."
+    ],
+    "2166": [
+        "Prefix sum queries: Fenwick tree with point updates."
+    ],
+    "2167": [
+        "Multiple sources and sinks: add super source/sink for max flow."
+    ],
+    "2168": [
+        "Nested ranges check: sort and use a set."
+    ],
+    "2169": [
+        "Nested ranges count: sort and use a Fenwick tree."
+    ],
+    "2174": [
+        "Removing digits II: DP or greedy."
+    ],
+    "2176": [
+        "Counting bishops: DP and combinatorics."
     ],
     "2177": [
-        "Find an Eulerian Circuit in a directed graph.",
-        "Check if in-degree equals out-degree for all nodes and the graph is connected. Use Hierholzer's algorithm."
+        "Strongly connected edges: Eulerian circuit."
     ],
     "2179": [
-        "Find an Eulerian Path in an undirected graph.",
-        "Check if zero or two nodes have odd degrees. Use Hierholzer's algorithm."
+        "Even outdegree edges: Eulerian circuit."
     ],
     "2180": [
-        "Move items between positions in a grid to minimize total movement cost.",
-        "Model as a flow problem or use a greedy approach with prefix sums and balancing logic."
+        "Coin arrangement: calculate minimum moves."
     ],
     "2181": [
-        "Broken Profile DP (or DP with bitmask on grids).",
-        "Fill the grid column by column, tracking the state of the next column's boundary."
+        "Counting tilings: Broken profile DP."
+    ],
+    "2182": [
+        "Divisor analysis: modular arithmetic and number theory."
+    ],
+    "2183": [
+        "Missing coin sum: sort and greedy."
+    ],
+    "2184": [
+        "Missing coin sum queries: segment tree + greedy."
+    ],
+    "2185": [
+        "Prime multiples: inclusion-exclusion."
+    ],
+    "2186": [
+        "Special substrings: hashing and combinatorics."
+    ],
+    "2187": [
+        "Bracket sequences II: combinatorics."
     ],
     "2189": [
-        "Calculate the cross product of (P2-P1) and (P3-P1).",
-        "Positive: Left turn, Negative: Right turn, Zero: Collinear."
+        "Point location test: cross product."
     ],
     "2190": [
-        "Check if two line segments intersect using the orientation test (cross products).",
-        "Handle special cases where points are collinear and overlapping."
+        "Line segment intersection: orientation tests."
     ],
     "2191": [
-        "Use the Shoelace Formula (Surveyor's Formula) to find the area of a polygon.",
-        "Sum the values (x_i * y_{i+1} - x_{i+1} * y_i) and divide by 2."
+        "Polygon area: Shoelace formula."
     ],
     "2192": [
-        "Ray Casting algorithm: Count how many times a horizontal ray from the point intersects the polygon's edges.",
-        "Also check if the point lies exactly on any edge."
+        "Point in polygon: ray casting."
+    ],
+    "2193": [
+        "Polygon lattice points: Pick's theorem."
     ],
     "2194": [
-        "Closest Pair of Points: Use a Divide and Conquer approach in O(n log n).",
-        "Sort by x-coordinate, then check points in a y-sorted strip near the dividing line."
+        "Minimum Euclidean distance: divide and conquer."
     ],
     "2195": [
-        "Monotone Chain or Graham Scan algorithm to find the Convex Hull.",
-        "Sort points by x, then build the upper and lower hulls using the orientation test."
+        "Convex hull: Graham scan or monotone chain."
     ],
     "2205": [
-        "Generate Gray code for n-1, then mirror it.",
-        "Prepend '0' to the original sequence and '1' to the reversed mirror."
+        "Gray code: recursive generation."
+    ],
+    "2206": [
+        "Pizzeria queries: segment tree storing a[i] - i and a[i] + i."
+    ],
+    "2207": [
+        "Grundy's game: calculate Grundy numbers."
+    ],
+    "2208": [
+        "Another game: analyze winning/losing states."
+    ],
+    "2209": [
+        "Counting necklaces: Burnside's lemma."
+    ],
+    "2210": [
+        "Counting grids: Burnside's lemma."
+    ],
+    "2214": [
+        "Inverse inversions: construct permutation greedily."
+    ],
+    "2215": [
+        "Monotone subsequences: greedy construction."
+    ],
+    "2216": [
+        "Collecting numbers: count increases."
+    ],
+    "2217": [
+        "Collecting numbers II: update positions and recount."
     ],
     "2220": [
-        "Digit DP: count numbers from 0 to x without adjacent identical digits.",
-        "State: dp(position, last_digit, is_less, is_started)."
+        "Counting numbers: Digit DP without adjacent identical digits."
+    ],
+    "2228": [
+        "Counting sequences: combinatorics and DP."
+    ],
+    "2229": [
+        "Permutation inversions: DP."
+    ],
+    "2402": [
+        "Two stacks sorting: 2-SAT or greedy."
     ],
     "2413": [
-        "DP for building towers of height n: dp[n][2] states.",
-        "State 1: Two separate 1x1 towers. State 2: One 2x1 tower. Transition based on adding 1x1 or 2x1 blocks."
+        "Counting towers: DP with 2 states."
+    ],
+    "2414": [
+        "List of sums: combinatorics and sorting."
+    ],
+    "2415": [
+        "Functional graph distribution: combinatorics."
     ],
     "2416": [
-        "Use a monotonic stack and a Segment Tree to calculate the cost to make a range non-decreasing.",
-        "Process queries offline or use persistent data structures/binary lifting for online."
+        "Increasing array queries: segment tree + monotonic stack."
     ],
     "2417": [
-        "Use Inclusion-Exclusion with prime factorization.",
-        "For each number, count multiples of its prime factors to find pairs with GCD > 1, then subtract from total pairs."
+        "Counting coprime pairs: inclusion-exclusion."
+    ],
+    "2418": [
+        "Grid path construction: constructive."
     ],
     "2419": [
-        "Lucas Theorem or Lucas-like properties for Sierpinski triangle.",
-        "The result is 1 only if (n-1) AND (i-1) == (i-1), otherwise 0 (mod 2)."
+        "Xor pyramid peak: Lucas' theorem."
     ],
     "2420": [
-        "Use a Segment Tree where each node stores the hash of its range.",
-        "Update point: update hash. Query: check if forward hash equals backward hash."
+        "Palindrome queries: segment tree + hashing."
+    ],
+    "2421": [
+        "Counting reorders: combinatorics."
     ],
     "2422": [
-        "Find the k-th smallest value in an n x n multiplication table.",
-        "Binary search on the answer: for a value x, count elements <= x using sum(min(n, x/i))."
+        "Multiplication table: binary search for the k-th element."
+    ],
+    "2423": [
+        "Filling trominos: constructive."
     ],
     "2425": [
-        "Signal Processing: This is a stack-based problem with greedy observations.",
-        "Use a Segment Tree to simulate the process and find the first available position."
+        "Stack weights: segment tree."
     ],
     "2426": [
-        "Model as a Minimum Cost Maximum Flow problem or use a greedy approach with a priority queue.",
-        "Prioritize the most profitable assignments and use the PQ to 'regret' and swap when a better option appears."
+        "Programmers and artists: DP + greedy."
     ],
     "2427": [
-        "Standard BFS on a state-space graph.",
-        "Model the game board as a string or integer and find the shortest path to the target configuration."
+        "Letter pair move game: BFS on state graph."
     ],
     "2428": [
-        "Sliding window with a frequency map.",
-        "Expand the right pointer until k+1 distinct elements exist, then shrink the left pointer."
+        "Distinct values subarrays II: sliding window + Fenwick tree."
+    ],
+    "2429": [
+        "Grid completion: DP + combinatorics."
     ],
     "2430": [
-        "Find a bitstring that contains all possible k-length bitstrings as substrings.",
-        "Construct a De Bruijn graph where nodes are (k-1)-bit strings and find an Eulerian circuit."
+        "Binary subsequences: Eulerian circuit on De Bruijn graph."
     ],
     "2431": [
-        "Determine the number of digits in the block where the index falls (e.g., 10-99).",
-        "Calculate the exact number and the specific digit position within that number."
+        "Digit queries: determine block length and find the digit."
     ],
     "2432": [
-        "Construct a grid with given row and column sums.",
-        "Model as a Max Flow problem with supply/demand at each row and column node."
+        "Grid puzzle I: max flow modeling."
+    ],
+    "3108": [
+        "K subset sums I: bitset optimization."
+    ],
+    "3109": [
+        "K subset sums II: advanced bitset optimization."
+    ],
+    "3111": [
+        "Transfer speeds sum: flow."
+    ],
+    "3112": [
+        "Hidden integer: interactive binary search."
+    ],
+    "3114": [
+        "Tree coin collecting I: tree DP."
+    ],
+    "3138": [
+        "All palindromes: hashing."
+    ],
+    "3139": [
+        "Hidden permutation: interactive binary search."
+    ],
+    "3140": [
+        "Inversion sorting: interactive."
+    ],
+    "3141": [
+        "And subset count: SOS DP."
+    ],
+    "3149": [
+        "Tree coin collecting II: advanced tree DP."
+    ],
+    "3150": [
+        "Distinct values sum: segment tree."
+    ],
+    "3151": [
+        "Bubble sort rounds I: Fenwick tree."
+    ],
+    "3152": [
+        "Bubble sort rounds II: advanced."
     ],
     "3154": [
-        "Use Gaussian Elimination."
+        "System of linear equations: Gaussian elimination."
+    ],
+    "3157": [
+        "Collecting numbers distribution: combinatorics."
+    ],
+    "3158": [
+        "Bus companies: max flow."
+    ],
+    "3159": [
+        "Replace with difference: number theory properties."
+    ],
+    "3161": [
+        "GCD subsets: inclusion-exclusion."
+    ],
+    "3163": [
+        "Range interval queries: segment tree."
+    ],
+    "3169": [
+        "Counting LCM arrays: number theory."
+    ],
+    "3175": [
+        "Beautiful permutation II: constructive."
+    ],
+    "3190": [
+        "Distinct values splits: greedy."
+    ],
+    "3191": [
+        "Maximum xor subset: linear basis."
+    ],
+    "3192": [
+        "K subset xors: linear basis."
+    ],
+    "3193": [
+        "Square subsets: bitmask."
+    ],
+    "3194": [
+        "Xor pyramid diagonal: combinatorics."
+    ],
+    "3195": [
+        "Xor pyramid row: combinatorics."
+    ],
+    "3211": [
+        "Number of subset xors: linear basis."
+    ],
+    "3213": [
+        "Water containers moves: BFS."
+    ],
+    "3214": [
+        "Water containers queries: BFS + preprocessing."
+    ],
+    "3215": [
+        "Bouncing ball steps: mathematical simulation."
+    ],
+    "3216": [
+        "Bouncing ball cycle: cycle detection."
+    ],
+    "3217": [
+        "Knight moves grid: BFS."
+    ],
+    "3218": [
+        "Knight moves queries: BFS + preprocessing."
+    ],
+    "3219": [
+        "Sliding window mex: set."
+    ],
+    "3220": [
+        "Sliding window sum: prefix sums."
+    ],
+    "3221": [
+        "Sliding window minimum: deque."
+    ],
+    "3222": [
+        "Sliding window distinct values: map."
+    ],
+    "3223": [
+        "Sliding window inversions: Fenwick tree."
+    ],
+    "3224": [
+        "Sliding window mode: multiset."
+    ],
+    "3225": [
+        "Inverse suffix array: reconstruct from suffix array."
+    ],
+    "3226": [
+        "Subarray sum queries II: segment tree."
+    ],
+    "3227": [
+        "Sliding window advertisement: deque."
+    ],
+    "3228": [
+        "Permuted binary strings: interactive."
+    ],
+    "3232": [
+        "Tournament graph distribution: combinatorics."
+    ],
+    "3233": [
+        "All subarray xors: bit manipulation."
+    ],
+    "3273": [
+        "Colored chairs: interactive greedy."
+    ],
+    "3294": [
+        "Subarray sum constraints: prefix sums and constraints."
+    ],
+    "3301": [
+        "Maximum average subarrays: binary search."
+    ],
+    "3302": [
+        "Subsets with fixed average: binary search."
+    ],
+    "3303": [
+        "Nearest shops: multi-source BFS."
+    ],
+    "3304": [
+        "Visible buildings queries: segment tree."
+    ],
+    "3305": [
+        "K-th highest score: interactive + binary search."
+    ],
+    "3306": [
+        "Nearest campsites I: BFS."
+    ],
+    "3307": [
+        "Nearest campsites II: advanced BFS."
+    ],
+    "3308": [
+        "Graph coloring: greedy."
+    ],
+    "3311": [
+        "Grid coloring I: constructive."
+    ],
+    "3312": [
+        "Grid coloring II: constructive."
+    ],
+    "3314": [
+        "Mountain range: DP."
+    ],
+    "3355": [
+        "Sum of four squares: Lagrange's four-square theorem."
+    ],
+    "3356": [
+        "Distinct values queries II: offline + Fenwick tree."
+    ],
+    "3357": [
+        "Fixed length walk queries: matrix exponentiation."
+    ],
+    "3358": [
+        "Split into two paths: flow."
+    ],
+    "3359": [
+        "Minimal grid path: DP."
+    ],
+    "3360": [
+        "Corner subgrid check: bitmask."
+    ],
+    "3361": [
+        "Two array average: binary search."
+    ],
+    "3396": [
+        "Next prime: sieve and check."
+    ],
+    "3397": [
+        "Permutation order: combinatorics."
+    ],
+    "3398": [
+        "Permutation rounds: combinatorics."
+    ],
+    "3399": [
+        "Raab game I: constructive."
+    ],
+    "3400": [
+        "Raab game II: DP + combinatorics."
+    ],
+    "3401": [
+        "Stick difference: greedy."
+    ],
+    "3402": [
+        "Minimum cost pairs: flow."
+    ],
+    "3403": [
+        "Longest common subsequence: string DP."
+    ],
+    "3404": [
+        "Permutation subsequence: DP + math."
+    ],
+    "3405": [
+        "Sliding window or: bitwise + deque."
+    ],
+    "3406": [
+        "Triangle number sums: number theory."
+    ],
+    "3407": [
+        "MST edge check: DSU."
+    ],
+    "3408": [
+        "MST edge set check: DSU."
+    ],
+    "3409": [
+        "MST edge cost: DSU."
+    ],
+    "3410": [
+        "Maximum Manhattan distances: coordinate rotation."
+    ],
+    "3411": [
+        "All Manhattan distances: coordinate rotation."
+    ],
+    "3413": [
+        "Filled subgrid count I: bitmask."
+    ],
+    "3414": [
+        "Filled subgrid count II: combinatorics."
+    ],
+    "3415": [
+        "All letter subgrid count I: bitmask."
+    ],
+    "3416": [
+        "All letter subgrid count II: combinatorics."
+    ],
+    "3417": [
+        "Border subgrid count I: bitmask."
+    ],
+    "3418": [
+        "Border subgrid count II: combinatorics."
+    ],
+    "3419": [
+        "Mex grid construction: constructive + set."
+    ],
+    "3420": [
+        "Distinct values subarrays: sliding window."
+    ],
+    "3421": [
+        "Distinct values subsequences: DP + combinatorics."
+    ],
+    "3422": [
+        "Third permutation: constructive."
+    ],
+    "3423": [
+        "Permutation prime sums: constructive."
+    ],
+    "3424": [
+        "Distinct sums grid: constructive."
+    ],
+    "3425": [
+        "Same sum subsets: DP + math."
+    ],
+    "3426": [
+        "Sliding window xor: bitwise."
+    ],
+    "3427": [
+        "Line segments trace I: geometry."
+    ],
+    "3428": [
+        "Line segments trace II: geometry."
+    ],
+    "3429": [
+        "Lines and queries I: geometry."
+    ],
+    "3430": [
+        "Lines and queries II: geometry."
     ]
 }
