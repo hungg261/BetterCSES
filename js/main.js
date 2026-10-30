@@ -11,6 +11,7 @@ const getProblemId = () => {
 };
 
 let tagsDB = null;
+let tagsDBPromise = null;
 let tipsDB = null;
 
 const fetchWithTimeout = async (url, timeout = 2000) => {
@@ -41,12 +42,13 @@ const loadDataWithFallback = async (remoteUrl, localUrl) => {
 };
 
 const getTags = async (problemId) => {
-    if (!tagsDB) {
-        tagsDB = await loadDataWithFallback(
+    if (!tagsDBPromise) {
+        tagsDBPromise = loadDataWithFallback(
             "https://raw.githubusercontent.com/hungg261/BetterCSES/refs/heads/master/database/tags.json",
             browser.runtime.getURL("database/tags.json")
         );
     }
+    if (!tagsDB) tagsDB = await tagsDBPromise;
     return tagsDB[problemId] || [];
 };
 
@@ -113,6 +115,15 @@ const injectStyles = () => {
         .ext-unsolved-list li { padding: 1px 0; break-inside: avoid; }
         .ext-unsolved-list a { color: #009; text-decoration: none; }
         .ext-unsolved-list a:hover { text-decoration: underline; }
+        .ext-tag-browser { margin: 10px 0; }
+        .ext-tag-browser > summary { cursor: pointer; }
+        .ext-tag-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+        .ext-tag-filter { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+        .ext-tag-option { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+        .ext-tag-random { font: inherit; font-size: .82em; padding: .15em .6em; cursor: pointer; }
+        .ext-tag-result-count { margin: 6px 0; font-size: .85em; }
+        .ext-tag-results { margin-top: 8px; }
+        .ext-tag-results .task { display: flex; }
         .ext-flat-container { margin-top: 10px; }
         .ext-flat-sort { max-width: 100%; margin: 0 0 10px; }
         .ext-badge { display: inline-block; font-size: .72em; background: #eaeaea; padding: 2px 6px; border-radius: 0; margin-left: 8px; color: #333; vertical-align: middle; }
@@ -131,6 +142,7 @@ const injectStyles = () => {
         body.dark .ext-dashboard-settings { border-top-color: #777; }
         body.dark .ext-unsolved > summary,
         body.dark .ext-unsolved-list a { color: #ff8a8a; }
+        body.dark .ext-tag-results a { color: #8ab4f8; }
         body.dark .ext-badge { background-color: #333; color: #ccc; }
         body.dark .ext-topic-stats { color: #aaa; }
         body.dark .ext-toc-list a { color: #8ab4f8; }
@@ -610,8 +622,19 @@ const setupProblemListsAndStats = () => {
             const solvers = detail ? parseInt(detail.innerText.split("/")[0].replace(/,/g, '')) || 0 : 0;
             const submissions = detail ? parseInt(detail.innerText.split("/")[1].replace(/,/g, '')) || 1 : 1;
             const acRate = solvers / submissions;
+            const problemId = aTag?.getAttribute("href")?.match(/\/task\/(\d+)/)?.[1];
             topicData.push({ defaultIndex: pIdx, solvers, acRate, html: task.outerHTML });
-            allProblemsFlat.push({ topic: originalTitle, defaultIndex: pIdx, solvers, acRate, html: task.outerHTML });
+            allProblemsFlat.push({
+                id: problemId,
+                title: aTag?.textContent.trim() || "",
+                url: aTag?.href || "",
+                topic: originalTitle,
+                defaultIndex: pIdx,
+                solvers,
+                acRate,
+                html: task.outerHTML,
+                tags: []
+            });
         });
 
         const statsDiv = document.createElement("div");
@@ -699,6 +722,121 @@ const buildDashboardAndTOC = () => {
 
         dashboardContent.appendChild(det);
     }
+
+    const tagBrowser = document.createElement("details");
+    tagBrowser.className = "ext-tag-browser";
+    const tagBrowserSummary = document.createElement("summary");
+    tagBrowserSummary.textContent = "Browse problems by tag";
+    tagBrowser.appendChild(tagBrowserSummary);
+
+    const tagControls = document.createElement("div");
+    tagControls.className = "ext-tag-controls";
+    const tagFilter = document.createElement("div");
+    tagFilter.className = "ext-tag-filter";
+    const selectedTags = new Set();
+    tagFilter.setAttribute("role", "group");
+    tagFilter.setAttribute("aria-label", "Filter problems by tags");
+    const randomButton = document.createElement("button");
+    randomButton.className = "ext-tag-random";
+    randomButton.type = "button";
+    randomButton.textContent = "Random problem";
+    randomButton.disabled = true;
+    const clearTagsButton = document.createElement("button");
+    clearTagsButton.className = "ext-tag-random";
+    clearTagsButton.type = "button";
+    clearTagsButton.textContent = "Clear tags";
+    clearTagsButton.hidden = true;
+    tagControls.append(tagFilter, clearTagsButton, randomButton);
+
+    const tagResultCount = document.createElement("p");
+    tagResultCount.className = "ext-tag-result-count";
+    tagResultCount.textContent = "Open this section to load tags.";
+    const tagResults = document.createElement("ul");
+    tagResults.className = "task-list ext-tag-results";
+    tagBrowser.append(tagControls, tagResultCount, tagResults);
+
+    let tagDataLoaded = false;
+    const getFilteredProblems = () => {
+        if (selectedTags.size === 0) return allProblemsFlat;
+        return allProblemsFlat.filter(problem => [...selectedTags].every(tag => problem.tags.includes(tag)));
+    };
+    const renderTagResults = () => {
+        const matchingProblems = getFilteredProblems();
+        tagResultCount.textContent = `${matchingProblems.length} problem${matchingProblems.length === 1 ? "" : "s"}`;
+        tagResults.replaceChildren();
+        matchingProblems.forEach(problem => {
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = problem.html;
+            const task = wrapper.firstElementChild;
+            const link = task?.querySelector("a");
+            if (!task || !link) return;
+            problem.tags.forEach(tag => {
+                const badge = document.createElement("span");
+                badge.className = "ext-badge";
+                badge.textContent = tag;
+                link.appendChild(badge);
+            });
+            tagResults.appendChild(task);
+        });
+    };
+    const loadTagBrowser = async () => {
+        if (tagDataLoaded) return;
+        tagResultCount.textContent = "Loading tags...";
+        try {
+            await Promise.all(allProblemsFlat.map(async problem => {
+                if (problem.id) problem.tags = await getTags(problem.id);
+            }));
+            const tags = [...new Set(allProblemsFlat.flatMap(problem => problem.tags))].sort((a, b) => a.localeCompare(b));
+            tags.forEach(tag => {
+                const label = document.createElement("label");
+                label.className = "ext-tag-option";
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.value = tag;
+                checkbox.addEventListener("change", () => {
+                    if (checkbox.checked) selectedTags.add(tag);
+                    else selectedTags.delete(tag);
+                    clearTagsButton.hidden = selectedTags.size === 0;
+                    renderTagResults();
+                });
+                label.append(checkbox, document.createTextNode(tag));
+                tagFilter.appendChild(label);
+            });
+            randomButton.disabled = allProblemsFlat.length === 0;
+            tagDataLoaded = true;
+            if (tags.length === 0) {
+                tagResultCount.textContent = "No tags available; showing all problems.";
+                renderTagResults();
+                return;
+            }
+            renderTagResults();
+        } catch (error) {
+            console.error("Unable to load problem tags:", error);
+            tagResultCount.textContent = "Could not load problem tags. Please try reloading the page.";
+        }
+    };
+    tagFilter.addEventListener("change", renderTagResults);
+    clearTagsButton.addEventListener("click", () => {
+        selectedTags.clear();
+        tagFilter.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        clearTagsButton.hidden = true;
+        renderTagResults();
+    });
+    randomButton.addEventListener("click", () => {
+        const matchingProblems = getFilteredProblems().filter(problem => problem.url);
+        if (matchingProblems.length === 0) {
+            tagResultCount.textContent = "No problems match the selected tags.";
+            return;
+        }
+        const selectedProblem = matchingProblems[Math.floor(Math.random() * matchingProblems.length)];
+        window.location.assign(selectedProblem.url);
+    });
+    tagBrowser.addEventListener("toggle", () => {
+        if (tagBrowser.open) loadTagBrowser();
+    });
+    dashboardContent.appendChild(tagBrowser);
 
     const flatLabel = document.createElement("label");
     flatLabel.className = "ext-setting-toggle";

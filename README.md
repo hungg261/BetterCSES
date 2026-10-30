@@ -1,4 +1,4 @@
-# BetterCSES v1.2.4
+# BetterCSES v1.3.0
 
 **BetterCSES** is a browser extension designed to enhance the user experience on the CSES Online Judge. This project is a fork of [CSES Helper](https://github.com/dada878/CSES-Helper).
 
@@ -21,4 +21,5 @@ The following enhancements are integrated directly into the CSES interface to st
 | **Translation** | Translate problem statements (Beta). | <img src="assets/extension/translate_languages.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
 | **Problem navigator** | Go to the previous or next problem. | <img src="assets/extension/problem_navigation.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
 | **Back to Top** | Scroll back to the top of the page. | <img src="assets/extension/back_to_top.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
+| **Tags filter & random problem** | Browse and pick random problems by tags. | <img src="assets/extension/tags_filter.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
 | **Search problem** | Search problems by link, ID, or title. | <img src="assets/extension/search_problem.png" width="400" style="border: 1px solid #ddd; border-radius: 4px;"> |
